@@ -296,7 +296,7 @@ def mathematical_model_solve(mip_inputs):
 
     model.ModelSense = -1  # set objective to maximization
     start_time = time.time()
-    model.params.MIPFocus = 3
+    model.params.MIPFocus = 2
     model.params.MIPGap = 0.01
     model.params.Presolve = 2
     model.optimize()
