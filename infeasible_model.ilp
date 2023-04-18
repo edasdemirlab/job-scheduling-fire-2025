@@ -1,0 +1,24 @@
+\ Model firefighting_copy
+\ LP format - for model browsing. Use MPS format to capture full model detail.
+Maximize
+ 
+Subject To
+ R0: x_ijk[5,7,1] = 1
+ R22: x_ijk[1,5,1] + x_ijk[3,5,1] + x_ijk[4,5,1] - x_ijk[5,1,1]
+   - x_ijk[5,3,1] - x_ijk[5,4,1] - x_ijk[5,6,1] - x_ijk[5,7,1]
+   - x_ijk[5,8,1] - x_ijk[5,9,1] + x_ijk[6,5,1] + x_ijk[7,5,1]
+   + x_ijk[8,5,1] + x_ijk[9,5,1] = 0
+ R38: - x_ijk[1,5,1] - x_ijk[1,5,2] - x_ijk[3,5,1] - x_ijk[3,5,2]
+   - x_ijk[4,5,1] - x_ijk[4,5,2] - x_ijk[6,5,1] - x_ijk[6,5,2]
+   - x_ijk[7,5,1] - x_ijk[7,5,2] - x_ijk[8,5,1] - x_ijk[8,5,2]
+   - x_ijk[9,5,1] - x_ijk[9,5,2] + y_j[5] >= 0
+ R286: - x_ijk[5,0,1] + x_ijk[5,3,1] + x_ijk[5,4,1] + x_ijk[5,6,1]
+   - x_ijk[5,7,1] + x_ijk[5,8,1] + x_ijk[5,9,1] = 0
+Bounds
+Binaries
+ x_ijk[1,5,1] x_ijk[1,5,2] x_ijk[3,5,1] x_ijk[3,5,2] x_ijk[4,5,1]
+ x_ijk[4,5,2] x_ijk[5,0,1] x_ijk[5,1,1] x_ijk[5,3,1] x_ijk[5,4,1]
+ x_ijk[5,6,1] x_ijk[5,7,1] x_ijk[5,8,1] x_ijk[5,9,1] x_ijk[6,5,1]
+ x_ijk[6,5,2] x_ijk[7,5,1] x_ijk[7,5,2] x_ijk[8,5,1] x_ijk[8,5,2]
+ x_ijk[9,5,1] x_ijk[9,5,2] y_j[5]
+End

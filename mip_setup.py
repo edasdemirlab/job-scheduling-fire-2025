@@ -58,7 +58,10 @@ class InputsSetup:
         self.n_nodes = self.parameters_df.loc["n_nodes", "value"]
         self.node_list = list(range(1, self.n_nodes + 1))
         self.base_node_id = self.problem_data_df.query("state == 6")["node_id"].item()
-        self.water_node_id = self.problem_data_df.query("state == 5")["node_id"].item()
+        # self.water_node_id = self.problem_data_df.query("state == 5")["node_id"].item()
+        self.water_node_id = self.problem_data_df.query("state == 5")["node_id"].tolist()
+        # self.problem_data_df.query("state not in 5")["node_id"].tolist()
+
         # define empty lists for classes, i.e. each element of the list will be an element of the corresponding class
         self.node_object_dict = {}  # dictionary of elements of IC attribute class
         self.links_multidict_input = {}  # multi-dictionary input for the transportation cost information for each available arc in the network
@@ -85,7 +88,7 @@ class InputsSetup:
         for i in range(len(self.flow_active_distance_df)):
             values = self.flow_active_distance_df .loc[i, :]
             for k in range(1, self.n_vehicles + 1):
-                self.links_multidict_input[values["from"], values["to"], k] = (values["distance"] / self.vehicle_flight_speed)
+                self.links_multidict_input[int(values["from"]), int(values["to"]), k] = (values["distance"] / self.vehicle_flight_speed)
 
         # setup multi dictionaries --> if you are unfamiliar with multidict and want to learn about, go to below link
         # https://www.gurobi.com/documentation/8.1/refman/py_multidict.html
@@ -98,6 +101,20 @@ class InputsSetup:
             self.node_object_dict[nd] = NodeSetup(self.fire_ready_nodes_data_df.query('node_id == @nd').iloc[0, :])
 
         self.fire_ready_node_ids = list(self.fire_ready_nodes_data_df["node_id"])
+        self.fire_ready_node_ids_and_base =  [self.base_node_id]  + self.fire_ready_node_ids
+
+
+        self.s_ijkw_links = gp.tuplelist()
+        for i in self.fire_ready_node_ids:
+            to_j_list = [x for x in self.fire_ready_node_ids if x != i]
+            for j in to_j_list:
+                for k in self.vehicle_list:
+                    for w in self.water_node_id:
+                        self.s_ijkw_links.append((i, j, k, w))
+
+
+
+
 
         # self.node_vehicle_pairs = gp.tuplelist([(j, k) for j in self.fire_ready_nodes_data_df["node_id"].tolist() for k in self.vehicle_list])
         #
