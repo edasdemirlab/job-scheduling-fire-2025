@@ -51,12 +51,12 @@ class InputsSetup:
         self.region_side_length = self.parameters_df.loc["region_side_length", "value"]
         self.node_area = self.parameters_df.loc["node_area", "value"]
         self.n_vehicles = self.parameters_df.loc["n_vehicles", "value"]
-        self.vehicle_list = list(range(1, self.n_vehicles + 1))
+        self.vehicle_list = list(range(1, int(self.n_vehicles) + 1))
         self.vehicle_flight_speed = self.parameters_df.loc["vehicle_flight_speed", "value"]
         self.time_limit = self.parameters_df.loc["time_limit", "value"]
 
         self.n_nodes = self.parameters_df.loc["n_nodes", "value"]
-        self.node_list = list(range(1, self.n_nodes + 1))
+        self.node_list = list(range(1, int(self.n_nodes) + 1))
         self.base_node_id = self.problem_data_df.query("state == 6")["node_id"].item()
         # self.water_node_id = self.problem_data_df.query("state == 5")["node_id"].item()
         self.water_node_id = self.problem_data_df.query("state == 5")["node_id"].tolist()
@@ -70,6 +70,7 @@ class InputsSetup:
         # node states --> 0: without forest fire, 1: with forest fire, 2: rescued, 3: burned down, 4: fire proof, 5: water, 6:home/base
         fire_proof_states = list(range(2, 7))
         fire_proof_nodes = self.problem_data_df.query("state in @fire_proof_states").loc[:,"node_id"].tolist()
+        self.fire_proof_node_list = fire_proof_nodes
         self.neighborhood_links_df = self.problem_data_df[['node_id', 'neighborhood_list']].copy()
         self.neighborhood_links_df = self.neighborhood_links_df.explode("neighborhood_list")
         self.neighborhood_links_df = self.neighborhood_links_df.rename(columns={"node_id": "from", "neighborhood_list": "to"})
@@ -87,7 +88,7 @@ class InputsSetup:
         # setup links and their distances
         for i in range(len(self.flow_active_distance_df)):
             values = self.flow_active_distance_df .loc[i, :]
-            for k in range(1, self.n_vehicles + 1):
+            for k in range(1, int(self.n_vehicles) + 1):
                 self.links_multidict_input[int(values["from"]), int(values["to"]), k] = (values["distance"] / self.vehicle_flight_speed)
 
         # setup multi dictionaries --> if you are unfamiliar with multidict and want to learn about, go to below link
