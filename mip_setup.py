@@ -41,11 +41,12 @@ class InputsSetup:
 
         # read problem input
         self.directory = os.path.join('inputs', 'inputs_to_load.xlsx')  # os.getcwd(),
-        self.parameters_df = pd.read_excel(self.directory, sheet_name="parameters", index_col=0)
-        self.problem_data_df = pd.read_excel(self.directory, sheet_name="inputs_df")
+        self.parameters_df = pd.read_excel(self.directory, sheet_name="parameters", index_col=0, engine='openpyxl').dropna(axis=0, how='all').dropna(axis=1, how='all')
+        self.problem_data_df = pd.read_excel(self.directory, sheet_name="inputs_df", engine='openpyxl').dropna(axis=0, how='all').dropna(axis=1, how='all')
         fix_df = self.problem_data_df.copy()
         self.problem_data_df["neighborhood_list"] = fix_df["neighborhood_list"].apply(literal_eval)  # make string lists of csv to python lists
-        self.distance_df = pd.read_excel(self.directory, sheet_name="distance_df")
+        #self.problem_data_df["neighborhood_list"] = [eval(str(i)) for i in fix_df["neighborhood_list"]] # fix_df["neighborhood_list"].apply(eval)  # make string lists of csv to python lists
+        self.distance_df = pd.read_excel(self.directory, sheet_name="distance_df", engine='openpyxl').dropna(axis=0, how='all').dropna(axis=1, how='all')
 
         # problem parameters
         self.region_side_length = self.parameters_df.loc["region_side_length", "value"]
@@ -113,11 +114,69 @@ class InputsSetup:
                     for w in self.water_node_id:
                         self.s_ijkw_links.append((i, j, k, w))
 
+        # ----------------------------------------------------------------------------
+        # Defining big-M values
 
+        self.big_m_augmentation_for_rounding_errors = 0.1
 
+        # after validations, it is better to move big m dictionary constructions to the mip_setup.py
+        self.M_3 = dict()
+        for j in self.fire_ready_node_ids:
+            self. M_3[j] = self.links_durations[
+                         (self.base_node_id, j, 1)] + self.big_m_augmentation_for_rounding_errors
+            # M_3[j] = 999
 
+        self. M_13 = dict()
+        for j in self.fire_ready_node_ids:
+            self.M_13[j] = (self.time_limit - self.links_durations[
+                (j, self.base_node_id, 1)]) + self.big_m_augmentation_for_rounding_errors
+            # M_13[j] = 999
 
-        # self.node_vehicle_pairs = gp.tuplelist([(j, k) for j in self.fire_ready_nodes_data_df["node_id"].tolist() for k in self.vehicle_list])
-        #
+        self. M_16 = dict()
+        for i in self.fire_ready_node_ids:
+            t_max = self.time_limit
+            d_i_h = self.links_durations[(i, self.base_node_id, 1)]
+            max_d_i_w = max([self.links_durations[(i, w, 1)] for w in self.water_node_id])
+            to_j_list = [x for x in self.fire_ready_node_ids if x != i]
+            for j in to_j_list:
+                max_d_w_j = max([self.links_durations[(w, j, 1)] for w in self.water_node_id])
+                self.M_16[(i, j)] = (t_max - d_i_h + max_d_i_w + max_d_w_j) + self.big_m_augmentation_for_rounding_errors
+                # M_16[(i, j)] = 999
 
+        self.M_19 = 6 * 30 * 24
+
+        self.M_21 = dict()
+        for i in self.fire_ready_node_ids:
+            self.M_21[i] = (1 / self.links_durations[
+                (self.base_node_id, i, 1)]) + self.big_m_augmentation_for_rounding_errors
+            # M_21[i] = ((mip_inputs.node_area / mip_inputs.node_object_dict[i].get_fire_degradation_rate()) + (10 ** -6)) + big_m_augmentation_for_rounding_errors
+            # M_21[i] = 999
+
+        self.M_22 = dict()
+        for i in self.fire_ready_node_ids:
+            self.M_22[i] = (self.time_limit - self.links_durations[
+                (i, self.base_node_id, 1)]) + self.big_m_augmentation_for_rounding_errors
+            # M_22[i] = 999
+
+        self.M_23 = dict()
+        for i in self.fire_ready_node_ids:
+            area_to_degradation = (self.node_area / self.node_object_dict[i].get_fire_degradation_rate())
+            self.M_23[i] = (self.time_limit - self.links_durations[
+                (i, self.base_node_id, 1)] - area_to_degradation) + self.big_m_augmentation_for_rounding_errors
+            # M_23[j] = len([l for l in mip_inputs.neighborhood_links if l[1] == j])\
+            # M_23[j] = 999
+
+        # M_24= dict()
+        # for j in mip_inputs.fire_ready_node_ids:
+        #     # M_24[j] = len([l for l in mip_inputs.neighborhood_links if l[1] == j])\
+        #     M_24[j] = 999
+
+        self.M_24 = 6 * 30 * 24
+
+        # M_26 = dict()
+        # for j in mip_inputs.fire_ready_node_ids:
+        #     M_26[j] = len([l for l in mip_inputs.neighborhood_links if l[1] == j])
+        #     # M_26[j] = 999
+
+        self.M_37 = 6 * 30 * 24
 

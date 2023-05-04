@@ -6,7 +6,7 @@ import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 import mip_setup as mip_setup
 import mip_solve as mip_solve
-
+import openpyxl
 
 mip_inputs = mip_setup.InputsSetup()
 mip_solve.mathematical_model_solve(mip_inputs)
