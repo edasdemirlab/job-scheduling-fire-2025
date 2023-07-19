@@ -37,16 +37,34 @@ class NodeSetup:
 
 # define setup classes
 class InputsSetup:
-    def __init__(self):
+    def __init__(self, user_inputs, list_of_active_fires="NA"):
 
         # read problem input
-        self.directory = os.path.join('inputs', 'inputs_to_load.xlsx')  # os.getcwd(),
-        self.parameters_df = pd.read_excel(self.directory, sheet_name="parameters", index_col=0, engine='openpyxl').dropna(axis=0, how='all').dropna(axis=1, how='all')
-        self.problem_data_df = pd.read_excel(self.directory, sheet_name="inputs_df", engine='openpyxl').dropna(axis=0, how='all').dropna(axis=1, how='all')
+        self.directory = user_inputs.directory
+        # self.directory = os.path.join('inputs', 'inputs_to_load_5x5.xlsx')  # os.getcwd(),
+
+        self.parameters_df = user_inputs.parameters_df.copy()
+        # self.parameters_df = pd.read_excel(self.directory, sheet_name="parameters", index_col=0, engine='openpyxl').dropna(axis=0, how='all').dropna(axis=1, how='all')
+
+        self.problem_data_df = user_inputs.problem_data_df.copy()
+        # self.problem_data_df = pd.read_excel(self.directory, sheet_name="inputs_df", engine='openpyxl').dropna(axis=0, how='all').dropna(axis=1, how='all')
+
+        # self.experiment_mode = experiment_mode
+        self.experiment_mode = self.parameters_df.loc["mode", "value"]
+
+        if self.experiment_mode == "combination_run":
+            self.problem_data_df.loc[[x - 1 for x in list(list_of_active_fires)], "state"] = 1
+            self.run_start_date = user_inputs.run_start_date
+
+
+
         fix_df = self.problem_data_df.copy()
         self.problem_data_df["neighborhood_list"] = fix_df["neighborhood_list"].apply(literal_eval)  # make string lists of csv to python lists
         #self.problem_data_df["neighborhood_list"] = [eval(str(i)) for i in fix_df["neighborhood_list"]] # fix_df["neighborhood_list"].apply(eval)  # make string lists of csv to python lists
-        self.distance_df = pd.read_excel(self.directory, sheet_name="distance_df", engine='openpyxl').dropna(axis=0, how='all').dropna(axis=1, how='all')
+
+        self.distance_df = user_inputs.distance_df.copy()
+        # self.distance_df = pd.read_excel(self.directory, sheet_name="distance_df", engine='openpyxl').dropna(axis=0, how='all').dropna(axis=1, how='all')
+        # self.distance_df["distance"] = round(self.distance_df["distance"], 2)
 
         # problem parameters
         self.region_side_length = self.parameters_df.loc["region_side_length", "value"]
@@ -122,17 +140,16 @@ class InputsSetup:
         # after validations, it is better to move big m dictionary constructions to the mip_setup.py
         self.M_3 = dict()
         for j in self.fire_ready_node_ids:
-            self. M_3[j] = self.links_durations[
-                         (self.base_node_id, j, 1)] + self.big_m_augmentation_for_rounding_errors
+            self. M_3[j] = (1/self.links_durations[(self.base_node_id, j, 1)]) + self.big_m_augmentation_for_rounding_errors
             # M_3[j] = 999
 
-        self. M_13 = dict()
+        self.M_13 = dict()
         for j in self.fire_ready_node_ids:
             self.M_13[j] = (self.time_limit - self.links_durations[
                 (j, self.base_node_id, 1)]) + self.big_m_augmentation_for_rounding_errors
             # M_13[j] = 999
 
-        self. M_16 = dict()
+        self.M_16 = dict()
         for i in self.fire_ready_node_ids:
             t_max = self.time_limit
             d_i_h = self.links_durations[(i, self.base_node_id, 1)]
@@ -141,7 +158,7 @@ class InputsSetup:
             for j in to_j_list:
                 max_d_w_j = max([self.links_durations[(w, j, 1)] for w in self.water_node_id])
                 self.M_16[(i, j)] = (t_max - d_i_h + max_d_i_w + max_d_w_j) + self.big_m_augmentation_for_rounding_errors
-                # M_16[(i, j)] = 999
+                # self.M_16[(i, j)] = 999
 
         self.M_19 = 6 * 30 * 24
 
@@ -179,4 +196,26 @@ class InputsSetup:
         #     # M_26[j] = 999
 
         self.M_37 = 6 * 30 * 24
+
+
+# def list_combinations():
+#     # read problem input
+#     input_directory = os.path.join('inputs', 'inputs_to_load_5x5.xlsx')  # os.getcwd(),
+#     input_parameters_df = pd.read_excel(self.directory, sheet_name="parameters", index_col=0, engine='openpyxl').dropna(
+#         axis=0, how='all').dropna(axis=1, how='all')
+#     self.problem_data_df = pd.read_excel(self.directory, sheet_name="inputs_df", engine='openpyxl').dropna(axis=0,
+#                                                                                                            how='all').dropna(
+#         axis=1, how='all')
+#     # self.experiment_mode = experiment_mode
+#     self.experiment_mode = self.parameters_df.loc["mode", "value"]
+
+class UserInputsRead:
+    def __init__(self):
+
+        # read problem input
+        self.directory = os.path.join('inputs', 'inputs_to_load.xlsx')  # os.getcwd(),
+        self.parameters_df = pd.read_excel(self.directory, sheet_name="parameters", index_col=0, engine='openpyxl').dropna(axis=0, how='all').dropna(axis=1, how='all')
+        self.problem_data_df = pd.read_excel(self.directory, sheet_name="inputs_df", engine='openpyxl').dropna(axis=0, how='all').dropna(axis=1, how='all')
+        self.distance_df = pd.read_excel(self.directory, sheet_name="distance_df", engine='openpyxl').dropna(axis=0, how='all').dropna(axis=1, how='all')
+
 

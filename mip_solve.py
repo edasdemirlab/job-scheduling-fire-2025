@@ -1,4 +1,5 @@
 import gurobipy as gp
+import numpy as np
 from gurobipy import GRB
 import re
 import pandas as pd
@@ -52,7 +53,7 @@ def mathematical_model_solve(mip_inputs):
         vtype=GRB.BINARY,
         name="s1_i",
     )
-    
+
     s2_i = model.addVars(
         mip_inputs.fire_ready_node_ids,
         vtype=GRB.BINARY,
@@ -64,7 +65,7 @@ def mathematical_model_solve(mip_inputs):
         vtype=GRB.BINARY,
         name="s3_i",
     )
-    
+
     s4_i = model.addVars(
         mip_inputs.fire_ready_node_ids,
         vtype=GRB.BINARY,
@@ -169,6 +170,8 @@ def mathematical_model_solve(mip_inputs):
     # Constraint 5 - each vehicle can leave the base only once
     for k in mip_inputs.vehicle_list:
         model.addConstr(x_ijk.sum(mip_inputs.base_node_id, mip_inputs.fire_ready_node_ids, k) <= 1)
+    # model.addConstr(x_ijk.sum(mip_inputs.base_node_id, mip_inputs.fire_ready_node_ids, '*') <= 1)
+    # model.addConstr(x_ijk.sum(mip_inputs.base_node_id, 7, '*') == 1)
 
     # Constraint 6 - flow balance equation -- incoming vehicles must be equal to the outgoing vehicles at each node
     for j in mip_inputs.fire_ready_node_ids:
@@ -178,7 +181,6 @@ def mathematical_model_solve(mip_inputs):
     # Constraint 7 - at most one vehicle can visit a node
     for j in mip_inputs.fire_ready_node_ids:
         model.addConstr(x_ijk.sum(mip_inputs.fire_ready_node_ids_and_base, j, '*') <= 1)
-
 
     # Constraint 8 - water resource selection for refilling
     for i in mip_inputs.s_ijkw_links:
@@ -212,9 +214,12 @@ def mathematical_model_solve(mip_inputs):
         #                 M_13[j] * (1 - x_ijk.sum(j, mip_inputs.base_node_id, '*')))
 
     # Constraint 14 - determines arrival times to the nodes
+
     for j in mip_inputs.fire_ready_node_ids:
         home_to_j_coef = {k: v for k, v in mip_inputs.links_durations.items() if
                           k[0] == mip_inputs.base_node_id and k[1] == j}
+        # model.addConstr(tv_j[j] <= x_ijk.prod(home_to_j_coef, mip_inputs.base_node_id, j, '*') + 99 * (
+        #         1 - x_ijk.sum(mip_inputs.base_node_id, j, '*')))
         model.addConstr(tv_j[j] <= x_ijk.prod(home_to_j_coef, mip_inputs.base_node_id, j, '*') + mip_inputs.M_13[j] * (
                 1 - x_ijk.sum(mip_inputs.base_node_id, j, '*')))
 
@@ -222,6 +227,8 @@ def mathematical_model_solve(mip_inputs):
     for j in mip_inputs.fire_ready_node_ids:
         home_to_j_coef = {k: v for k, v in mip_inputs.links_durations.items() if
                           k[0] == mip_inputs.base_node_id and k[1] == j}
+        # model.addConstr(tv_j[j] >= x_ijk.prod(home_to_j_coef, mip_inputs.base_node_id, j, '*') - 99 * (
+        #         1 - x_ijk.sum(mip_inputs.base_node_id, j, '*')))
         model.addConstr(tv_j[j] >= x_ijk.prod(home_to_j_coef, mip_inputs.base_node_id, j, '*') - mip_inputs.M_13[j] * (
                 1 - x_ijk.sum(mip_inputs.base_node_id, j, '*')))
 
@@ -237,6 +244,11 @@ def mathematical_model_solve(mip_inputs):
                 tv_j[j] <= tv_j[i] + x_ijk.prod(i_to_water_coef, i, mip_inputs.water_node_id, '*') + x_ijk.prod(
                     water_to_j_coef, mip_inputs.water_node_id, j, '*') + mip_inputs.M_16[(i, j)] * (1 - x_ijk.sum(i, j, '*')))
 
+            # i_to_j_coef = {k: v for k, v in mip_inputs.links_durations.items() if
+            #                    k[0] == i and k[1]  == j}
+            # model.addConstr(
+            #     tv_j[j] <= tv_j[i] + x_ijk.prod(i_to_j_coef, i, j, '*') + mip_inputs.M_16[(i, j)] * (1 - x_ijk.sum(i, j, '*')))
+
     # Constraint 17 - determines arrival times to the nodes
     for i in mip_inputs.fire_ready_node_ids:
         to_j_list = [x for x in mip_inputs.fire_ready_node_ids if x != i]
@@ -248,6 +260,12 @@ def mathematical_model_solve(mip_inputs):
             model.addConstr(
                 tv_j[j] >= tv_j[i] + x_ijk.prod(i_to_water_coef, i, mip_inputs.water_node_id, '*') + x_ijk.prod(
                     water_to_j_coef, mip_inputs.water_node_id, j, '*') - mip_inputs.M_16[(i, j)] * (1 - x_ijk.sum(i, j, '*')))
+
+            # i_to_j_coef = {k: v for k, v in mip_inputs.links_durations.items() if
+            #                    k[0] == i and k[1] == j}
+            # model.addConstr(
+            #     tv_j[j] >= tv_j[i] + x_ijk.prod(i_to_j_coef, i, j, '*') - mip_inputs.M_16[(i, j)] * (1 - x_ijk.sum(i, j, '*')))
+
 
     # Constraint 18 - determines arrival times to the nodes
     for j in mip_inputs.fire_ready_node_ids:
@@ -373,18 +391,42 @@ def mathematical_model_solve(mip_inputs):
     for j in mip_inputs.fire_ready_node_ids:
         model.addConstr(te_j[j] == tm_j[j] + (mip_inputs.node_area / mip_inputs.node_object_dict[j].get_fire_amelioration_rate()))
 
-    # model.params.DualReductions = 0
+
+    # Constraint xx - valid inequality cuts
+    #
+    # for i in mip_inputs.fire_ready_node_ids:
+    #     print(i)
+    #     i_neighborhood = [l[1] for l in mip_inputs.neighborhood_links if l[0] == i]
+    #     i_neighborhood_size = len(i_neighborhood)
+    #     model.addConstr(gp.quicksum(y_j[j] for j in i_neighborhood) >= i_neighborhood_size * b_j[i])
+    #
+    # for i in mip_inputs.fire_ready_node_ids:
+    #     i_neighborhood = [l[1] for l in mip_inputs.neighborhood_links if l[0] == i]
+    #     i_neighborhood_size = len(i_neighborhood)
+    #     model.addConstr(gp.quicksum(y_j[j] for j in i_neighborhood) >= i_neighborhood_size * s2_i[i])
+
+
 
     model.ModelSense = -1  # set objective to maximization
+    model.params.TimeLimit = 3600
+    model.params.MIPGap = 0.01
     start_time = time.time()
     model.params.MIPFocus = 3
-    # model.params.MIPGap = 0.01
     model.params.Presolve = 2
+    model.params.LogFile = "gurobi_log"
+
+    # model.params.MIPGap = 0.02
+    # model.params.Cuts = 3
+    # model.params.Threads = 8
+    # model.params.NoRelHeurTime = 5
 
     # model.update()
-    # model.write("model_hand.lp")
-
-
+    # model.write("model_hand2.lp")
+    # (23.745 - 23.39) == (24.1-23.745)
+    # 23.745 - 23.390
+    # 0.455*0.355
+    model.update()
+    model.printStats()
     model.optimize()
     end_time = time.time()
     run_time_cpu = round(end_time - start_time, 2)
@@ -403,12 +445,15 @@ def mathematical_model_solve(mip_inputs):
 
         x_ijk_results_df = pd.DataFrame(columns=['var_name', 'from_node_id', 'to_node_id', 'vehicle_id', 'value'])
         x_ijk_results_df = model_organize_results(x_ijk.values(), x_ijk_results_df)
+        # x_ijk_results_df.loc[x_ijk_results_df["to_node_id"] == "24",]
+       #  x_ijk_results_df.loc[x_ijk_results_df["from_node_id"] == "1",]
 
         y_j_results_df = pd.DataFrame(columns=['var_name', 'node_id', 'value'])
         y_j_results_df = model_organize_results(y_j.values(), y_j_results_df)
 
         z_ij_results_df = pd.DataFrame(columns=['var_name', 'from_node_id', 'to_node_id', 'value'])
         z_ij_results_df = model_organize_results(z_ij.values(), z_ij_results_df)
+        #z_ij_results_df.loc[z_ij_results_df["to_node_id"]=="24",]
 
         q_ij_results_df = pd.DataFrame(columns=['var_name', 'from_node_id', 'to_node_id', 'value'])
         q_ij_results_df = model_organize_results(q_ij.values(), q_ij_results_df)
@@ -439,31 +484,54 @@ def mathematical_model_solve(mip_inputs):
         # obj_result = model.objval + (penalty_coef_spread * sum(z_ij_results_df.loc[:, 'value'])) + penalty_coef_return_time * tv_h.X
         obj_result = model.objval + penalty_coef_return_time * tv_h.X
 
-
-
-
         global_results_df = pd.DataFrame(columns=['total_value', 'model_obj_value', 'model_obj_bound', 'gap', 'gurobi_time', 'python_time'])
-        global_results_df.loc[len(global_results_df.index)] = [obj_result, model.objval, model.objbound, model.mipgap, model.runtime, run_time_cpu]
+        global_results_df.loc[len(global_results_df.index)] = [obj_result, model.objval, model.objbound, model.mipgap,
+                                                               model.runtime, run_time_cpu]
+
+        global_results_df["operation_time"] = tv_h.X
+        global_results_df["number_of_initial_fires"] = len(mip_inputs.set_of_active_fires_at_start)
+        global_results_df["number_of_jobs_arrived"] = sum(ts_j_results_df.value > 0) + len(mip_inputs.set_of_active_fires_at_start)
+        global_results_df["number_of_job_processed"] = sum(tv_j_results_df.value > 0) - 1  # subtract the base return time
+        global_results_df["number_of_vehicles"] = len(mip_inputs.vehicle_list)  # subtract the base return time
+        global_results_df["number_of_vehicles_used"] = len(np.unique(x_ijk_results_df.query("`from_node_id` == '1' & `value` > 0")["vehicle_id"].tolist()))  # subtract the base return time
+        global_results_df["initial_fire_node_IDs"] = ','.join(map(str, mip_inputs.set_of_active_fires_at_start))
+
+
+        if mip_inputs.experiment_mode == "single_run":
+            writer_file_name = os.path.join('outputs', "single_run_results_{0}_nodes_{1}.xlsx".format(mip_inputs.n_nodes,
+                                                                                           str(datetime.now().strftime(
+                                                                                               '%Y_%m_%d_%H_%M'))))
+            writer = pd.ExcelWriter(writer_file_name)
+            global_results_df.to_excel(writer, sheet_name='global_results')
+            x_ijk_results_df.to_excel(writer, sheet_name='x_ijk_results')
+            y_j_results_df.to_excel(writer, sheet_name='y_j_results')
+            z_ij_results_df.to_excel(writer, sheet_name='z_ij_results')
+            q_ij_results_df.to_excel(writer, sheet_name='q_ij_results')
+            b_j_results_df.to_excel(writer, sheet_name='b_j_results')
+            ts_j_results_df.to_excel(writer, sheet_name='ts_j_results')
+            tm_j_results_df.to_excel(writer, sheet_name='tm_j_results')
+            te_j_results_df.to_excel(writer, sheet_name='te_j_results')
+            tv_j_results_df.to_excel(writer, sheet_name='tv_j_results')
+            p_j_results_df.to_excel(writer, sheet_name='p_j_results')
+            s_ijkw_results_df.to_excel(writer, sheet_name='s_ijkw_results')
+            mip_inputs.problem_data_df.to_excel(writer, sheet_name='inputs_problem_data')
+            mip_inputs.distance_df.to_excel(writer, sheet_name='inputs_distances')
+            mip_inputs.parameters_df.to_excel(writer, sheet_name='inputs_parameters')
+            writer.close()
+
+        elif mip_inputs.experiment_mode == "combination_run":
+            writer_file_name = os.path.join('outputs', "combination_results_{0}_nodes_{1}.csv".format(mip_inputs.n_nodes, mip_inputs.run_start_date))
+            if os.path.isfile(writer_file_name):
+                global_results_df.to_csv(writer_file_name, mode="a", index=False, header=False)
+            else:
+                global_results_df.to_csv(writer_file_name, mode="a", index=False, header=True)
+
+        # global_results_df["operation_time"] = tv_h.X
+        # global_results_df["number_of_jobs_arrived"] = sum(ts_j_results_df.value > 0) + len(mip_inputs.set_of_active_fires_at_start)
+        # global_results_df["number_of_job_processed"] = sum(tv_j_results_df.value > 0) - 1  # substract the base return time
+
+        return global_results_df
 
 
 
-
-        writer_file_name = os.path.join('outputs', "results_{0}_nodes_{1}.xlsx".format(mip_inputs.n_nodes, str(datetime.now().strftime('%Y_%m_%d_%H_%M'))))
-
-
-        writer = pd.ExcelWriter(writer_file_name)
-        global_results_df.to_excel(writer, sheet_name='global_results')
-        x_ijk_results_df.to_excel(writer, sheet_name='x_ijk_results')
-        y_j_results_df.to_excel(writer, sheet_name='y_j_results')
-        z_ij_results_df.to_excel(writer, sheet_name='z_ij_results')
-        q_ij_results_df.to_excel(writer, sheet_name='q_ij_results')
-        b_j_results_df.to_excel(writer, sheet_name='b_j_results')
-
-        ts_j_results_df.to_excel(writer, sheet_name='ts_j_results')
-        tm_j_results_df.to_excel(writer, sheet_name='tm_j_results')
-        te_j_results_df.to_excel(writer, sheet_name='te_j_results')
-        tv_j_results_df.to_excel(writer, sheet_name='tv_j_results')
-        p_j_results_df.to_excel(writer, sheet_name='p_j_results')
-        s_ijkw_results_df.to_excel(writer, sheet_name='s_ijkw_results')
-
-        writer.close()
+        # 24 - (24-mip_inputs.links_durations[1,7,1]) == mip_inputs.links_durations[1,7,1]

@@ -2,7 +2,7 @@
 library(plotly)
 library(gganimate)
 library(ggplot2)
-library(gridExtra)
+library(nodeExtra)
 library(tidyverse)
 library(ggthemes)
 library(ggpubr)
@@ -21,14 +21,23 @@ region_map_df <- param$coordinates
 
 # distance matrix
 dist_matrix <- func$generate_dist_matrix(param)
+dist_matrix_mip_model <- dist_matrix
 
-dist_matrix_mip_model <- rbind(dist_matrix[param$base_node_id,], dist_matrix)
-dist_matrix_mip_model <- cbind(dist_matrix_mip_model[,param$base_node_id], dist_matrix_mip_model)
-rownames(dist_matrix_mip_model) <- 0:nrow(dist_matrix)  
-colnames(dist_matrix_mip_model) <- 0:ncol(dist_matrix)  
+# dist_matrix_mip_model <- rbind(dist_matrix[param$base_node_id,], dist_matrix)
+# dist_matrix_mip_model <- cbind(dist_matrix_mip_model[,param$base_node_id], dist_matrix_mip_model)
+# rownames(dist_matrix_mip_model) <- 0:nrow(dist_matrix)  
+# colnames(dist_matrix_mip_model) <- 0:ncol(dist_matrix)  
 
-dist_pairwise <- data.frame(from = colnames(dist_matrix_mip_model)[col(dist_matrix_mip_model)], to=rownames(dist_matrix_mip_model)[row(dist_matrix_mip_model)], dist=c(dist_matrix_mip_model)) %>% filter(if_any(from:to, ~ .x != to))
-dist_pairwise <- do.call("rbind", apply(dist_pairwise,1, function(x){if (!((x[1] == 0 & x[2] == 1) | (x[2] == 0 & x[1] == 1))) {return(as.numeric(x))}}))
+dist_pairwise <- data.frame(from = colnames(dist_matrix_mip_model)[col(dist_matrix_mip_model)], to=rownames(dist_matrix_mip_model)[row(dist_matrix_mip_model)], dist = c(dist_matrix_mip_model)) %>% filter(if_any(from:to, ~ .x != to))
+dist_pairwise <- do.call("rbind", apply(dist_pairwise,1, function(x){if (!((x[1] == param$base_node_id & (x[2] %in% param$water_node_id)) | ((x[1] %in% param$water_node_id) & x[2] == param$base_node_id))) {return(as.numeric(x))}}))
+dist_pairwise <- do.call("rbind", apply(dist_pairwise,1, function(x){if (!((x[1] %in% param$water_node_id & (x[2] %in% param$water_node_id)) | ((x[1] %in% param$water_node_id) & x[2] %in% param$water_node_id))) {return(as.numeric(x))}}))
+
+dist_pairwise <- do.call("rbind", apply(dist_pairwise,1, function(x){if (!((x[1] %in% param$fire_proof_node_list | (x[2] %in% param$fire_proof_node_list)))) {return(as.numeric(x))}}))
+
+
+write.table(dist_pairwise, "dist_pairwise.txt")
+# 
+# dist_pairwise <- do.call("rbind", apply(dist_pairwise,1, function(x){if (!((x[1] == 0 & x[2] == 1) | (x[2] == 0 & x[1] == 1))) {return(as.numeric(x))}}))
 
 # 
 # 
@@ -43,6 +52,8 @@ ploting$plot_region_maps(region_map_df)
 
 # generate active fire data frame
 fire_df <- func$generate_fire_df(param, region_map_df)
+write.table(fire_df, "fire_df.txt")
+param$neighborhood_list
 
 # # plot active fire degradation and amelioration plots
 # ploting$plot_active_fire_plots(active_fire_df)
@@ -71,12 +82,12 @@ while (there_are_jobs_to_process) {
     # vehicle_df<-all_vehicle_df[2,]
     vehicle_df <- (as.data.frame(t(x)))
     
-    if (nrow(fire_dynamic_df %>% filter(grid_state == 1)) > 0){
+    if (nrow(fire_dynamic_df %>% filter(node_state == 1)) > 0){
       
     
     if (vehicle_df$next_status == 1) {  # vehicle is ready to go a job
       
-      next_arrival_location <- fire_dynamic_df %>% filter(grid_state == 1) %>% arrange(desc(value_now)) %>% slice(1) %>% .$grid_id
+      next_arrival_location <- fire_dynamic_df %>% filter(node_state == 1) %>% arrange(desc(value_now)) %>% slice(1) %>% .$node_id
       next_arrival_time  <- vehicle_df$arrival_time + dist_matrix[vehicle_df$arrival_location, next_arrival_location]
       next_status <- 0 # will return to base
       
@@ -89,55 +100,55 @@ while (there_are_jobs_to_process) {
       
       }
 
-    # update the conditions of grids with fire
+    # update the conditions of nodes with fire
     
     # update fire_size_now 
     
     # if next_arrival_time < fire_time_max --> use degradation,
-    temp_before <- fire_dynamic_df %>% filter(grid_state == 1 & next_arrival_time < fire_time_max) %>% mutate(fire_size_now = replace(fire_size_now, values =   0 + (grid_degradation_rate * (next_arrival_time - fire_time_start))))
+    temp_before <- fire_dynamic_df %>% filter(node_state == 1 & next_arrival_time < fire_time_max) %>% mutate(fire_size_now = replace(fire_size_now, values =   0 + (node_degradation_rate * (next_arrival_time - fire_time_start))))
     # if next_arrival_time > fire_time_max --> use amelioration
-    temp_after <- fire_dynamic_df %>% filter(grid_state == 1 & next_arrival_time > fire_time_max) %>% mutate(fire_size_now = replace(fire_size_now, values =   1 - (grid_amelioration_rate * (next_arrival_time - fire_time_max))))
+    temp_after <- fire_dynamic_df %>% filter(node_state == 1 & next_arrival_time > fire_time_max) %>% mutate(fire_size_now = replace(fire_size_now, values =   1 - (node_amelioration_rate * (next_arrival_time - fire_time_max))))
     # update fire_size_now
-    fire_dynamic_df[fire_dynamic_df$grid_state == 1 & (next_arrival_time < fire_dynamic_df$fire_time_max),] <- temp_before
-    fire_dynamic_df[fire_dynamic_df$grid_state == 1 & (next_arrival_time > fire_dynamic_df$fire_time_max),] <- temp_after
+    fire_dynamic_df[fire_dynamic_df$node_state == 1 & (next_arrival_time < fire_dynamic_df$fire_time_max),] <- temp_before
+    fire_dynamic_df[fire_dynamic_df$node_state == 1 & (next_arrival_time > fire_dynamic_df$fire_time_max),] <- temp_after
     
     # update value_now
-    temp_value <- fire_dynamic_df %>% filter(grid_state == 1) %>% mutate(value_now  = replace(value_now, values =   grid_value_at_start  - (value_degradation_rate * next_arrival_time)))
-    fire_dynamic_df[fire_dynamic_df$grid_state == 1, ] <- temp_value
+    temp_value <- fire_dynamic_df %>% filter(node_state == 1) %>% mutate(value_now  = replace(value_now, values =   node_value_at_start  - (value_degradation_rate * next_arrival_time)))
+    fire_dynamic_df[fire_dynamic_df$node_state == 1, ] <- temp_value
     # update active fires that are burned down
-    # a grid becomes burned down if fire_size <=0 
+    # a node becomes burned down if fire_size <=0 
     
-    fire_dynamic_df[fire_dynamic_df$grid_state == 1 & fire_dynamic_df$fire_size_now <= 0, "grid_state"] <- 3
+    fire_dynamic_df[fire_dynamic_df$node_state == 1 & fire_dynamic_df$fire_size_now <= 0, "node_state"] <- 3
     
     
     # check if active fires caused a spread / new fire
                                                 # compare arrival time with fire_time_max, if arrival is later, spread fire to the neighborhoods
     
-    fire_spreaded <- fire_dynamic_df[fire_dynamic_df$grid_state == 1 & next_arrival_time >= fire_dynamic_df$fire_time_max,] 
+    fire_spreaded <- fire_dynamic_df[fire_dynamic_df$node_state == 1 & next_arrival_time >= fire_dynamic_df$fire_time_max,] 
     for (i in 1:nrow(fire_spreaded)){
       
       spreading_fire <- fire_spreaded[i,]
-      new_fire_id_list <- unique(unlist(lapply(spreading_fire$grid_id, function(x){param$neighborhood_list[[x]]})))
-      new_fire_df <- fire_dynamic_df %>% filter(grid_state == 0 & grid_id %in% new_fire_id_list)
+      new_fire_id_list <- unique(unlist(lapply(spreading_fire$node_id, function(x){param$neighborhood_list[[x]]})))
+      new_fire_df <- fire_dynamic_df %>% filter(node_state == 0 & node_id %in% new_fire_id_list)
       
       if(nrow(new_fire_df) > 0){
         new_fire_df$fire_time_start <- new_fire_df$fire_time_start + spreading_fire$fire_time_max
         new_fire_df$fire_time_max <- new_fire_df$fire_time_max  + spreading_fire$fire_time_max
         new_fire_df$fire_time_end <- new_fire_df$fire_time_end   + spreading_fire$fire_time_max
         
-        new_fire_df[next_arrival_time <= new_fire_df$fire_time_max, "fire_size_now"] <- 0 + (new_fire_df$grid_degradation_rate * (next_arrival_time - new_fire_df$fire_time_start))
-        new_fire_df[next_arrival_time > new_fire_df$fire_time_max, "fire_size_now"] <- 0 + (new_fire_df$grid_degradation_rate * (next_arrival_time - new_fire_df$fire_time_start))
-        new_fire_df$grid_state <- 1
+        new_fire_df[next_arrival_time <= new_fire_df$fire_time_max, "fire_size_now"] <- 0 + (new_fire_df$node_degradation_rate * (next_arrival_time - new_fire_df$fire_time_start))
+        new_fire_df[next_arrival_time > new_fire_df$fire_time_max, "fire_size_now"] <- 0 + (new_fire_df$node_degradation_rate * (next_arrival_time - new_fire_df$fire_time_start))
+        new_fire_df$node_state <- 1
         
         
         # if (next_arrival_time <= new_fire_df$fire_time_max){
-        #   new_fire_df$fire_size_now  <- 0 + (new_fire_df$grid_degradation_rate * (next_arrival_time - new_fire_df$fire_time_start))
+        #   new_fire_df$fire_size_now  <- 0 + (new_fire_df$node_degradation_rate * (next_arrival_time - new_fire_df$fire_time_start))
         # } else {
-        #   new_fire_df$fire_size_now  <- 1 - (new_fire_df$grid_amelioration_rate * (next_arrival_time - new_fire_df$fire_time_max))
+        #   new_fire_df$fire_size_now  <- 1 - (new_fire_df$node_amelioration_rate * (next_arrival_time - new_fire_df$fire_time_max))
         # }
       }
       
-      fire_dynamic_df[fire_dynamic_df$grid_state == 0 & fire_dynamic_df$grid_id %in% new_fire_id_list,] <- new_fire_df 
+      fire_dynamic_df[fire_dynamic_df$node_state == 0 & fire_dynamic_df$node_id %in% new_fire_id_list,] <- new_fire_df 
       
       
     }
@@ -145,25 +156,25 @@ while (there_are_jobs_to_process) {
     
     
     # if (nrow(fire_spreaded) > 0) {
-    #   new_fire_id_list <- unique(unlist(lapply(fire_spreaded$grid_id, function(x){param$neighborhood_list[[x]]})))
+    #   new_fire_id_list <- unique(unlist(lapply(fire_spreaded$node_id, function(x){param$neighborhood_list[[x]]})))
     #   
-    #   new_fire_df <- fire_dynamic_df %>% filter(grid_state == 0 & grid_id %in% new_fire_id_list)
+    #   new_fire_df <- fire_dynamic_df %>% filter(node_state == 0 & node_id %in% new_fire_id_list)
     #   
     #   if(nrow(new_fire_df) > 0){
     #     new_fire_df$fire_time_start <- new_fire_df$fire_time_start + next_arrival_time
     #     new_fire_df$fire_time_max <- new_fire_df$fire_time_max  + next_arrival_time
     #     new_fire_df$fire_time_end <- new_fire_df$fire_time_end   + next_arrival_time
-    #     new_fire_df$grid_state <- 1
+    #     new_fire_df$node_state <- 1
     #   }
     #   
-    #   fire_dynamic_df[fire_dynamic_df$grid_state == 0 & fire_dynamic_df$grid_id %in% new_fire_id_list,] <- new_fire_df 
+    #   fire_dynamic_df[fire_dynamic_df$node_state == 0 & fire_dynamic_df$node_id %in% new_fire_id_list,] <- new_fire_df 
     #   
     #   
     #   }
    
-    # process the job and change grid state of next_arrival_location to rescued (state 2)
+    # process the job and change node state of next_arrival_location to rescued (state 2)
     if (next_arrival_location != param$base_node_id){
-      fire_dynamic_df[fire_dynamic_df$grid_id == next_arrival_location, 'grid_state'] = 2
+      fire_dynamic_df[fire_dynamic_df$node_id == next_arrival_location, 'node_state'] = 2
     }
 
     
@@ -191,14 +202,14 @@ while (there_are_jobs_to_process) {
   decision_space_df <- rbind(decision_space_df, vehicle_next_df )
   all_vehicle_df <- as.data.frame(vehicle_next_df)
   
-  if (sum(fire_dynamic_df$grid_state == 1) == 0) {
+  if (sum(fire_dynamic_df$node_state == 1) == 0) {
     there_are_jobs_to_process = FALSE
   }
 }
 
   
   
-obj_total_value <- fire_dynamic_df %>% filter(grid_state %in% c(0, 2) & value_now > 0)  %>% select (value_now) %>% sum()
+obj_total_value <- fire_dynamic_df %>% filter(node_state %in% c(0, 2) & value_now > 0)  %>% select (value_now) %>% sum()
   
 obj_total_time <- decision_space_df %>% select(arrival_time) %>% max()
   
@@ -222,8 +233,8 @@ vehicle_2_route <- decision_space_df %>% filter(vehicle_id == 2) %>% select(arri
   # find next jobs and their attributes
   new_jobs <- jobs_in_order_df %>% slice(1:n_free_vehicles) 
   
-  new_jobs$arrival_time <-  new_jobs$clock_time + dist_matrix[param$base_node_id, new_jobs$grid_id]
-  new_jobs$return_time <-   new_jobs$arrival_time + dist_matrix[new_jobs$grid_id, param$base_node_id]
+  new_jobs$arrival_time <-  new_jobs$clock_time + dist_matrix[param$base_node_id, new_jobs$node_id]
+  new_jobs$return_time <-   new_jobs$arrival_time + dist_matrix[new_jobs$node_id, param$base_node_id]
   
   
   # update fire status when there is an arrival
@@ -231,8 +242,8 @@ vehicle_2_route <- decision_space_df %>% filter(vehicle_id == 2) %>% select(arri
   
   upcoming_events <- rbind(new_jobs$arrival_time, new_jobs$return_time)
   
-  a <- new_jobs %>% select(grid_id, arrival_time) %>% mutate(evet_type='arrival', time)
-  b <- new_jobs %>% select(grid_id, return_time)  %>% mutate(evet_type='return')
+  a <- new_jobs %>% select(node_id, arrival_time) %>% mutate(evet_type='arrival', time)
+  b <- new_jobs %>% select(node_id, return_time)  %>% mutate(evet_type='return')
   
   rbind(a,b)
   
@@ -243,7 +254,7 @@ vehicle_2_route <- decision_space_df %>% filter(vehicle_id == 2) %>% select(arri
     fire_dynamic_df$clock_time <- fire_dynamic_df$clock_time + x$arrival_time
     
     fire_dynamic_df 
-    x$grid_id
+    x$node_id
     
     
   })
@@ -267,7 +278,7 @@ vehicle_2_route <- decision_space_df %>% filter(vehicle_id == 2) %>% select(arri
       
       
       %>% slice_sample(n = 1)
-      next_job <- next_task$grid_id
+      next_job <- next_task$node_id
       next_job_arrival_time <- df$vehicle_return_time + dist_matrix[param$base_node_id, next_job]
       next_return_time <- next_job_arrival_time + dist_matrix[next_job, param$base_node_id]
  

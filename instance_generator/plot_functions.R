@@ -1,12 +1,12 @@
 plot_live_map <- function(fire_dynamic_df, plot_counter){
  
   
-    p1 <- fire_dynamic_df %>%   ggplot(aes(x_coordinate, y_coordinate, label = grid_id, fill = grid_degradation_rate)) +
+    p1 <- fire_dynamic_df %>%   ggplot(aes(x_coordinate, y_coordinate, label = node_id, fill = node_degradation_rate)) +
     scale_fill_gradient2(low = "white", high = "red", na.value = "#009cdc") +
     geom_tile(colour = 'black') + #  geom_raster(aes(fill = fire_size_start), interpolate = TRUE)
-    geom_point(data = ~filter(.x, grid_state == 1), color = "yellow2",shape = 4, stroke = 10) + 
-    geom_point(data = ~filter(.x, grid_state == 2), color = "aquamarine2",shape = 3, stroke = 10) + 
-    geom_point(data = ~filter(.x, grid_state == 3), color = "black",shape = 4, stroke = 10, alpha=0.3) + 
+    geom_point(data = ~filter(.x, node_state == 1), color = "yellow2",shape = 4, stroke = 10) + 
+    geom_point(data = ~filter(.x, node_state == 2), color = "aquamarine2",shape = 3, stroke = 10) + 
+    geom_point(data = ~filter(.x, node_state == 3), color = "black",shape = 4, stroke = 10, alpha=0.3) + 
       
     geom_text(alpha = 0.7) +
     theme(panel.background = element_rect(fill = "transparent")) + 
@@ -18,12 +18,12 @@ plot_live_map <- function(fire_dynamic_df, plot_counter){
   
     
     
-    p2 <- fire_dynamic_df %>%  ggplot(aes(x_coordinate, y_coordinate , label = grid_id, fill = grid_value_at_start )) +
+    p2 <- fire_dynamic_df %>%  ggplot(aes(x_coordinate, y_coordinate , label = node_id, fill = node_value_at_start )) +
       scale_fill_gradient2(low = "white", high = "darkgreen", na.value = "#009cdc") +
       geom_tile(colour = 'black') + #  geom_raster(aes(fill = fire_size_start), interpolate = TRUE)
-      geom_point(data = ~filter(.x, grid_state == 1), color = "yellow2",shape = 4, stroke = 10) + 
-      geom_point(data = ~filter(.x, grid_state == 2), color = "aquamarine2",shape = 3, stroke = 10) + 
-      geom_point(data = ~filter(.x, grid_state == 3), color = "black",shape = 4, stroke = 10, alpha=0.3) + 
+      geom_point(data = ~filter(.x, node_state == 1), color = "yellow2",shape = 4, stroke = 10) + 
+      geom_point(data = ~filter(.x, node_state == 2), color = "aquamarine2",shape = 3, stroke = 10) + 
+      geom_point(data = ~filter(.x, node_state == 3), color = "black",shape = 4, stroke = 10, alpha=0.3) + 
       geom_text(alpha = 0.7) +
       theme(panel.background = element_rect(fill = "transparent")) +
       # coord_equal() +
@@ -40,11 +40,11 @@ plot_live_map <- function(fire_dynamic_df, plot_counter){
 
 plot_region_maps <- function(region_map_df) {
   
-  p1 <- region_map_df %>%   ggplot(aes(x_coordinate, y_coordinate, label = grid_id, fill = grid_degradation_rate)) +
+  p1 <- region_map_df %>%   ggplot(aes(x_coordinate, y_coordinate, label = node_id, fill = node_degradation_rate)) +
     scale_fill_gradient2(low = "white", high = "red", na.value = "#009cdc") +
     geom_tile(colour = 'black') + #  geom_raster(aes(fill = fire_size_start), interpolate = TRUE)
     geom_text(alpha = 0.7) +
-    geom_point(data = ~filter(.x, grid_state == 1), color = "yellow2",shape=4, stroke = 1.5) + 
+    geom_point(data = ~filter(.x, node_state == 1), color = "yellow2",shape=4, stroke = 1.5) + 
     theme(panel.background = element_rect(fill = "transparent")) + 
     # coord_equal() +
     theme(legend.position = "bottom") +
@@ -53,11 +53,11 @@ plot_region_maps <- function(region_map_df) {
   
 
   
-  p2 <- region_map_df %>%  ggplot(aes(x_coordinate, y_coordinate , label = grid_id, fill = grid_value_at_start )) +
+  p2 <- region_map_df %>%  ggplot(aes(x_coordinate, y_coordinate , label = node_id, fill = node_value_at_start )) +
     scale_fill_gradient2(low = "white", high = "darkgreen", na.value = "#009cdc") +
     geom_tile(colour = 'black') + #  geom_raster(aes(fill = fire_size_start), interpolate = TRUE)
     geom_text(alpha = 0.7) +
-    geom_point(data = ~filter(.x, grid_state == 1), color = "yellow2",shape=4, stroke = 1.5) + 
+    geom_point(data = ~filter(.x, node_state == 1), color = "yellow2",shape=4, stroke = 1.5) + 
     theme(panel.background = element_rect(fill = "transparent")) +
     # coord_equal() +
     theme(legend.position = "bottom") + 
@@ -65,19 +65,19 @@ plot_region_maps <- function(region_map_df) {
     theme() 
   
   
-  p3 <- region_map_df %>%   ggplot(aes(x_coordinate, y_coordinate, label = grid_id, fill = grid_degradation_rate)) +
+  p3 <- region_map_df %>%   ggplot(aes(x_coordinate, y_coordinate, label = node_id, fill = node_degradation_rate)) +
     scale_fill_gradient2(low = "white", high = "red", na.value = "#009cdc") +
-    geom_raster(aes(fill = grid_degradation_rate), interpolate = TRUE) +
-    # geom_point(data = ~filter(.x, grid_state == 1), color = "yellow2",shape=4, stroke = 2) + 
+    geom_raster(aes(fill = node_degradation_rate), interpolate = TRUE) +
+    # geom_point(data = ~filter(.x, node_state == 1), color = "yellow2",shape=4, stroke = 2) + 
     theme(panel.background = element_rect(fill = "transparent")) +
     #coord_equal() +
     theme(axis.title = element_blank()) +
     theme(legend.position = "none")
   
-  p4 <- region_map_df %>%   ggplot(aes(x_coordinate, y_coordinate , label = grid_id, fill = grid_value_at_start)) +
+  p4 <- region_map_df %>%   ggplot(aes(x_coordinate, y_coordinate , label = node_id, fill = node_value_at_start)) +
     scale_fill_gradient2(low = "white", high = "darkgreen", na.value = "#009cdc") +
-    geom_raster(aes(fill = grid_value_at_start), interpolate = TRUE) + 
-    # geom_point(data = ~filter(.x, grid_state == 1), color = "yellow2",shape=4, stroke = 2) + 
+    geom_raster(aes(fill = node_value_at_start), interpolate = TRUE) + 
+    # geom_point(data = ~filter(.x, node_state == 1), color = "yellow2",shape=4, stroke = 2) + 
     # coord_equal() +
     theme(panel.background = element_rect(fill = "transparent")) +
     theme(axis.title = element_blank()) +
@@ -86,7 +86,7 @@ plot_region_maps <- function(region_map_df) {
   p4 + p3 + p2 + p1 + plot_layout(guides = "collect") & theme(legend.position = "bottom", legend.title = element_text(size=8) )
   
   # ggarrange(p4, p3, p2, p1, common.legend = TRUE, legend="bottom")
-  # grid.arrange(p4, p3, p2, p1, nrow = 2)
+  # node.arrange(p4, p3, p2, p1, nrow = 2)
 }
 library(patchwork)
 
@@ -112,14 +112,14 @@ library(patchwork)
 # a1 <- active_fire_graphs %>% ggplot(aes(time, fire_size)) + 
 #   geom_line(aes(colour = region_id, group = region_id ), lwd = 1) +
 #   scale_x_continuous(expand = c(0,0), breaks = round(seq(min(active_fire_graphs$time), max(active_fire_graphs$time), by = 2),1)) +
-#   facet_grid(region_id~., ) +  scale_y_continuous(expand = c(0,0)) + 
+#   facet_node(region_id~., ) +  scale_y_continuous(expand = c(0,0)) + 
 #   theme_bw()  +  theme(legend.position = "none") 
 # 
 # 
 # a2 <- active_fire_graphs %>% ggplot(aes(time, region_value)) + 
 #   geom_line(aes(colour = region_id, group = region_id ), lwd = 1) +
 #   scale_x_continuous(expand = c(0,0), breaks = round(seq(min(active_fire_graphs$time), max(active_fire_graphs$time), by = 2),1)) +
-#   facet_grid(region_id~., ) +  scale_y_continuous(expand = c(0,0)) + 
+#   facet_node(region_id~., ) +  scale_y_continuous(expand = c(0,0)) + 
 #   theme_bw() +   theme(legend.position = "bottom") 
 # 
 # ggarrange(a1, a2, ncol = 2, common.legend = TRUE, legend = "bottom")
