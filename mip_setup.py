@@ -135,13 +135,20 @@ class InputsSetup:
         # ----------------------------------------------------------------------------
         # Defining big-M values
 
-        self.big_m_augmentation_for_rounding_errors = 0.1
+        self.big_m_augmentation_for_rounding_errors = 1
 
         # after validations, it is better to move big m dictionary constructions to the mip_setup.py
         self.M_3 = dict()
+
         for j in self.fire_ready_node_ids:
-            self. M_3[j] = (1/self.links_durations[(self.base_node_id, j, 1)]) + self.big_m_augmentation_for_rounding_errors
-            # M_3[j] = 999
+            self.M_3[j] = (1/self.links_durations[(self.base_node_id, j, 1)]) + self.big_m_augmentation_for_rounding_errors
+            # self.M_3[7] = 9999
+
+        # self.M_3[1] = 9999
+        # self.M_3[7] = 9999
+        # self.M_3[25] = 9999
+        # self.M_3[49] = 9999
+
 
         self.M_13 = dict()
         for j in self.fire_ready_node_ids:
@@ -217,5 +224,3 @@ class UserInputsRead:
         self.parameters_df = pd.read_excel(self.directory, sheet_name="parameters", index_col=0, engine='openpyxl').dropna(axis=0, how='all').dropna(axis=1, how='all')
         self.problem_data_df = pd.read_excel(self.directory, sheet_name="inputs_df", engine='openpyxl').dropna(axis=0, how='all').dropna(axis=1, how='all')
         self.distance_df = pd.read_excel(self.directory, sheet_name="distance_df", engine='openpyxl').dropna(axis=0, how='all').dropna(axis=1, how='all')
-
-

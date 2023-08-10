@@ -14748,3 +14748,1787 @@ Solution count 8: 10.3811 10.3774 10.2837 ... 1.78519
 
 Optimal solution found (tolerance 1.00e-02)
 Best objective 1.038108172136e+01, best bound 1.048452779184e+01, gap 0.9965%
+
+Gurobi 9.5.2 (win64) logging started Wed Aug  2 10:10:06 2023
+
+Set parameter LogFile to value "gurobi_log"
+
+Statistics for modelfirefighting:
+  Linear constraint matrix    : 4473 Constrs, 2712 Vars, 26520 NZs
+  Variable types              : 86 Continuous,
+2626 Integer (2626 Binary)
+  Matrix coefficient range    : [ 0.064, 4320 ]
+  Objective coefficient range : [ 1e-06, 1 ]
+  Variable bound range        : [ 1, 1 ]
+  RHS coefficient range       : [ 1e-06, 12960 ]
+Gurobi Optimizer version 9.5.2 build v9.5.2rc0 (win64)
+Thread count: 4 physical cores, 8 logical processors, using up to 8 threads
+Optimize a model with 4473 rows, 2712 columns and 26520 nonzeros
+Model fingerprint: 0xeb19b43f
+Variable types: 86 continuous, 2626 integer (2626 binary)
+Coefficient statistics:
+  Matrix range     [6e-02, 4e+03]
+  Objective range  [1e-06, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e-06, 1e+04]
+Presolve removed 1262 rows and 84 columns
+Presolve time: 0.80s
+Presolved: 3211 rows, 2628 columns, 29220 nonzeros
+Variable types: 34 continuous, 2594 integer (2593 binary)
+Root relaxation presolve removed 2 rows and 0 columns
+Root relaxation presolved: 3209 rows, 2628 columns, 29152 nonzeros
+
+
+Root relaxation: objective 1.053989e+01, 261 iterations, 0.04 seconds (0.05 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   10.53989    0   44          -   10.53989      -     -    0s
+H    0     0                       1.7851911   10.53989   490%     -    1s
+H    0     0                       2.7303928   10.53989   286%     -    1s
+H    0     0                       6.2795285   10.53989  67.8%     -    1s
+     0     0   10.53989    0   35    6.27953   10.53989  67.8%     -    1s
+H    0     0                       7.0918954   10.53989  48.6%     -    1s
+     0     0   10.53989    0   29    7.09190   10.53989  48.6%     -    1s
+     0     0   10.53450    0   80    7.09190   10.53450  48.5%     -    1s
+H    0     0                       9.2755159   10.53450  13.6%     -    1s
+     0     0   10.53450    0   88    9.27552   10.53450  13.6%     -    2s
+H    0     0                      10.2836887   10.53450  2.44%     -    2s
+H    0     0                      10.3773690   10.52931  1.46%     -    2s
+     0     0   10.52438    0   86   10.37737   10.52438  1.42%     -    3s
+     0     0   10.52171    0  102   10.37737   10.52171  1.39%     -    3s
+
+Cutting planes:
+  Gomory: 12
+  Lift-and-project: 19
+  Cover: 49
+  Implied bound: 212
+  Projected implied bound: 1
+  Clique: 45
+  MIR: 61
+  Flow cover: 235
+  Zero half: 85
+  RLT: 2
+  Relax-and-lift: 124
+
+Explored 1 nodes (10202 simplex iterations) in 3.31 seconds (2.55 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 7: 10.3774 10.2837 9.27552 ... 1.78519
+
+Solve interrupted
+Best objective 1.037736899409e+01, best bound 1.052171048713e+01, gap 1.3909%
+
+Gurobi 9.5.2 (win64) logging started Wed Aug  2 12:18:05 2023
+
+Set parameter LogFile to value "gurobi_log"
+
+Statistics for modelfirefighting:
+  Linear constraint matrix    : 39469 Constrs, 26751 Vars, 264311 NZs
+  Variable types              : 231 Continuous,
+26520 Integer (26520 Binary)
+  Matrix coefficient range    : [ 0.000277778, 4320 ]
+  Objective coefficient range : [ 1e-06, 1 ]
+  Variable bound range        : [ 1, 1 ]
+  RHS coefficient range       : [ 1e-06, 12960 ]
+Gurobi Optimizer version 9.5.2 build v9.5.2rc0 (win64)
+Thread count: 4 physical cores, 8 logical processors, using up to 8 threads
+Optimize a model with 39469 rows, 26751 columns and 264311 nonzeros
+Model fingerprint: 0xec71b558
+Variable types: 231 continuous, 26520 integer (26520 binary)
+Coefficient statistics:
+  Matrix range     [3e-04, 4e+03]
+  Objective range  [1e-06, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e-06, 1e+04]
+Presolve removed 8543 rows and 196 columns (presolve time = 7s) ...
+Presolve removed 8562 rows and 198 columns (presolve time = 10s) ...
+Presolve removed 8603 rows and 199 columns (presolve time = 15s) ...
+Presolve removed 8603 rows and 199 columns (presolve time = 20s) ...
+Presolve added 0 rows and 1056 columns
+Presolve removed 7303 rows and 0 columns
+Presolve time: 20.30s
+Presolved: 32166 rows, 27807 columns, 247928 nonzeros
+Variable types: 89 continuous, 27718 integer (27539 binary)
+
+Deterministic concurrent LP optimizer: primal and dual simplex
+Showing first log only...
+
+Root relaxation presolve removed 45 rows and 0 columns
+Root relaxation presolved: 32121 rows, 27807 columns, 247787 nonzeros
+
+
+Root simplex log...
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    3.0000000e-01   4.565833e+00   8.309483e+07     21s
+Concurrent spin time: 0.01s
+
+Solved with dual simplex
+
+Root relaxation: objective 1.589974e+01, 1144 iterations, 0.89 seconds (1.01 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   15.89974    0   41          -   15.89974      -     -   24s
+H    0     0                      15.8997394   15.89974  0.00%     -   25s
+
+Explored 1 nodes (24930 simplex iterations) in 25.14 seconds (30.22 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 15.8997 
+
+Optimal solution found (tolerance 1.00e-02)
+Best objective 1.589973936428e+01, best bound 1.589973941289e+01, gap 0.0000%
+
+Gurobi 9.5.2 (win64) logging started Wed Aug  2 12:20:37 2023
+
+Set parameter LogFile to value "gurobi_log"
+
+Statistics for modelfirefighting:
+  Linear constraint matrix    : 39469 Constrs, 26751 Vars, 264311 NZs
+  Variable types              : 231 Continuous,
+26520 Integer (26520 Binary)
+  Matrix coefficient range    : [ 0.000277778, 4320 ]
+  Objective coefficient range : [ 1e-06, 1 ]
+  Variable bound range        : [ 1, 1 ]
+  RHS coefficient range       : [ 1e-06, 12960 ]
+Gurobi Optimizer version 9.5.2 build v9.5.2rc0 (win64)
+Thread count: 4 physical cores, 8 logical processors, using up to 8 threads
+Optimize a model with 39469 rows, 26751 columns and 264311 nonzeros
+Model fingerprint: 0xec71b558
+Variable types: 231 continuous, 26520 integer (26520 binary)
+Coefficient statistics:
+  Matrix range     [3e-04, 4e+03]
+  Objective range  [1e-06, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e-06, 1e+04]
+Presolve removed 8543 rows and 196 columns (presolve time = 8s) ...
+Presolve removed 8543 rows and 198 columns (presolve time = 10s) ...
+Presolve removed 8603 rows and 198 columns (presolve time = 16s) ...
+Presolve removed 8603 rows and 199 columns (presolve time = 22s) ...
+Presolve added 0 rows and 1056 columns
+Presolve removed 7303 rows and 0 columns
+Presolve time: 21.71s
+Presolved: 32166 rows, 27807 columns, 247928 nonzeros
+Variable types: 89 continuous, 27718 integer (27539 binary)
+
+Deterministic concurrent LP optimizer: primal and dual simplex
+Showing first log only...
+
+Root relaxation presolve removed 45 rows and 0 columns
+Root relaxation presolved: 32121 rows, 27807 columns, 247787 nonzeros
+
+
+Root simplex log...
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    3.0000000e-01   4.565833e+00   8.309483e+07     23s
+Concurrent spin time: 0.01s
+
+Solved with dual simplex
+
+Root relaxation: objective 1.589974e+01, 1144 iterations, 0.99 seconds (1.01 work units)
+Total elapsed time = 25.37s
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   15.89974    0   41          -   15.89974      -     -   26s
+H    0     0                      15.8997394   15.89974  0.00%     -   26s
+
+Explored 1 nodes (24930 simplex iterations) in 26.71 seconds (30.22 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 15.8997 
+
+Optimal solution found (tolerance 1.00e-02)
+Best objective 1.589973936428e+01, best bound 1.589973941289e+01, gap 0.0000%
+
+Gurobi 9.5.2 (win64) logging started Wed Aug  2 12:35:20 2023
+
+Set parameter LogFile to value "gurobi_log"
+
+Statistics for modelfirefighting:
+  Linear constraint matrix    : 39469 Constrs, 26751 Vars, 264311 NZs
+  Variable types              : 231 Continuous,
+26520 Integer (26520 Binary)
+  Matrix coefficient range    : [ 0.000277778, 4320 ]
+  Objective coefficient range : [ 1e-06, 1 ]
+  Variable bound range        : [ 1, 1 ]
+  RHS coefficient range       : [ 1e-06, 12960 ]
+Gurobi Optimizer version 9.5.2 build v9.5.2rc0 (win64)
+Thread count: 4 physical cores, 8 logical processors, using up to 8 threads
+Optimize a model with 39469 rows, 26751 columns and 264311 nonzeros
+Model fingerprint: 0xec71b558
+Variable types: 231 continuous, 26520 integer (26520 binary)
+Coefficient statistics:
+  Matrix range     [3e-04, 4e+03]
+  Objective range  [1e-06, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e-06, 1e+04]
+Presolve removed 8543 rows and 196 columns (presolve time = 8s) ...
+Presolve removed 8543 rows and 198 columns (presolve time = 10s) ...
+Presolve removed 8603 rows and 198 columns (presolve time = 16s) ...
+Presolve removed 8603 rows and 199 columns (presolve time = 22s) ...
+Presolve added 0 rows and 1056 columns
+Presolve removed 7303 rows and 0 columns
+Presolve time: 21.92s
+Presolved: 32166 rows, 27807 columns, 247928 nonzeros
+Variable types: 89 continuous, 27718 integer (27539 binary)
+
+Deterministic concurrent LP optimizer: primal and dual simplex
+Showing first log only...
+
+Root relaxation presolve removed 45 rows and 0 columns
+Root relaxation presolved: 32121 rows, 27807 columns, 247787 nonzeros
+
+Concurrent spin time: 0.01s
+
+Solved with dual simplex
+
+Root relaxation: objective 1.589974e+01, 1144 iterations, 0.82 seconds (1.01 work units)
+Total elapsed time = 25.14s
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   15.89974    0   41          -   15.89974      -     -   25s
+H    0     0                      15.8997394   15.89974  0.00%     -   26s
+
+Explored 1 nodes (24930 simplex iterations) in 26.38 seconds (30.22 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 15.8997 
+
+Optimal solution found (tolerance 1.00e-02)
+Best objective 1.589973936428e+01, best bound 1.589973941289e+01, gap 0.0000%
+
+Gurobi 9.5.2 (win64) logging started Wed Aug  2 12:49:54 2023
+
+Set parameter LogFile to value "gurobi_log"
+
+Statistics for modelfirefighting:
+  Linear constraint matrix    : 39469 Constrs, 26751 Vars, 264311 NZs
+  Variable types              : 231 Continuous,
+26520 Integer (26520 Binary)
+  Matrix coefficient range    : [ 0.0045, 4320 ]
+  Objective coefficient range : [ 1e-06, 1 ]
+  Variable bound range        : [ 1, 1 ]
+  RHS coefficient range       : [ 1e-06, 12960 ]
+Gurobi Optimizer version 9.5.2 build v9.5.2rc0 (win64)
+Thread count: 4 physical cores, 8 logical processors, using up to 8 threads
+Optimize a model with 39469 rows, 26751 columns and 264311 nonzeros
+Model fingerprint: 0x3ab96a60
+Variable types: 231 continuous, 26520 integer (26520 binary)
+Coefficient statistics:
+  Matrix range     [5e-03, 4e+03]
+  Objective range  [1e-06, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e-06, 1e+04]
+Presolve removed 8543 rows and 192 columns (presolve time = 8s) ...
+Presolve removed 8543 rows and 194 columns (presolve time = 11s) ...
+Presolve removed 8599 rows and 194 columns (presolve time = 17s) ...
+Presolve removed 8599 rows and 196 columns (presolve time = 24s) ...
+Presolve added 0 rows and 848 columns
+Presolve removed 7511 rows and 0 columns
+Presolve time: 24.47s
+Presolved: 31958 rows, 27599 columns, 329131 nonzeros
+Variable types: 93 continuous, 27506 integer (27337 binary)
+
+Deterministic concurrent LP optimizer: primal and dual simplex
+Showing first log only...
+
+Root relaxation presolve removed 45 rows and 0 columns
+Root relaxation presolved: 31913 rows, 27599 columns, 328972 nonzeros
+
+Concurrent spin time: 0.02s
+
+Solved with dual simplex
+
+Root relaxation: objective 1.588452e+01, 1036 iterations, 1.41 seconds (1.51 work units)
+Total elapsed time = 30.23s
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   15.88452    0   38          -   15.88452      -     -   31s
+H    0     0                      15.8424714   15.88452  0.27%     -   32s
+
+Explored 1 nodes (32254 simplex iterations) in 32.49 seconds (39.02 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 15.8425 
+
+Optimal solution found (tolerance 1.00e-02)
+Best objective 1.584247143252e+01, best bound 1.588451848117e+01, gap 0.2654%
+
+Gurobi 9.5.2 (win64) logging started Wed Aug  2 13:04:08 2023
+
+Set parameter LogFile to value "gurobi_log"
+
+Statistics for modelfirefighting:
+  Linear constraint matrix    : 39471 Constrs, 26751 Vars, 264313 NZs
+  Variable types              : 231 Continuous,
+26520 Integer (26520 Binary)
+  Matrix coefficient range    : [ 0.0045, 4320 ]
+  Objective coefficient range : [ 1e-06, 1 ]
+  Variable bound range        : [ 1, 1 ]
+  RHS coefficient range       : [ 1e-06, 12960 ]
+Gurobi Optimizer version 9.5.2 build v9.5.2rc0 (win64)
+Thread count: 4 physical cores, 8 logical processors, using up to 8 threads
+Optimize a model with 39471 rows, 26751 columns and 264313 nonzeros
+Model fingerprint: 0x56286522
+Variable types: 231 continuous, 26520 integer (26520 binary)
+Coefficient statistics:
+  Matrix range     [5e-03, 4e+03]
+  Objective range  [1e-06, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e-06, 1e+04]
+Presolve removed 10662 rows and 2214 columns (presolve time = 7s) ...
+Presolve removed 10701 rows and 2214 columns (presolve time = 10s) ...
+Presolve removed 10702 rows and 2215 columns (presolve time = 15s) ...
+Presolve removed 10702 rows and 2215 columns (presolve time = 21s) ...
+Presolve removed 9725 rows and 1281 columns
+Presolve time: 20.75s
+Presolved: 29746 rows, 25470 columns, 307351 nonzeros
+Variable types: 89 continuous, 25381 integer (25218 binary)
+
+Deterministic concurrent LP optimizer: primal and dual simplex
+Showing first log only...
+
+Root relaxation presolve removed 43 rows and 0 columns
+Root relaxation presolved: 29703 rows, 25470 columns, 307093 nonzeros
+
+Concurrent spin time: 0.02s
+
+Solved with dual simplex
+
+Root relaxation: objective 1.588441e+01, 1314 iterations, 1.24 seconds (1.60 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   15.88441    0   19          -   15.88441      -     -   22s
+H    0     0                      15.8843619   15.88441  0.00%     -   23s
+
+Explored 1 nodes (13857 simplex iterations) in 23.42 seconds (29.20 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 15.8844 
+
+Optimal solution found (tolerance 1.00e-02)
+Best objective 1.588436185708e+01, best bound 1.588441079454e+01, gap 0.0003%
+
+Gurobi 9.5.2 (win64) logging started Wed Aug  2 13:14:45 2023
+
+Set parameter LogFile to value "gurobi_log"
+
+Statistics for modelfirefighting:
+  Linear constraint matrix    : 39469 Constrs, 26751 Vars, 264311 NZs
+  Variable types              : 231 Continuous,
+26520 Integer (26520 Binary)
+  Matrix coefficient range    : [ 0.0166667, 4320 ]
+  Objective coefficient range : [ 1e-06, 1 ]
+  Variable bound range        : [ 1, 1 ]
+  RHS coefficient range       : [ 1e-06, 12960 ]
+Gurobi Optimizer version 9.5.2 build v9.5.2rc0 (win64)
+Thread count: 4 physical cores, 8 logical processors, using up to 8 threads
+Optimize a model with 39469 rows, 26751 columns and 264311 nonzeros
+Model fingerprint: 0x36294d40
+Variable types: 231 continuous, 26520 integer (26520 binary)
+Coefficient statistics:
+  Matrix range     [2e-02, 4e+03]
+  Objective range  [1e-06, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e-06, 1e+04]
+Presolve removed 8543 rows and 192 columns (presolve time = 7s) ...
+Presolve removed 8573 rows and 194 columns (presolve time = 10s) ...
+Presolve removed 8599 rows and 194 columns (presolve time = 17s) ...
+Presolve removed 8599 rows and 195 columns (presolve time = 24s) ...
+Presolve added 0 rows and 775 columns
+Presolve removed 7584 rows and 0 columns
+Presolve time: 24.52s
+Presolved: 31885 rows, 27526 columns, 326464 nonzeros
+Variable types: 93 continuous, 27433 integer (27267 binary)
+
+Deterministic concurrent LP optimizer: primal and dual simplex
+Showing first log only...
+
+Root relaxation presolve removed 46 rows and 0 columns
+Root relaxation presolved: 31839 rows, 27526 columns, 326296 nonzeros
+
+Concurrent spin time: 0.01s
+
+Solved with dual simplex
+
+Root relaxation: objective 1.588791e+02, 1289 iterations, 1.23 seconds (1.60 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  158.87907    0   36          -  158.87907      -     -   28s
+H    0     0                     157.8397221  158.87907  0.66%     -   29s
+
+Explored 1 nodes (19010 simplex iterations) in 29.17 seconds (34.83 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 157.84 
+
+Optimal solution found (tolerance 1.00e-02)
+Best objective 1.578397221285e+02, best bound 1.588790711965e+02, gap 0.6585%
+
+Gurobi 9.5.2 (win64) logging started Thu Aug  3 13:10:47 2023
+
+Set parameter LogFile to value "gurobi_log"
+
+Statistics for modelfirefighting:
+  Linear constraint matrix    : 20737 Constrs, 12633 Vars, 126809 NZs
+  Variable types              : 221 Continuous,
+12412 Integer (12412 Binary)
+  Matrix coefficient range    : [ 0.0166667, 4320 ]
+  Objective coefficient range : [ 1e-06, 1 ]
+  Variable bound range        : [ 1, 1 ]
+  RHS coefficient range       : [ 1e-06, 12960 ]
+Gurobi Optimizer version 9.5.2 build v9.5.2rc0 (win64)
+Thread count: 4 physical cores, 8 logical processors, using up to 8 threads
+Optimize a model with 20737 rows, 12633 columns and 126809 nonzeros
+Model fingerprint: 0x76866952
+Variable types: 221 continuous, 12412 integer (12412 binary)
+Coefficient statistics:
+  Matrix range     [2e-02, 4e+03]
+  Objective range  [1e-06, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e-06, 1e+04]
+Presolve removed 4045 rows and 140 columns
+Presolve time: 4.44s
+Presolved: 16692 rows, 12493 columns, 185899 nonzeros
+Variable types: 89 continuous, 12404 integer (12404 binary)
+
+Deterministic concurrent LP optimizer: primal and dual simplex
+Showing first log only...
+
+Root relaxation presolve removed 2 rows and 0 columns
+Root relaxation presolved: 16690 rows, 12493 columns, 185723 nonzeros
+
+Concurrent spin time: 0.00s
+
+Solved with dual simplex
+
+Root relaxation: objective 1.558791e+02, 587 iterations, 0.37 seconds (0.50 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  155.87907    0   29          -  155.87907      -     -    5s
+H    0     0                     155.8357508  155.87907  0.03%     -    5s
+
+Explored 1 nodes (7233 simplex iterations) in 5.74 seconds (7.75 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 155.836 
+
+Optimal solution found (tolerance 1.00e-02)
+Best objective 1.558357508049e+02, best bound 1.558790711965e+02, gap 0.0278%
+
+Gurobi 9.5.2 (win64) logging started Thu Aug  3 09:40:04 2023
+
+Set parameter LogFile to value "gurobi_log"
+
+Statistics for modelfirefighting:
+  Linear constraint matrix    : 20737 Constrs, 12633 Vars, 126809 NZs
+  Variable types              : 221 Continuous,
+12412 Integer (12412 Binary)
+  Matrix coefficient range    : [ 0.0166667, 4320 ]
+  Objective coefficient range : [ 1e-06, 1 ]
+  Variable bound range        : [ 1, 1 ]
+  RHS coefficient range       : [ 1e-06, 12960 ]
+Gurobi Optimizer version 9.5.2 build v9.5.2rc0 (win64)
+Thread count: 4 physical cores, 8 logical processors, using up to 8 threads
+Optimize a model with 20737 rows, 12633 columns and 126809 nonzeros
+Model fingerprint: 0x76866952
+Variable types: 221 continuous, 12412 integer (12412 binary)
+Coefficient statistics:
+  Matrix range     [2e-02, 4e+03]
+  Objective range  [1e-06, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e-06, 1e+04]
+Presolve removed 4045 rows and 140 columns
+Presolve time: 4.64s
+Presolved: 16692 rows, 12493 columns, 185899 nonzeros
+Variable types: 89 continuous, 12404 integer (12404 binary)
+
+Deterministic concurrent LP optimizer: primal and dual simplex
+Showing first log only...
+
+Root relaxation presolve removed 2 rows and 0 columns
+Root relaxation presolved: 16690 rows, 12493 columns, 185723 nonzeros
+
+Concurrent spin time: 0.00s
+
+Solved with dual simplex
+
+Root relaxation: objective 1.558791e+02, 587 iterations, 0.35 seconds (0.50 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  155.87907    0   29          -  155.87907      -     -    5s
+H    0     0                     155.8357508  155.87907  0.03%     -    5s
+
+Explored 1 nodes (7233 simplex iterations) in 5.89 seconds (7.75 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 155.836 
+
+Optimal solution found (tolerance 1.00e-02)
+Best objective 1.558357508049e+02, best bound 1.558790711965e+02, gap 0.0278%
+
+Gurobi 9.5.2 (win64) logging started Thu Aug  3 09:48:21 2023
+
+Set parameter LogFile to value "gurobi_log"
+
+Statistics for modelfirefighting:
+  Linear constraint matrix    : 20737 Constrs, 12633 Vars, 126809 NZs
+  Variable types              : 221 Continuous,
+12412 Integer (12412 Binary)
+  Matrix coefficient range    : [ 0.0166667, 4320 ]
+  Objective coefficient range : [ 1e-06, 1 ]
+  Variable bound range        : [ 1, 1 ]
+  RHS coefficient range       : [ 1e-06, 12960 ]
+Gurobi Optimizer version 9.5.2 build v9.5.2rc0 (win64)
+Thread count: 4 physical cores, 8 logical processors, using up to 8 threads
+Optimize a model with 20737 rows, 12633 columns and 126809 nonzeros
+Model fingerprint: 0x76866952
+Variable types: 221 continuous, 12412 integer (12412 binary)
+Coefficient statistics:
+  Matrix range     [2e-02, 4e+03]
+  Objective range  [1e-06, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e-06, 1e+04]
+Presolve removed 4045 rows and 140 columns
+Presolve time: 4.56s
+Presolved: 16692 rows, 12493 columns, 185899 nonzeros
+Variable types: 89 continuous, 12404 integer (12404 binary)
+
+Deterministic concurrent LP optimizer: primal and dual simplex
+Showing first log only...
+
+Root relaxation presolve removed 2 rows and 0 columns
+Root relaxation presolved: 16690 rows, 12493 columns, 185723 nonzeros
+
+Concurrent spin time: 0.01s
+
+Solved with dual simplex
+
+Root relaxation: objective 1.558791e+02, 587 iterations, 0.37 seconds (0.50 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  155.87907    0   29          -  155.87907      -     -    5s
+H    0     0                     155.8357508  155.87907  0.03%     -    5s
+
+Explored 1 nodes (7233 simplex iterations) in 5.90 seconds (7.75 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 155.836 
+
+Optimal solution found (tolerance 1.00e-02)
+Best objective 1.558357508049e+02, best bound 1.558790711965e+02, gap 0.0278%
+
+Gurobi 9.5.2 (win64) logging started Thu Aug  3 10:08:29 2023
+
+Set parameter LogFile to value "gurobi_log"
+
+Statistics for modelfirefighting:
+  Linear constraint matrix    : 36141 Constrs, 24513 Vars, 241737 NZs
+  Variable types              : 221 Continuous,
+24292 Integer (24292 Binary)
+  Matrix coefficient range    : [ 0.0166667, 4320 ]
+  Objective coefficient range : [ 1e-06, 1 ]
+  Variable bound range        : [ 1, 1 ]
+  RHS coefficient range       : [ 1e-06, 12960 ]
+Gurobi Optimizer version 9.5.2 build v9.5.2rc0 (win64)
+Thread count: 4 physical cores, 8 logical processors, using up to 8 threads
+Optimize a model with 36141 rows, 24513 columns and 241737 nonzeros
+Model fingerprint: 0xae54b646
+Variable types: 221 continuous, 24292 integer (24292 binary)
+Coefficient statistics:
+  Matrix range     [2e-02, 4e+03]
+  Objective range  [1e-06, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e-06, 1e+04]
+Presolve removed 7821 rows and 184 columns (presolve time = 6s) ...
+Presolve removed 7875 rows and 186 columns (presolve time = 13s) ...
+Presolve removed 7875 rows and 187 columns (presolve time = 18s) ...
+Presolve added 0 rows and 712 columns
+Presolve removed 6933 rows and 0 columns
+Presolve time: 18.18s
+Presolved: 29208 rows, 25225 columns, 296594 nonzeros
+Variable types: 89 continuous, 25136 integer (24978 binary)
+
+Deterministic concurrent LP optimizer: primal and dual simplex
+Showing first log only...
+
+Root relaxation presolve removed 44 rows and 0 columns
+Root relaxation presolved: 29164 rows, 25225 columns, 296435 nonzeros
+
+Concurrent spin time: 0.01s
+
+Solved with dual simplex
+
+Root relaxation: objective 1.558791e+02, 1210 iterations, 0.96 seconds (1.22 work units)
+Total elapsed time = 20.25s
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  155.87907    0   34          -  155.87907      -     -   23s
+H    0     0                     155.3494402  155.87907  0.34%     -   23s
+
+Explored 1 nodes (37932 simplex iterations) in 23.50 seconds (32.74 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 155.349 
+
+Optimal solution found (tolerance 1.00e-02)
+Best objective 1.553494402064e+02, best bound 1.558790711965e+02, gap 0.3409%
+
+Gurobi 9.5.2 (win64) logging started Thu Aug  3 10:10:51 2023
+
+Set parameter LogFile to value "gurobi_log"
+
+Statistics for modelfirefighting:
+  Linear constraint matrix    : 36141 Constrs, 24513 Vars, 241737 NZs
+  Variable types              : 221 Continuous,
+24292 Integer (24292 Binary)
+  Matrix coefficient range    : [ 0.0166667, 4320 ]
+  Objective coefficient range : [ 1e-06, 1 ]
+  Variable bound range        : [ 1, 1 ]
+  RHS coefficient range       : [ 1e-06, 12960 ]
+Gurobi Optimizer version 9.5.2 build v9.5.2rc0 (win64)
+Thread count: 4 physical cores, 8 logical processors, using up to 8 threads
+Optimize a model with 36141 rows, 24513 columns and 241737 nonzeros
+Model fingerprint: 0xae54b646
+Variable types: 221 continuous, 24292 integer (24292 binary)
+Coefficient statistics:
+  Matrix range     [2e-02, 4e+03]
+  Objective range  [1e-06, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e-06, 1e+04]
+Presolve removed 7821 rows and 184 columns (presolve time = 6s) ...
+Presolve removed 7875 rows and 186 columns (presolve time = 10s) ...
+Presolve removed 7875 rows and 187 columns (presolve time = 18s) ...
+Presolve added 0 rows and 712 columns
+Presolve removed 6933 rows and 0 columns
+Presolve time: 18.39s
+Presolved: 29208 rows, 25225 columns, 296594 nonzeros
+Variable types: 89 continuous, 25136 integer (24978 binary)
+
+Deterministic concurrent LP optimizer: primal and dual simplex
+Showing first log only...
+
+Root relaxation presolve removed 44 rows and 0 columns
+Root relaxation presolved: 29164 rows, 25225 columns, 296435 nonzeros
+
+
+Root simplex log...
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    2.0000000e+00   2.152708e+02   4.196769e+09     19s
+Concurrent spin time: 0.01s
+
+Solved with dual simplex
+
+Root relaxation: objective 1.558791e+02, 1210 iterations, 0.85 seconds (1.22 work units)
+Total elapsed time = 20.18s
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  155.87907    0   34          -  155.87907      -     -   22s
+H    0     0                     155.3494402  155.87907  0.34%     -   23s
+
+Explored 1 nodes (37932 simplex iterations) in 23.17 seconds (32.74 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 155.349 
+
+Optimal solution found (tolerance 1.00e-02)
+Best objective 1.553494402064e+02, best bound 1.558790711965e+02, gap 0.3409%
+
+Gurobi 9.5.2 (win64) logging started Thu Aug  3 10:29:53 2023
+
+Set parameter LogFile to value "gurobi_log"
+
+Statistics for modelfirefighting:
+  Linear constraint matrix    : 36141 Constrs, 24513 Vars, 241737 NZs
+  Variable types              : 221 Continuous,
+24292 Integer (24292 Binary)
+  Matrix coefficient range    : [ 0.0166667, 9999.14 ]
+  Objective coefficient range : [ 1e-06, 1 ]
+  Variable bound range        : [ 1, 1 ]
+  RHS coefficient range       : [ 1e-06, 12960 ]
+Gurobi Optimizer version 9.5.2 build v9.5.2rc0 (win64)
+Thread count: 4 physical cores, 8 logical processors, using up to 8 threads
+Optimize a model with 36141 rows, 24513 columns and 241737 nonzeros
+Model fingerprint: 0xa2db7b3e
+Variable types: 221 continuous, 24292 integer (24292 binary)
+Coefficient statistics:
+  Matrix range     [2e-02, 1e+04]
+  Objective range  [1e-06, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e-06, 1e+04]
+Presolve removed 7821 rows and 188 columns (presolve time = 6s) ...
+Presolve removed 7879 rows and 190 columns (presolve time = 13s) ...
+Presolve removed 7879 rows and 227 columns (presolve time = 18s) ...
+Presolve added 0 rows and 707 columns
+Presolve removed 6938 rows and 0 columns
+Presolve time: 18.53s
+Presolved: 29203 rows, 25220 columns, 298535 nonzeros
+Variable types: 85 continuous, 25135 integer (24974 binary)
+
+Deterministic concurrent LP optimizer: primal and dual simplex
+Showing first log only...
+
+Root relaxation presolve removed 43 rows and 0 columns
+Root relaxation presolved: 29160 rows, 25220 columns, 298379 nonzeros
+
+
+Root simplex log...
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    2.0000000e+00   1.610913e+03   7.769361e+10     20s
+Concurrent spin time: 0.01s
+
+Solved with dual simplex
+
+Root relaxation: objective 1.559999e+02, 2276 iterations, 1.21 seconds (1.86 work units)
+Total elapsed time = 20.12s
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  155.99987    0   28          -  155.99987      -     -   23s
+H    0     0                     155.8778528  155.99987  0.08%     -   24s
+H    0     0                     155.8778528  155.99987  0.08%     -   29s
+H    0     0                     155.8778528  155.99987  0.08%     -   30s
+H    0     0                     155.8778531  155.99984  0.08%     -   34s
+     0     0  155.99982    0   64  155.87785  155.99982  0.08%     -   36s
+     0     0  155.99982    0   75  155.87785  155.99982  0.08%     -   40s
+     0     0  155.99971    0  151  155.87785  155.99971  0.08%     -   45s
+     0     0  155.99955    0   86  155.87785  155.99955  0.08%     -   57s
+     0     0  155.97217    0  105  155.87785  155.97217  0.06%     -   65s
+     0     0  155.96672    0  116  155.87785  155.96672  0.06%     -   67s
+     0     0  155.96113    0  115  155.87785  155.96113  0.05%     -   75s
+     0     0  155.96098    0  164  155.87785  155.96098  0.05%     -   78s
+     0     0  155.95866    0  116  155.87785  155.95866  0.05%     -   88s
+     0     0  155.95276    0  105  155.87785  155.95276  0.05%     -   96s
+     0     0  155.94852    0  151  155.87785  155.94852  0.05%     -  108s
+     0     0  155.94303    0  212  155.87785  155.94303  0.04%     -  111s
+     0     0  155.93876    0  153  155.87785  155.93876  0.04%     -  121s
+     0     0  155.93852    0  174  155.87785  155.93852  0.04%     -  124s
+     0     0  155.93553    0  125  155.87785  155.93553  0.04%     -  136s
+     0     0  155.93551    0  164  155.87785  155.93551  0.04%     -  141s
+     0     0  155.93511    0  171  155.87785  155.93511  0.04%     -  146s
+     0     0  155.93367    0  182  155.87785  155.93367  0.04%     -  152s
+     0     0  155.93302    0  115  155.87785  155.93302  0.04%     -  160s
+     0     0  155.93188    0  208  155.87785  155.93188  0.03%     -  165s
+     0     0  155.93126    0  202  155.87785  155.93126  0.03%     -  175s
+     0     0  155.93109    0  174  155.87785  155.93109  0.03%     -  183s
+
+Cutting planes:
+  Gomory: 2
+  Lift-and-project: 40
+  Cover: 60
+  Implied bound: 734
+  Projected implied bound: 4
+  Clique: 3
+  MIR: 32
+  Flow cover: 155
+  GUB cover: 1
+  Zero half: 112
+  RLT: 15
+  Relax-and-lift: 124
+
+Explored 1 nodes (281323 simplex iterations) in 185.30 seconds (166.01 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 4: 155.878 155.878 155.878 155.878 
+
+Solve interrupted
+Best objective 1.558778530961e+02, best bound 1.559310920481e+02, gap 0.0342%
+
+Gurobi 9.5.2 (win64) logging started Thu Aug  3 10:33:24 2023
+
+Set parameter LogFile to value "gurobi_log"
+
+Statistics for modelfirefighting:
+  Linear constraint matrix    : 36141 Constrs, 24513 Vars, 241737 NZs
+  Variable types              : 221 Continuous,
+24292 Integer (24292 Binary)
+  Matrix coefficient range    : [ 0.0166667, 9999.14 ]
+  Objective coefficient range : [ 1e-06, 1 ]
+  Variable bound range        : [ 1, 1 ]
+  RHS coefficient range       : [ 1e-06, 12960 ]
+Gurobi Optimizer version 9.5.2 build v9.5.2rc0 (win64)
+Thread count: 4 physical cores, 8 logical processors, using up to 8 threads
+Optimize a model with 36141 rows, 24513 columns and 241737 nonzeros
+Model fingerprint: 0xa2db7b3e
+Variable types: 221 continuous, 24292 integer (24292 binary)
+Coefficient statistics:
+  Matrix range     [2e-02, 1e+04]
+  Objective range  [1e-06, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e-06, 1e+04]
+Presolve removed 7821 rows and 188 columns (presolve time = 7s) ...
+Presolve removed 7854 rows and 190 columns (presolve time = 10s) ...
+Presolve removed 7879 rows and 190 columns (presolve time = 15s) ...
+Presolve removed 7879 rows and 227 columns (presolve time = 22s) ...
+Presolve added 0 rows and 707 columns
+Presolve removed 6938 rows and 0 columns
+Presolve time: 21.59s
+Presolved: 29203 rows, 25220 columns, 298535 nonzeros
+Variable types: 85 continuous, 25135 integer (24974 binary)
+
+Deterministic concurrent LP optimizer: primal and dual simplex
+Showing first log only...
+
+Root relaxation presolve removed 43 rows and 0 columns
+Root relaxation presolved: 29160 rows, 25220 columns, 298379 nonzeros
+
+
+Root simplex log...
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    2.0000000e+00   1.610913e+03   7.769361e+10     23s
+Concurrent spin time: 0.02s
+
+Solved with dual simplex
+
+Root relaxation: objective 1.559999e+02, 2276 iterations, 1.52 seconds (1.86 work units)
+Total elapsed time = 26.00s
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  155.99987    0   28          -  155.99987      -     -   27s
+H    0     0                     155.8778528  155.99987  0.08%     -   27s
+H    0     0                     155.8778528  155.99987  0.08%     -   32s
+H    0     0                     155.8778528  155.99987  0.08%     -   33s
+H    0     0                     155.8778531  155.99984  0.08%     -   37s
+     0     0  155.99982    0   64  155.87785  155.99982  0.08%     -   39s
+     0     0  155.99982    0   75  155.87785  155.99982  0.08%     -   42s
+     0     0  155.99971    0  151  155.87785  155.99971  0.08%     -   49s
+
+Gurobi 9.5.2 (win64) logging started Thu Aug  3 10:34:31 2023
+
+Set parameter LogFile to value "gurobi_log"
+
+Statistics for modelfirefighting:
+  Linear constraint matrix    : 36141 Constrs, 24513 Vars, 241737 NZs
+  Variable types              : 221 Continuous,
+24292 Integer (24292 Binary)
+  Matrix coefficient range    : [ 0.0166667, 9999.14 ]
+  Objective coefficient range : [ 1e-06, 1 ]
+  Variable bound range        : [ 1, 1 ]
+  RHS coefficient range       : [ 1e-06, 12960 ]
+Gurobi Optimizer version 9.5.2 build v9.5.2rc0 (win64)
+Thread count: 4 physical cores, 8 logical processors, using up to 8 threads
+Optimize a model with 36141 rows, 24513 columns and 241737 nonzeros
+Model fingerprint: 0xa2db7b3e
+Variable types: 221 continuous, 24292 integer (24292 binary)
+Coefficient statistics:
+  Matrix range     [2e-02, 1e+04]
+  Objective range  [1e-06, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e-06, 1e+04]
+Presolve removed 7821 rows and 188 columns (presolve time = 8s) ...
+Presolve removed 7821 rows and 190 columns (presolve time = 11s) ...
+Presolve removed 7879 rows and 190 columns (presolve time = 17s) ...
+Presolve removed 7879 rows and 227 columns (presolve time = 24s) ...
+Presolve added 0 rows and 707 columns
+Presolve removed 6938 rows and 0 columns
+Presolve time: 23.66s
+Presolved: 29203 rows, 25220 columns, 298535 nonzeros
+Variable types: 85 continuous, 25135 integer (24974 binary)
+
+Deterministic concurrent LP optimizer: primal and dual simplex
+Showing first log only...
+
+Root relaxation presolve removed 43 rows and 0 columns
+Root relaxation presolved: 29160 rows, 25220 columns, 298379 nonzeros
+
+
+Root simplex log...
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    2.0000000e+00   1.610913e+03   7.769361e+10     25s
+Concurrent spin time: 0.02s
+
+Solved with dual simplex
+
+Root relaxation: objective 1.559999e+02, 2276 iterations, 1.85 seconds (1.86 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  155.99987    0   28          -  155.99987      -     -   29s
+H    0     0                     155.8778528  155.99987  0.08%     -   30s
+
+Explored 1 nodes (33356 simplex iterations) in 30.42 seconds (33.06 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 155.878 
+
+Optimal solution found (tolerance 1.00e-02)
+Best objective 1.558778527620e+02, best bound 1.559998687602e+02, gap 0.0783%
+
+Gurobi 9.5.2 (win64) logging started Thu Aug  3 10:37:46 2023
+
+Set parameter LogFile to value "gurobi_log"
+
+Statistics for modelfirefighting:
+  Linear constraint matrix    : 36141 Constrs, 24513 Vars, 241737 NZs
+  Variable types              : 221 Continuous,
+24292 Integer (24292 Binary)
+  Matrix coefficient range    : [ 0.0166667, 4320 ]
+  Objective coefficient range : [ 1e-06, 1 ]
+  Variable bound range        : [ 1, 1 ]
+  RHS coefficient range       : [ 1e-06, 12960 ]
+Gurobi Optimizer version 9.5.2 build v9.5.2rc0 (win64)
+Thread count: 4 physical cores, 8 logical processors, using up to 8 threads
+Optimize a model with 36141 rows, 24513 columns and 241737 nonzeros
+Model fingerprint: 0xae54b646
+Variable types: 221 continuous, 24292 integer (24292 binary)
+Coefficient statistics:
+  Matrix range     [2e-02, 4e+03]
+  Objective range  [1e-06, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e-06, 1e+04]
+Presolve removed 7821 rows and 184 columns (presolve time = 6s) ...
+Presolve removed 7875 rows and 186 columns (presolve time = 13s) ...
+Presolve removed 7875 rows and 187 columns (presolve time = 19s) ...
+Presolve added 0 rows and 712 columns
+Presolve removed 6933 rows and 0 columns
+Presolve time: 18.71s
+Presolved: 29208 rows, 25225 columns, 296594 nonzeros
+Variable types: 89 continuous, 25136 integer (24978 binary)
+
+Deterministic concurrent LP optimizer: primal and dual simplex
+Showing first log only...
+
+Root relaxation presolve removed 44 rows and 0 columns
+Root relaxation presolved: 29164 rows, 25225 columns, 296435 nonzeros
+
+Concurrent spin time: 0.01s
+
+Solved with dual simplex
+
+Root relaxation: objective 1.558791e+02, 1210 iterations, 0.89 seconds (1.22 work units)
+Total elapsed time = 20.55s
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  155.87907    0   34          -  155.87907      -     -   23s
+H    0     0                     155.3494402  155.87907  0.34%     -   23s
+
+Explored 1 nodes (37932 simplex iterations) in 23.54 seconds (32.74 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 155.349 
+
+Optimal solution found (tolerance 1.00e-02)
+Best objective 1.553494402064e+02, best bound 1.558790711965e+02, gap 0.3409%
+
+Gurobi 9.5.2 (win64) logging started Thu Aug  3 10:52:54 2023
+
+Set parameter LogFile to value "gurobi_log"
+
+Statistics for modelfirefighting:
+  Linear constraint matrix    : 36141 Constrs, 24513 Vars, 241737 NZs
+  Variable types              : 221 Continuous,
+24292 Integer (24292 Binary)
+  Matrix coefficient range    : [ 0.0166667, 9999 ]
+  Objective coefficient range : [ 1e-06, 1 ]
+  Variable bound range        : [ 1, 1 ]
+  RHS coefficient range       : [ 1e-06, 12960 ]
+Gurobi Optimizer version 9.5.2 build v9.5.2rc0 (win64)
+Thread count: 4 physical cores, 8 logical processors, using up to 8 threads
+Optimize a model with 36141 rows, 24513 columns and 241737 nonzeros
+Model fingerprint: 0x95712069
+Variable types: 221 continuous, 24292 integer (24292 binary)
+Coefficient statistics:
+  Matrix range     [2e-02, 1e+04]
+  Objective range  [1e-06, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e-06, 1e+04]
+Presolve removed 7821 rows and 188 columns (presolve time = 6s) ...
+Presolve removed 7875 rows and 190 columns (presolve time = 10s) ...
+Presolve removed 7875 rows and 191 columns (presolve time = 21s) ...
+Presolve added 0 rows and 708 columns
+Presolve removed 6933 rows and 0 columns
+Presolve time: 20.79s
+Presolved: 29208 rows, 25221 columns, 296638 nonzeros
+Variable types: 85 continuous, 25136 integer (24977 binary)
+
+Deterministic concurrent LP optimizer: primal and dual simplex
+Showing first log only...
+
+Root relaxation presolve removed 44 rows and 0 columns
+Root relaxation presolved: 29164 rows, 25221 columns, 296479 nonzeros
+
+
+Root simplex log...
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    1.0000000e+00   6.427101e+02   4.811738e+09     22s
+Concurrent spin time: 0.01s
+
+Solved with dual simplex
+
+Root relaxation: objective 1.558791e+02, 2125 iterations, 1.40 seconds (1.68 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  155.87907    0   37          -  155.87907      -     -   25s
+H    0     0                     155.8778528  155.87907  0.00%     -   26s
+
+Explored 1 nodes (25201 simplex iterations) in 26.06 seconds (31.18 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 155.878 
+
+Optimal solution found (tolerance 1.00e-02)
+Best objective 1.558778527620e+02, best bound 1.558790711965e+02, gap 0.0008%
+
+Gurobi 9.5.2 (win64) logging started Thu Aug  3 10:56:11 2023
+
+Set parameter LogFile to value "gurobi_log"
+
+Statistics for modelfirefighting:
+  Linear constraint matrix    : 36141 Constrs, 24513 Vars, 241737 NZs
+  Variable types              : 221 Continuous,
+24292 Integer (24292 Binary)
+  Matrix coefficient range    : [ 0.0166667, 4320 ]
+  Objective coefficient range : [ 1e-06, 1 ]
+  Variable bound range        : [ 1, 1 ]
+  RHS coefficient range       : [ 1e-06, 12960 ]
+Gurobi Optimizer version 9.5.2 build v9.5.2rc0 (win64)
+Thread count: 4 physical cores, 8 logical processors, using up to 8 threads
+Optimize a model with 36141 rows, 24513 columns and 241737 nonzeros
+Model fingerprint: 0xae54b646
+Variable types: 221 continuous, 24292 integer (24292 binary)
+Coefficient statistics:
+  Matrix range     [2e-02, 4e+03]
+  Objective range  [1e-06, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e-06, 1e+04]
+Presolve removed 7821 rows and 184 columns (presolve time = 6s) ...
+Presolve removed 7875 rows and 186 columns (presolve time = 10s) ...
+Presolve removed 7875 rows and 187 columns (presolve time = 19s) ...
+Presolve added 0 rows and 712 columns
+Presolve removed 6933 rows and 0 columns
+Presolve time: 18.60s
+Presolved: 29208 rows, 25225 columns, 296594 nonzeros
+Variable types: 89 continuous, 25136 integer (24978 binary)
+
+Deterministic concurrent LP optimizer: primal and dual simplex
+Showing first log only...
+
+Root relaxation presolve removed 44 rows and 0 columns
+Root relaxation presolved: 29164 rows, 25225 columns, 296435 nonzeros
+
+Concurrent spin time: 0.01s
+
+Solved with dual simplex
+
+Root relaxation: objective 1.558791e+02, 1210 iterations, 0.95 seconds (1.22 work units)
+Total elapsed time = 20.55s
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  155.87907    0   34          -  155.87907      -     -   23s
+H    0     0                     155.3494402  155.87907  0.34%     -   23s
+
+Explored 1 nodes (37932 simplex iterations) in 23.63 seconds (32.74 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 155.349 
+
+Optimal solution found (tolerance 1.00e-02)
+Best objective 1.553494402064e+02, best bound 1.558790711965e+02, gap 0.3409%
+
+Gurobi 9.5.2 (win64) logging started Thu Aug  3 11:06:24 2023
+
+Set parameter LogFile to value "gurobi_log"
+
+Statistics for modelfirefighting:
+  Linear constraint matrix    : 36141 Constrs, 24513 Vars, 241737 NZs
+  Variable types              : 221 Continuous,
+24292 Integer (24292 Binary)
+  Matrix coefficient range    : [ 0.0166667, 9999.14 ]
+  Objective coefficient range : [ 1e-06, 1 ]
+  Variable bound range        : [ 1, 1 ]
+  RHS coefficient range       : [ 1e-06, 12960 ]
+Gurobi Optimizer version 9.5.2 build v9.5.2rc0 (win64)
+Thread count: 4 physical cores, 8 logical processors, using up to 8 threads
+Optimize a model with 36141 rows, 24513 columns and 241737 nonzeros
+Model fingerprint: 0x388813e0
+Variable types: 221 continuous, 24292 integer (24292 binary)
+Coefficient statistics:
+  Matrix range     [2e-02, 1e+04]
+  Objective range  [1e-06, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e-06, 1e+04]
+Presolve removed 7821 rows and 184 columns (presolve time = 6s) ...
+Presolve removed 7875 rows and 186 columns (presolve time = 13s) ...
+Presolve removed 7875 rows and 187 columns (presolve time = 18s) ...
+Presolve added 0 rows and 712 columns
+Presolve removed 6933 rows and 0 columns
+Presolve time: 18.35s
+Presolved: 29208 rows, 25225 columns, 296594 nonzeros
+Variable types: 89 continuous, 25136 integer (24978 binary)
+
+Deterministic concurrent LP optimizer: primal and dual simplex
+Showing first log only...
+
+Root relaxation presolve removed 44 rows and 0 columns
+Root relaxation presolved: 29164 rows, 25225 columns, 296435 nonzeros
+
+Concurrent spin time: 0.01s
+
+Solved with dual simplex
+
+Root relaxation: objective 1.558791e+02, 926 iterations, 0.84 seconds (1.17 work units)
+Total elapsed time = 20.33s
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  155.87907    0   33          -  155.87907      -     -   22s
+H    0     0                     155.3613574  155.87907  0.33%     -   22s
+
+Explored 1 nodes (26568 simplex iterations) in 22.85 seconds (31.62 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 155.361 
+
+Optimal solution found (tolerance 1.00e-02)
+Best objective 1.553613574310e+02, best bound 1.558790711965e+02, gap 0.3332%
+
+Gurobi 9.5.2 (win64) logging started Thu Aug  3 11:08:09 2023
+
+Set parameter LogFile to value "gurobi_log"
+
+Statistics for modelfirefighting:
+  Linear constraint matrix    : 36141 Constrs, 24513 Vars, 241737 NZs
+  Variable types              : 221 Continuous,
+24292 Integer (24292 Binary)
+  Matrix coefficient range    : [ 0.0166667, 9999.14 ]
+  Objective coefficient range : [ 1e-06, 1 ]
+  Variable bound range        : [ 1, 1 ]
+  RHS coefficient range       : [ 1e-06, 12960 ]
+Gurobi Optimizer version 9.5.2 build v9.5.2rc0 (win64)
+Thread count: 4 physical cores, 8 logical processors, using up to 8 threads
+Optimize a model with 36141 rows, 24513 columns and 241737 nonzeros
+Model fingerprint: 0x75fef161
+Variable types: 221 continuous, 24292 integer (24292 binary)
+Coefficient statistics:
+  Matrix range     [2e-02, 1e+04]
+  Objective range  [1e-06, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e-06, 1e+04]
+Presolve removed 7821 rows and 184 columns (presolve time = 6s) ...
+Presolve removed 7875 rows and 186 columns (presolve time = 13s) ...
+Presolve removed 7875 rows and 224 columns (presolve time = 18s) ...
+Presolve added 0 rows and 712 columns
+Presolve removed 6933 rows and 0 columns
+Presolve time: 18.11s
+Presolved: 29208 rows, 25225 columns, 300159 nonzeros
+Variable types: 89 continuous, 25136 integer (24977 binary)
+
+Deterministic concurrent LP optimizer: primal and dual simplex
+Showing first log only...
+
+Root relaxation presolve removed 44 rows and 0 columns
+Root relaxation presolved: 29164 rows, 25225 columns, 300000 nonzeros
+
+Concurrent spin time: 0.01s
+
+Solved with dual simplex
+
+Root relaxation: objective 1.558791e+02, 953 iterations, 0.93 seconds (1.34 work units)
+Total elapsed time = 20.18s
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  155.87907    0   29          -  155.87907      -     -   21s
+H    0     0                     155.4013899  155.87907  0.31%     -   21s
+
+Explored 1 nodes (20985 simplex iterations) in 21.42 seconds (29.88 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 155.401 
+
+Optimal solution found (tolerance 1.00e-02)
+Best objective 1.554013899294e+02, best bound 1.558790711965e+02, gap 0.3074%
+
+Gurobi 9.5.2 (win64) logging started Thu Aug  3 11:17:33 2023
+
+Set parameter LogFile to value "gurobi_log"
+
+Statistics for modelfirefighting:
+  Linear constraint matrix    : 36141 Constrs, 24513 Vars, 241737 NZs
+  Variable types              : 221 Continuous,
+24292 Integer (24292 Binary)
+  Matrix coefficient range    : [ 0.0166667, 9999 ]
+  Objective coefficient range : [ 1e-06, 1 ]
+  Variable bound range        : [ 1, 1 ]
+  RHS coefficient range       : [ 1e-06, 12960 ]
+Gurobi Optimizer version 9.5.2 build v9.5.2rc0 (win64)
+Thread count: 4 physical cores, 8 logical processors, using up to 8 threads
+Optimize a model with 36141 rows, 24513 columns and 241737 nonzeros
+Model fingerprint: 0x71fcc14c
+Variable types: 221 continuous, 24292 integer (24292 binary)
+Coefficient statistics:
+  Matrix range     [2e-02, 1e+04]
+  Objective range  [1e-06, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e-06, 1e+04]
+Presolve removed 7821 rows and 188 columns (presolve time = 6s) ...
+Presolve removed 7875 rows and 190 columns (presolve time = 10s) ...
+Presolve removed 7875 rows and 191 columns (presolve time = 20s) ...
+Presolve added 0 rows and 708 columns
+Presolve removed 6933 rows and 0 columns
+Presolve time: 19.92s
+Presolved: 29208 rows, 25221 columns, 296598 nonzeros
+Variable types: 85 continuous, 25136 integer (24978 binary)
+
+Deterministic concurrent LP optimizer: primal and dual simplex
+Showing first log only...
+
+Root relaxation presolve removed 44 rows and 0 columns
+Root relaxation presolved: 29164 rows, 25221 columns, 296439 nonzeros
+
+Concurrent spin time: 0.02s
+
+Solved with dual simplex
+
+Root relaxation: objective 1.558791e+02, 1321 iterations, 1.14 seconds (1.45 work units)
+Total elapsed time = 25.37s
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  155.87907    0   33          -  155.87907      -     -   27s
+H    0     0                     155.8778528  155.87907  0.00%     -   28s
+
+Explored 1 nodes (38437 simplex iterations) in 28.34 seconds (35.14 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 155.878 
+
+Optimal solution found (tolerance 1.00e-02)
+Best objective 1.558778527620e+02, best bound 1.558790711965e+02, gap 0.0008%
+
+Gurobi 9.5.2 (win64) logging started Thu Aug  3 11:34:35 2023
+
+Set parameter LogFile to value "gurobi_log"
+
+Statistics for modelfirefighting:
+  Linear constraint matrix    : 36141 Constrs, 24513 Vars, 241737 NZs
+  Variable types              : 221 Continuous,
+24292 Integer (24292 Binary)
+  Matrix coefficient range    : [ 0.0166667, 9999 ]
+  Objective coefficient range : [ 1e-06, 1 ]
+  Variable bound range        : [ 1, 1 ]
+  RHS coefficient range       : [ 1e-06, 12960 ]
+Gurobi Optimizer version 9.5.2 build v9.5.2rc0 (win64)
+Thread count: 4 physical cores, 8 logical processors, using up to 8 threads
+Optimize a model with 36141 rows, 24513 columns and 241737 nonzeros
+Model fingerprint: 0xe9c24762
+Variable types: 221 continuous, 24292 integer (24292 binary)
+Coefficient statistics:
+  Matrix range     [2e-02, 1e+04]
+  Objective range  [1e-06, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e-06, 1e+04]
+Presolve removed 7821 rows and 185 columns (presolve time = 6s) ...
+Presolve removed 7875 rows and 187 columns (presolve time = 13s) ...
+Presolve removed 7875 rows and 188 columns (presolve time = 18s) ...
+Presolve added 0 rows and 711 columns
+Presolve removed 6933 rows and 0 columns
+Presolve time: 17.98s
+Presolved: 29208 rows, 25224 columns, 296595 nonzeros
+Variable types: 88 continuous, 25136 integer (24978 binary)
+
+Deterministic concurrent LP optimizer: primal and dual simplex
+Showing first log only...
+
+Root relaxation presolve removed 44 rows and 0 columns
+Root relaxation presolved: 29164 rows, 25224 columns, 296436 nonzeros
+
+Concurrent spin time: 0.01s
+
+Solved with dual simplex
+
+Root relaxation: objective 1.558791e+02, 869 iterations, 0.77 seconds (1.16 work units)
+Total elapsed time = 20.03s
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  155.87907    0   38          -  155.87907      -     -   23s
+H    0     0                     155.3494402  155.87907  0.34%     -   23s
+
+Explored 1 nodes (30425 simplex iterations) in 23.48 seconds (33.56 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 155.349 
+
+Optimal solution found (tolerance 1.00e-02)
+Best objective 1.553494402064e+02, best bound 1.558790711965e+02, gap 0.3409%
+
+Gurobi 9.5.2 (win64) logging started Thu Aug  3 11:35:32 2023
+
+Set parameter LogFile to value "gurobi_log"
+
+Statistics for modelfirefighting:
+  Linear constraint matrix    : 36141 Constrs, 24513 Vars, 241737 NZs
+  Variable types              : 221 Continuous,
+24292 Integer (24292 Binary)
+  Matrix coefficient range    : [ 0.0166667, 9999 ]
+  Objective coefficient range : [ 1e-06, 1 ]
+  Variable bound range        : [ 1, 1 ]
+  RHS coefficient range       : [ 1e-06, 12960 ]
+Gurobi Optimizer version 9.5.2 build v9.5.2rc0 (win64)
+Thread count: 4 physical cores, 8 logical processors, using up to 8 threads
+Optimize a model with 36141 rows, 24513 columns and 241737 nonzeros
+Model fingerprint: 0x7bc2698f
+Variable types: 221 continuous, 24292 integer (24292 binary)
+Coefficient statistics:
+  Matrix range     [2e-02, 1e+04]
+  Objective range  [1e-06, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e-06, 1e+04]
+Presolve removed 7821 rows and 185 columns (presolve time = 8s) ...
+Presolve removed 7850 rows and 187 columns (presolve time = 10s) ...
+Presolve removed 7875 rows and 187 columns (presolve time = 15s) ...
+Presolve removed 7875 rows and 188 columns (presolve time = 21s) ...
+Presolve added 0 rows and 711 columns
+Presolve removed 6933 rows and 0 columns
+Presolve time: 21.45s
+Presolved: 29208 rows, 25224 columns, 296595 nonzeros
+Variable types: 88 continuous, 25136 integer (24978 binary)
+
+Deterministic concurrent LP optimizer: primal and dual simplex
+Showing first log only...
+
+Root relaxation presolve removed 44 rows and 0 columns
+Root relaxation presolved: 29164 rows, 25224 columns, 296436 nonzeros
+
+
+Root simplex log...
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    2.0000000e+00   2.142708e+02   4.453054e+09     23s
+Concurrent spin time: 0.00s
+
+Solved with dual simplex
+
+Root relaxation: objective 1.558791e+02, 1220 iterations, 1.20 seconds (1.23 work units)
+Total elapsed time = 25.78s
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  155.87907    0   37          -  155.87907      -     -   27s
+H    0     0                     155.8778528  155.87907  0.00%     -   27s
+
+Explored 1 nodes (30823 simplex iterations) in 28.01 seconds (33.56 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 155.878 
+
+Optimal solution found (tolerance 1.00e-02)
+Best objective 1.558778527620e+02, best bound 1.558790711965e+02, gap 0.0008%
+
+Gurobi 9.5.2 (win64) logging started Thu Aug  3 11:39:25 2023
+
+Set parameter LogFile to value "gurobi_log"
+
+Statistics for modelfirefighting:
+  Linear constraint matrix    : 36141 Constrs, 24513 Vars, 241737 NZs
+  Variable types              : 221 Continuous,
+24292 Integer (24292 Binary)
+  Matrix coefficient range    : [ 0.0166667, 4320 ]
+  Objective coefficient range : [ 1e-06, 1 ]
+  Variable bound range        : [ 1, 1 ]
+  RHS coefficient range       : [ 1e-06, 12960 ]
+Gurobi Optimizer version 9.5.2 build v9.5.2rc0 (win64)
+Thread count: 4 physical cores, 8 logical processors, using up to 8 threads
+Optimize a model with 36141 rows, 24513 columns and 241737 nonzeros
+Model fingerprint: 0xe68b483f
+Variable types: 221 continuous, 24292 integer (24292 binary)
+Coefficient statistics:
+  Matrix range     [2e-02, 4e+03]
+  Objective range  [1e-06, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e-06, 1e+04]
+Found heuristic solution: objective 155.8778528
+Presolve removed 36127 rows and 24488 columns
+Presolve time: 1.85s
+Presolved: 14 rows, 25 columns, 69 nonzeros
+Variable types: 1 continuous, 24 integer (24 binary)
+
+Explored 0 nodes (0 simplex iterations) in 1.87 seconds (2.41 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 155.878 
+
+Optimal solution found (tolerance 1.00e-02)
+Best objective 1.558778527620e+02, best bound 1.558778528449e+02, gap 0.0000%
+
+Gurobi 9.5.2 (win64) logging started Thu Aug  3 11:48:53 2023
+
+Set parameter LogFile to value "gurobi_log"
+
+Statistics for modelfirefighting:
+  Linear constraint matrix    : 36141 Constrs, 24513 Vars, 241737 NZs
+  Variable types              : 221 Continuous,
+24292 Integer (24292 Binary)
+  Matrix coefficient range    : [ 0.0166667, 4320 ]
+  Objective coefficient range : [ 1e-06, 1 ]
+  Variable bound range        : [ 1, 1 ]
+  RHS coefficient range       : [ 1e-06, 12960 ]
+Gurobi Optimizer version 9.5.2 build v9.5.2rc0 (win64)
+Thread count: 4 physical cores, 8 logical processors, using up to 8 threads
+Optimize a model with 36141 rows, 24513 columns and 241737 nonzeros
+Model fingerprint: 0x5c083317
+Variable types: 221 continuous, 24292 integer (24292 binary)
+Coefficient statistics:
+  Matrix range     [2e-02, 4e+03]
+  Objective range  [1e-06, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e-06, 1e+04]
+Presolve removed 7821 rows and 184 columns (presolve time = 8s) ...
+Presolve removed 7821 rows and 186 columns (presolve time = 10s) ...
+Presolve removed 7911 rows and 186 columns (presolve time = 16s) ...
+Presolve removed 7911 rows and 231 columns (presolve time = 23s) ...
+Presolve removed 7955 rows and 231 columns (presolve time = 27s) ...
+Presolve removed 7955 rows and 231 columns (presolve time = 31s) ...
+Presolve added 0 rows and 276 columns
+Presolve removed 7448 rows and 0 columns
+Presolve time: 30.97s
+Presolved: 28693 rows, 24789 columns, 205615 nonzeros
+Variable types: 89 continuous, 24700 integer (24581 binary)
+
+Deterministic concurrent LP optimizer: primal and dual simplex
+Showing first log only...
+
+Root relaxation presolved: 28693 rows, 24789 columns, 205615 nonzeros
+
+Concurrent spin time: 0.02s
+
+Solved with dual simplex
+
+Root relaxation: objective 1.551073e+02, 614 iterations, 0.73 seconds (0.54 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  155.10728    0   23          -  155.10728      -     -   33s
+H    0     0                     155.0179732  155.10728  0.06%     -   34s
+
+Explored 1 nodes (20983 simplex iterations) in 34.51 seconds (33.61 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 155.018 
+
+Optimal solution found (tolerance 1.00e-02)
+Best objective 1.550179732188e+02, best bound 1.551072817119e+02, gap 0.0576%
+
+Gurobi 9.5.2 (win64) logging started Thu Aug  3 12:00:48 2023
+
+Set parameter LogFile to value "gurobi_log"
+
+Statistics for modelfirefighting:
+  Linear constraint matrix    : 36141 Constrs, 24513 Vars, 241737 NZs
+  Variable types              : 221 Continuous,
+24292 Integer (24292 Binary)
+  Matrix coefficient range    : [ 0.0166667, 4320 ]
+  Objective coefficient range : [ 1e-06, 1 ]
+  Variable bound range        : [ 1, 1 ]
+  RHS coefficient range       : [ 1e-06, 12960 ]
+Gurobi Optimizer version 9.5.2 build v9.5.2rc0 (win64)
+Thread count: 4 physical cores, 8 logical processors, using up to 8 threads
+Optimize a model with 36141 rows, 24513 columns and 241737 nonzeros
+Model fingerprint: 0x5c083317
+Variable types: 221 continuous, 24292 integer (24292 binary)
+Coefficient statistics:
+  Matrix range     [2e-02, 4e+03]
+  Objective range  [1e-06, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e-06, 1e+04]
+Presolve removed 7821 rows and 184 columns (presolve time = 7s) ...
+Presolve removed 7901 rows and 186 columns (presolve time = 10s) ...
+Presolve removed 7911 rows and 186 columns (presolve time = 15s) ...
+Presolve removed 7911 rows and 231 columns (presolve time = 21s) ...
+Presolve removed 7955 rows and 231 columns (presolve time = 27s) ...
+Presolve added 0 rows and 276 columns
+Presolve removed 7448 rows and 0 columns
+Presolve time: 27.44s
+Presolved: 28693 rows, 24789 columns, 205615 nonzeros
+Variable types: 89 continuous, 24700 integer (24581 binary)
+
+Deterministic concurrent LP optimizer: primal and dual simplex
+Showing first log only...
+
+Root relaxation presolved: 28693 rows, 24789 columns, 205615 nonzeros
+
+Concurrent spin time: 0.01s
+
+Solved with dual simplex
+
+Root relaxation: objective 1.551073e+02, 614 iterations, 0.72 seconds (0.54 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  155.10728    0   23          -  155.10728      -     -   29s
+H    0     0                     155.0179732  155.10728  0.06%     -   30s
+
+Explored 1 nodes (20983 simplex iterations) in 30.64 seconds (33.61 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 155.018 
+
+Optimal solution found (tolerance 1.00e-02)
+Best objective 1.550179732188e+02, best bound 1.551072817119e+02, gap 0.0576%
+
+Gurobi 9.5.2 (win64) logging started Thu Aug  3 12:06:20 2023
+
+Set parameter LogFile to value "gurobi_log"
+
+Statistics for modelfirefighting:
+  Linear constraint matrix    : 36141 Constrs, 24513 Vars, 241741 NZs
+  Variable types              : 221 Continuous,
+24292 Integer (24292 Binary)
+  Matrix coefficient range    : [ 0.0166667, 4320 ]
+  Objective coefficient range : [ 1e-06, 1 ]
+  Variable bound range        : [ 1, 1 ]
+  RHS coefficient range       : [ 1e-06, 12960 ]
+Gurobi Optimizer version 9.5.2 build v9.5.2rc0 (win64)
+Thread count: 4 physical cores, 8 logical processors, using up to 8 threads
+Optimize a model with 36141 rows, 24513 columns and 241741 nonzeros
+Model fingerprint: 0x0a781228
+Variable types: 221 continuous, 24292 integer (24292 binary)
+Coefficient statistics:
+  Matrix range     [2e-02, 4e+03]
+  Objective range  [1e-06, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e-06, 1e+04]
+Presolve removed 7840 rows and 188 columns (presolve time = 6s) ...
+Presolve removed 7932 rows and 191 columns (presolve time = 10s) ...
+Presolve removed 7932 rows and 235 columns (presolve time = 19s) ...
+Presolve removed 7974 rows and 235 columns (presolve time = 22s) ...
+Presolve added 0 rows and 272 columns
+Presolve removed 7467 rows and 0 columns
+Presolve time: 24.73s
+Presolved: 28674 rows, 24785 columns, 206346 nonzeros
+Variable types: 89 continuous, 24696 integer (24577 binary)
+
+Deterministic concurrent LP optimizer: primal and dual simplex
+Showing first log only...
+
+Root relaxation presolve removed 4 rows and 0 columns
+Root relaxation presolved: 28670 rows, 24785 columns, 205994 nonzeros
+
+Concurrent spin time: 0.01s
+
+Solved with dual simplex
+
+Root relaxation: objective 1.534887e+02, 1539 iterations, 0.53 seconds (0.54 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  153.48874    0   54          -  153.48874      -     -   26s
+H    0     0                     153.1919180  153.48874  0.19%     -   26s
+
+Explored 1 nodes (15218 simplex iterations) in 26.52 seconds (32.74 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 153.192 
+
+Optimal solution found (tolerance 1.00e-02)
+Best objective 1.531919179724e+02, best bound 1.534887429017e+02, gap 0.1938%
+
+Gurobi 9.5.2 (win64) logging started Fri Aug  4 10:54:23 2023
+
+Set parameter LogFile to value "gurobi_log"
+
+Statistics for modelfirefighting:
+  Linear constraint matrix    : 36141 Constrs, 24513 Vars, 241741 NZs
+  Variable types              : 221 Continuous,
+24292 Integer (24292 Binary)
+  Matrix coefficient range    : [ 0.0166667, 4320 ]
+  Objective coefficient range : [ 1e-06, 1 ]
+  Variable bound range        : [ 1, 1 ]
+  RHS coefficient range       : [ 1e-06, 12960 ]
+Gurobi Optimizer version 9.5.2 build v9.5.2rc0 (win64)
+Thread count: 4 physical cores, 8 logical processors, using up to 8 threads
+Optimize a model with 36141 rows, 24513 columns and 241741 nonzeros
+Model fingerprint: 0x0a781228
+Variable types: 221 continuous, 24292 integer (24292 binary)
+Coefficient statistics:
+  Matrix range     [2e-02, 4e+03]
+  Objective range  [1e-06, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e-06, 1e+04]
+Presolve removed 7840 rows and 188 columns (presolve time = 6s) ...
+Presolve removed 7932 rows and 191 columns (presolve time = 13s) ...
+Presolve removed 7932 rows and 235 columns (presolve time = 18s) ...
+Presolve removed 7974 rows and 235 columns (presolve time = 20s) ...
+Presolve added 0 rows and 272 columns
+Presolve removed 7467 rows and 0 columns
+Presolve time: 23.53s
+Presolved: 28674 rows, 24785 columns, 206346 nonzeros
+Variable types: 89 continuous, 24696 integer (24577 binary)
+
+Deterministic concurrent LP optimizer: primal and dual simplex
+Showing first log only...
+
+Root relaxation presolve removed 4 rows and 0 columns
+Root relaxation presolved: 28670 rows, 24785 columns, 205994 nonzeros
+
+
+Root simplex log...
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    2.1000000e+01   3.426443e+03   3.638855e+10     24s
+Concurrent spin time: 0.00s
+
+Solved with dual simplex
+
+Root relaxation: objective 1.534887e+02, 1539 iterations, 0.47 seconds (0.54 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  153.48874    0   54          -  153.48874      -     -   24s
+H    0     0                     153.1919180  153.48874  0.19%     -   25s
+
+Explored 1 nodes (15218 simplex iterations) in 25.31 seconds (32.74 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 153.192 
+
+Optimal solution found (tolerance 1.00e-02)
+Best objective 1.531919179724e+02, best bound 1.534887429017e+02, gap 0.1938%
+
+Gurobi 9.5.2 (win64) logging started Fri Aug  4 10:59:44 2023
+
+Set parameter LogFile to value "gurobi_log"
+
+Statistics for modelfirefighting:
+  Linear constraint matrix    : 36141 Constrs, 24513 Vars, 241741 NZs
+  Variable types              : 221 Continuous,
+24292 Integer (24292 Binary)
+  Matrix coefficient range    : [ 0.0166667, 4320 ]
+  Objective coefficient range : [ 1e-06, 1 ]
+  Variable bound range        : [ 1, 1 ]
+  RHS coefficient range       : [ 1e-06, 12960 ]
+Gurobi Optimizer version 9.5.2 build v9.5.2rc0 (win64)
+Thread count: 4 physical cores, 8 logical processors, using up to 8 threads
+Optimize a model with 36141 rows, 24513 columns and 241741 nonzeros
+Model fingerprint: 0x0a781228
+Variable types: 221 continuous, 24292 integer (24292 binary)
+Coefficient statistics:
+  Matrix range     [2e-02, 4e+03]
+  Objective range  [1e-06, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e-06, 1e+04]
+Presolve removed 7840 rows and 188 columns (presolve time = 8s) ...
+Presolve removed 7796 rows and 147 columns
+Presolve time: 8.64s
+
+Explored 0 nodes (0 simplex iterations) in 8.66 seconds (9.00 work units)
+Thread count was 1 (of 8 available processors)
+
+Solution count 0
+
+Solve interrupted
+Best objective -, best bound -, gap -
+
+Gurobi 9.5.2 (win64) logging started Fri Aug  4 11:13:06 2023
+
+Set parameter LogFile to value "gurobi_log"
+
+Statistics for modelfirefighting:
+  Linear constraint matrix    : 36141 Constrs, 24513 Vars, 241741 NZs
+  Variable types              : 221 Continuous,
+24292 Integer (24292 Binary)
+  Matrix coefficient range    : [ 0.0166667, 4320 ]
+  Objective coefficient range : [ 1e-06, 1 ]
+  Variable bound range        : [ 1, 1 ]
+  RHS coefficient range       : [ 1e-06, 12960 ]
+Gurobi Optimizer version 9.5.2 build v9.5.2rc0 (win64)
+Thread count: 4 physical cores, 8 logical processors, using up to 8 threads
+Optimize a model with 36141 rows, 24513 columns and 241741 nonzeros
+Model fingerprint: 0x0a781228
+Variable types: 221 continuous, 24292 integer (24292 binary)
+Coefficient statistics:
+  Matrix range     [2e-02, 4e+03]
+  Objective range  [1e-06, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e-06, 1e+04]
+Presolve removed 7840 rows and 188 columns (presolve time = 7s) ...
+Presolve removed 7932 rows and 191 columns (presolve time = 10s) ...
+Presolve removed 7932 rows and 235 columns (presolve time = 19s) ...
+Presolve removed 7974 rows and 235 columns (presolve time = 20s) ...
+Presolve removed 7974 rows and 235 columns (presolve time = 26s) ...
+Presolve added 0 rows and 272 columns
+Presolve removed 7467 rows and 0 columns
+Presolve time: 25.97s
+Presolved: 28674 rows, 24785 columns, 206346 nonzeros
+Variable types: 89 continuous, 24696 integer (24577 binary)
+
+Deterministic concurrent LP optimizer: primal and dual simplex
+Showing first log only...
+
+Root relaxation presolve removed 4 rows and 0 columns
+Root relaxation presolved: 28670 rows, 24785 columns, 205994 nonzeros
+
+
+Root simplex log...
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    2.1000000e+01   3.426443e+03   3.638855e+10     27s
+Concurrent spin time: 0.01s
+
+Solved with dual simplex
+
+Root relaxation: objective 1.534887e+02, 1539 iterations, 0.61 seconds (0.54 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  153.48874    0   54          -  153.48874      -     -   27s
+H    0     0                     153.1919180  153.48874  0.19%     -   28s
+
+Explored 1 nodes (15218 simplex iterations) in 28.07 seconds (32.74 work units)
+Thread count was 8 (of 8 available processors)
+
+Solution count 1: 153.192 
+
+Optimal solution found (tolerance 1.00e-02)
+Best objective 1.531919179724e+02, best bound 1.534887429017e+02, gap 0.1938%

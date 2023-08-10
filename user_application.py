@@ -11,6 +11,8 @@ import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 import mip_setup as mip_setup
 import mip_solve as mip_solve
+import case_generator_setup as generator
+
 import openpyxl
 from itertools import combinations
 from datetime import datetime
@@ -21,6 +23,15 @@ from random import sample
 # read user inputs
 user_inputs = mip_setup.UserInputsRead()
 experiment_mode = user_inputs.parameters_df.loc["mode", "value"]
+
+
+# modes
+# single_run: runs MIP as a single optimization task
+# combination_run: runs MIP in the combination mode (to evaluate the impact of quantity and location of initial fires)
+# case_instance_generate: generate a new WUI scneario based case instance
+
+
+
 
 
 # run optimization in single_run_mode
@@ -46,22 +57,19 @@ elif experiment_mode == "combination_run":
         mip_inputs = mip_setup.InputsSetup(user_inputs, i)
         run_result = mip_solve.mathematical_model_solve(mip_inputs)
 
+elif experiment_mode == "case_instance_generation":
+    # read user inputs
+    # n is dimension of square grid, m is number of areas of different types to generate
+    n_grid_at_a_side = int(user_inputs.parameters_df.loc["n_grid_at_a_side", "value"])
+    n_areas_of_different_types = int(user_inputs.parameters_df.loc["n_areas_of_different_types", "value"])
+    include_water = int(user_inputs.parameters_df.loc["water", "value"])
+    if include_water == 1:
+        include_water = True
+    else:
+        include_water = False
+    # include_block = int(user_inputs.parameters_df.loc["block", "value"])
 
-#
-# fire_prone_node_list = [2, 3, 4, 6, 7, 8, 10, 11, 14, 15, 18, 19, 20, 22, 23, 24, 25]  # for 5x5 instance
-#
-# list_combinations = list()
-# # n=1
-# for n in range(0, 18):
-#     combn_list = list(combinations(fire_prone_node_list, n))
-#     # list_combinations += combn_list
-#     list_combinations += sample(combn_list, min(20, len(combn_list)))
-#
-# len(list_combinations)
-# # back up code
-#
-# # fire_prone_node_list = [3, 5, 6, 7, 8, 9]  # for 3x3 instance
-# # fire_prone_node_list = [2, 3, 4, 6, 7, 8, 10, 11, 14, 15, 18, 19, 20, 22, 23, 24, 25]  # for 5x5 instance
-#    # run_result["number_of_initial_fires"] = len(i)
-#         # run_result["initial_fire_node_IDs"] = ','.join(map(str, i))
-#         # run_result.to_csv(writer_file_name, mode="a", index=False, header=False)
+    case_output_file_name = os.path.join('outputs', "wui_scenario_{0}.csv".format(str(datetime.now().strftime('%Y_%m_%d_%H_%M_%S'))))
+
+    generator.generate_grid(n_grid_at_a_side, n_areas_of_different_types, default_density=(1, 1), water=include_water,
+                            csv_filename=case_output_file_name)

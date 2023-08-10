@@ -12,7 +12,7 @@ def model_organize_results(var_values, var_df):
     for v in var_values:
         # if(v.X>0):
         current_var = re.split("\[|,|]", v.varName)[:-1]
-        current_var.append(round(v.X, 2))
+        current_var.append(round(v.X, 4))
         var_df.loc[counter] = current_var
         counter = counter + 1
         # with open("./math_model_outputs/" + 'mip-results.txt',
@@ -144,7 +144,8 @@ def mathematical_model_solve(mip_inputs):
 
 
     # # forced solution
-    # model.addConstr(x_ijk.sum(1, 4, 1) == 1)
+    # model.addConstr(x_ijk.sum(43, 1, 1) == 1)
+    # model.addConstr(x_ijk.sum(43, 7, 2) == 1)
     # model.addConstr(x_ijk.sum(4, 3, 1) == 1)
     # model.addConstr(x_ijk.sum(3, 5, 1) == 1)
     # model.addConstr(x_ijk.sum(1, 8, 2) == 1)
@@ -493,7 +494,8 @@ def mathematical_model_solve(mip_inputs):
         global_results_df["number_of_jobs_arrived"] = sum(ts_j_results_df.value > 0) + len(mip_inputs.set_of_active_fires_at_start)
         global_results_df["number_of_job_processed"] = sum(tv_j_results_df.value > 0) - 1  # subtract the base return time
         global_results_df["number_of_vehicles"] = len(mip_inputs.vehicle_list)  # subtract the base return time
-        global_results_df["number_of_vehicles_used"] = len(np.unique(x_ijk_results_df.query("`from_node_id` == '1' & `value` > 0")["vehicle_id"].tolist()))  # subtract the base return time
+        mip_inputs.base_node_id_string = str(mip_inputs.base_node_id)
+        global_results_df["number_of_vehicles_used"] = len(np.unique(x_ijk_results_df.query("`from_node_id` == @mip_inputs.base_node_id_string & `value` > 0")["vehicle_id"].tolist()))  # subtract the base return time
         global_results_df["initial_fire_node_IDs"] = ','.join(map(str, mip_inputs.set_of_active_fires_at_start))
 
 

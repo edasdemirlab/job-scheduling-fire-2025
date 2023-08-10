@@ -2,10 +2,20 @@ import random
 import csv
 import matplotlib.pyplot as plt
 import os
-import matplotlib
+import pandas as pd
 
 
-def generate_grid(n, m, default_density=(1, 0), water=True, block=True, csv_filename=None):
+class UserInputsRead:
+    def __init__(self):
+
+        # read problem input
+        self.directory = os.path.join('inputs', 'case_instance_inputs.csv')  # os.getcwd(),
+        self.case_input_df = pd.read_csv(self.directory, index_col=0).dropna(axis=0, how='all').dropna(axis=1, how='all')
+
+
+
+
+def generate_grid(n, m, default_density=(1, 0), water=True, csv_filename=None):
     # n is dimension of square grid, m is number of areas of different types to generate
     # Create an empty grid
     grid = [[None] * n for _ in range(n)]
@@ -27,8 +37,6 @@ def generate_grid(n, m, default_density=(1, 0), water=True, block=True, csv_file
     if water:
         area_types.append({'housing_density': 0, 'vegetation_density': 'w'})
 
-    if block:
-        area_types.append({'housing_density': 0, 'vegetation_density': 'b'})
 
     # Create m rectangular areas
     for _ in range(m):
@@ -127,9 +135,8 @@ def generate_grid(n, m, default_density=(1, 0), water=True, block=True, csv_file
             node_id += 1
 
     # Write CSV file
-    directory = os.path.join('case_study_generator', csv_filename)
     if csv_filename:
-        with open(directory, 'w', newline='') as csvfile: # csv_filename
+        with open(csv_filename, 'w', newline='') as csvfile: # csv_filename
             writer = csv.writer(csvfile)
             writer.writerow([
                 'node_id', 'x_coordinate', 'y_coordinate', 'value_at_start',
@@ -140,7 +147,7 @@ def generate_grid(n, m, default_density=(1, 0), water=True, block=True, csv_file
 
     # Plot the grid
     plt.figure(figsize=(6, 6))
-    plt.show()
+    # plt.show()
     plt.imshow([[area['housing_density'] for area in row] for row in grid], cmap='RdYlBu_r', vmin=0, vmax=5)
     plt.colorbar(label='Housing Density')
     veg = [[None] * n for _ in range(n)]
@@ -152,8 +159,8 @@ def generate_grid(n, m, default_density=(1, 0), water=True, block=True, csv_file
             plt.annotate(veg[i][j], xy=(j, i), ha='center', va='center')
 
     plt.title('Density Grid')
-    plt.show()
+    # plt.show()
+    plt.savefig(csv_filename.split('.', 1)[0]+'.png')
 
 
-# n is dimension of square grid, m is number of areas of different types to generate
-generate_grid(7, 20, default_density=(1, 1), water = True, block = True, csv_filename='WUI_scenario.csv')
+

@@ -1,0 +1,9 @@
+- add home base (we can set that node 1 is always base)
+- reverse y axis
+- check random rate assignments -- > there was a case when fire degradation rate is assigned as 0 --> dont allow 0
+- generate distance_df (euclidean distances between nodes)
+- change the range of region valeus (0-1 is too small may cause rounding errors)
+- fire spread rates : https://www.iawfonline.org/article/evaluating-the-10-wind-speed-rule-of-thumb-for-estimating-a-wildfires-forward-spread-rate/
+	acording to 88 wildfire runs, The rates of fire spread and corresponding wind speeds ranged from 0.8-8.0 km/h (0.5-5.0 mi/h) and 30- 100 km/h (19-62 mi/h), respectively.
+	we can use this as a reference and use 0.8-8.0 km/h to generate our fire degradation rates.
+	we can use a reasonable range for fire amelioration (cool-down rate) according to fire degradation rates.
