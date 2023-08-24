@@ -2,8 +2,8 @@ import gurobipy as gp
 import pandas as pd
 import os
 from ast import literal_eval
-
-
+from sklearn.metrics.pairwise import euclidean_distances
+import numpy as np
 class NodeSetup:
     def __init__(self, attributes_given):  # attributes=values
         self.attributes = attributes_given
@@ -62,9 +62,8 @@ class InputsSetup:
         self.problem_data_df["neighborhood_list"] = fix_df["neighborhood_list"].apply(literal_eval)  # make string lists of csv to python lists
         #self.problem_data_df["neighborhood_list"] = [eval(str(i)) for i in fix_df["neighborhood_list"]] # fix_df["neighborhood_list"].apply(eval)  # make string lists of csv to python lists
 
-        self.distance_df = user_inputs.distance_df.copy()
-        # self.distance_df = pd.read_excel(self.directory, sheet_name="distance_df", engine='openpyxl').dropna(axis=0, how='all').dropna(axis=1, how='all')
-        # self.distance_df["distance"] = round(self.distance_df["distance"], 2)
+        # self.distance_df = user_inputs.distance_df.copy()
+
 
         # problem parameters
         self.region_side_length = self.parameters_df.loc["region_side_length", "value"]
@@ -80,6 +79,8 @@ class InputsSetup:
         # self.water_node_id = self.problem_data_df.query("state == 5")["node_id"].item()
         self.water_node_id = self.problem_data_df.query("state == 5")["node_id"].tolist()
         # self.problem_data_df.query("state not in 5")["node_id"].tolist()
+
+        self.block_node_id = self.problem_data_df.query("state == 4")["node_id"].tolist()
 
         # define empty lists for classes, i.e. each element of the list will be an element of the corresponding class
         self.node_object_dict = {}  # dictionary of elements of IC attribute class
@@ -98,10 +99,47 @@ class InputsSetup:
         self.neighborhood_links = gp.tuplelist(list(self.neighborhood_links_df.itertuples(index=False, name=None)))
 
         self.set_of_active_fires_at_start = self.problem_data_df.query("`state`==1")["node_id"].tolist()
+
+        # create pairwise distance data frame
+        coordinate_array = self.problem_data_df[["x_coordinate", "y_coordinate"]].values
+        euclidean_distances_array = euclidean_distances(coordinate_array, coordinate_array)
+        self.distance_matrix = pd.DataFrame(
+            euclidean_distances_array,
+            columns=self.problem_data_df["node_id"],
+            index=self.problem_data_df["node_id"]
+        )
+        self.distance_matrix.index.name = 'from'
+        self.distance_df = self.distance_matrix.stack().reset_index()
+        self.distance_df .columns = ["from", "to", "distance"]
+
+        # eliminate non-existing connections
+        # 1 - no inner connections
+        index_drop = self.distance_df[(self.distance_df['from'] == self.distance_df['to'])].index
+        self.distance_df.drop(index_drop, inplace=True)
+
+        # 2 - no connections from base to water nodes (we assume that UAVs wait at base with full tank)
+        index_drop = self.distance_df[(self.distance_df['from'] == self.base_node_id) & (self.distance_df['to'].isin(self.water_node_id))].index
+        self.distance_df.drop(index_drop, inplace=True)
+
+        # 3 - no connections from water nodes to base (UAV returns directly to the base after its final shot without refilling)
+        index_drop = self.distance_df[(self.distance_df['from'].isin(self.water_node_id)) & (self.distance_df['to'] == self.base_node_id)].index
+        self.distance_df.drop(index_drop, inplace=True)
+
+        # 4 - no connections between water nodes
+        index_drop = self.distance_df[(self.distance_df['from'].isin(self.water_node_id)) & (self.distance_df['to'].isin(self.water_node_id))].index
+        self.distance_df.drop(index_drop, inplace=True)
+
+        # 5 - no connections from and to the blocking nodes
+        index_drop = self.distance_df[(self.distance_df['from'].isin(self.block_node_id)) | (self.distance_df['to'].isin(self.block_node_id))].index
+        self.distance_df.drop(index_drop, inplace=True)
+
+        # reset index
+        self.distance_df.reset_index(drop=True)
+
+
+        # start creating links
         flow_active_states = [0, 1, 5, 6]
-
         flow_active_nodes = self.problem_data_df.query("`state` in @flow_active_states")["node_id"]
-
         self.flow_active_distance_df = self.distance_df.query("`from` in @flow_active_nodes & `to`  in @flow_active_nodes").copy().reset_index(drop=True)
 
         # setup links and their distances
@@ -223,4 +261,4 @@ class UserInputsRead:
         self.directory = os.path.join('inputs', 'inputs_to_load.xlsx')  # os.getcwd(),
         self.parameters_df = pd.read_excel(self.directory, sheet_name="parameters", index_col=0, engine='openpyxl').dropna(axis=0, how='all').dropna(axis=1, how='all')
         self.problem_data_df = pd.read_excel(self.directory, sheet_name="inputs_df", engine='openpyxl').dropna(axis=0, how='all').dropna(axis=1, how='all')
-        self.distance_df = pd.read_excel(self.directory, sheet_name="distance_df", engine='openpyxl').dropna(axis=0, how='all').dropna(axis=1, how='all')
+        # self.distance_df = pd.read_excel(self.directory, sheet_name="distance_df", engine='openpyxl').dropna(axis=0, how='all').dropna(axis=1, how='all')

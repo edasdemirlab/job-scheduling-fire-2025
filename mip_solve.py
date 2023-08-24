@@ -410,13 +410,12 @@ def mathematical_model_solve(mip_inputs):
 
     model.ModelSense = -1  # set objective to maximization
     model.params.TimeLimit = 3600
-    model.params.MIPGap = 0.01
+    model.params.MIPGap = 0.02
     start_time = time.time()
     model.params.MIPFocus = 3
     model.params.Presolve = 2
     model.params.LogFile = "gurobi_log"
-
-    # model.params.MIPGap = 0.02
+    model.params.Heuristics = 0.2
     # model.params.Cuts = 3
     # model.params.Threads = 8
     # model.params.NoRelHeurTime = 5
