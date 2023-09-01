@@ -118,6 +118,20 @@ def mathematical_model_solve(mip_inputs):
         name="tv_j",
     )
 
+    #
+    lv_j = model.addVars(
+        mip_inputs.fire_ready_node_ids,
+        lb=0,
+        vtype=GRB.CONTINUOUS,
+        name="lv_j",
+    )
+
+    lv_h = model.addVar(
+        lb=0,
+        vtype=GRB.CONTINUOUS,
+        name="lv_h",
+    )
+
     p_j = model.addVars(
         mip_inputs.fire_ready_node_ids,
         lb=0,
@@ -209,28 +223,19 @@ def mathematical_model_solve(mip_inputs):
         model.addConstr(tv_h >= tv_j[j] +
                         mip_inputs.links_durations[(j, mip_inputs.base_node_id, 1)] * x_ijk.sum(j, mip_inputs.base_node_id, '*') -
                         mip_inputs.M_13[j] * (1 - x_ijk.sum(j, mip_inputs.base_node_id, '*')))
-        # model.addConstr(tv_h >= tv_j[j] +
-        #                 gp.quicksum(x_ijk[(j, mip_inputs.base_node_id, k)] * mip_inputs.links_durations[
-        #                     (j, mip_inputs.base_node_id, 1)] for k in mip_inputs.vehicle_list) -
-        #                 M_13[j] * (1 - x_ijk.sum(j, mip_inputs.base_node_id, '*')))
 
     # Constraint 14 - determines arrival times to the nodes
-
     for j in mip_inputs.fire_ready_node_ids:
         home_to_j_coef = {k: v for k, v in mip_inputs.links_durations.items() if
                           k[0] == mip_inputs.base_node_id and k[1] == j}
-        # model.addConstr(tv_j[j] <= x_ijk.prod(home_to_j_coef, mip_inputs.base_node_id, j, '*') + 99 * (
-        #         1 - x_ijk.sum(mip_inputs.base_node_id, j, '*')))
-        model.addConstr(tv_j[j] <= x_ijk.prod(home_to_j_coef, mip_inputs.base_node_id, j, '*') + mip_inputs.M_13[j] * (
+        model.addConstr(tv_j[j] <= lv_h + x_ijk.prod(home_to_j_coef, mip_inputs.base_node_id, j, '*') + mip_inputs.M_13[j] * (
                 1 - x_ijk.sum(mip_inputs.base_node_id, j, '*')))
 
     # Constraint 15 - determines arrival times to the nodes
     for j in mip_inputs.fire_ready_node_ids:
         home_to_j_coef = {k: v for k, v in mip_inputs.links_durations.items() if
                           k[0] == mip_inputs.base_node_id and k[1] == j}
-        # model.addConstr(tv_j[j] >= x_ijk.prod(home_to_j_coef, mip_inputs.base_node_id, j, '*') - 99 * (
-        #         1 - x_ijk.sum(mip_inputs.base_node_id, j, '*')))
-        model.addConstr(tv_j[j] >= x_ijk.prod(home_to_j_coef, mip_inputs.base_node_id, j, '*') - mip_inputs.M_13[j] * (
+        model.addConstr(tv_j[j] >= lv_h + x_ijk.prod(home_to_j_coef, mip_inputs.base_node_id, j, '*') - mip_inputs.M_13[j] * (
                 1 - x_ijk.sum(mip_inputs.base_node_id, j, '*')))
 
     # Constraint 16 - determines arrival times to the nodes
@@ -242,13 +247,8 @@ def mathematical_model_solve(mip_inputs):
             water_to_j_coef = {k: v for k, v in mip_inputs.links_durations.items() if
                                k[0] in mip_inputs.water_node_id and k[1] == j}
             model.addConstr(
-                tv_j[j] <= tv_j[i] + x_ijk.prod(i_to_water_coef, i, mip_inputs.water_node_id, '*') + x_ijk.prod(
+                tv_j[j] <= tv_j[i] + lv_j[i] + x_ijk.prod(i_to_water_coef, i, mip_inputs.water_node_id, '*') + x_ijk.prod(
                     water_to_j_coef, mip_inputs.water_node_id, j, '*') + mip_inputs.M_16[(i, j)] * (1 - x_ijk.sum(i, j, '*')))
-
-            # i_to_j_coef = {k: v for k, v in mip_inputs.links_durations.items() if
-            #                    k[0] == i and k[1]  == j}
-            # model.addConstr(
-            #     tv_j[j] <= tv_j[i] + x_ijk.prod(i_to_j_coef, i, j, '*') + mip_inputs.M_16[(i, j)] * (1 - x_ijk.sum(i, j, '*')))
 
     # Constraint 17 - determines arrival times to the nodes
     for i in mip_inputs.fire_ready_node_ids:
@@ -259,106 +259,104 @@ def mathematical_model_solve(mip_inputs):
             water_to_j_coef = {k: v for k, v in mip_inputs.links_durations.items() if
                                k[0] in mip_inputs.water_node_id and k[1] == j}
             model.addConstr(
-                tv_j[j] >= tv_j[i] + x_ijk.prod(i_to_water_coef, i, mip_inputs.water_node_id, '*') + x_ijk.prod(
+                tv_j[j] >= tv_j[i] + lv_j[i] + x_ijk.prod(i_to_water_coef, i, mip_inputs.water_node_id, '*') + x_ijk.prod(
                     water_to_j_coef, mip_inputs.water_node_id, j, '*') - mip_inputs.M_16[(i, j)] * (1 - x_ijk.sum(i, j, '*')))
 
-            # i_to_j_coef = {k: v for k, v in mip_inputs.links_durations.items() if
-            #                    k[0] == i and k[1] == j}
-            # model.addConstr(
-            #     tv_j[j] >= tv_j[i] + x_ijk.prod(i_to_j_coef, i, j, '*') - mip_inputs.M_16[(i, j)] * (1 - x_ijk.sum(i, j, '*')))
-
-
-    # Constraint 18 - determines arrival times to the nodes
+    # Constraint 18 - no arrival time at unvisited nodes
     for j in mip_inputs.fire_ready_node_ids:
         model.addConstr(tv_j[j] <= mip_inputs.M_13[j] * x_ijk.sum(mip_inputs.fire_ready_node_ids_and_base, j, '*'))
 
-    # Constraint 19 - vehicle arrival has to be after fire arrival (start)
+    # Constraint 19 - no loitering at unvisited nodes
+    for j in mip_inputs.fire_ready_node_ids:
+        model.addConstr(lv_j[j] <= mip_inputs.M_13[j] * x_ijk.sum(mip_inputs.fire_ready_node_ids_and_base, j, '*'))
+
+    # Constraint 20 - vehicle arrival has to be after fire arrival (start)
     for j in mip_inputs.fire_ready_node_ids:
         model.addConstr(tv_j[j] - ts_j[j] >= mip_inputs.M_19 * (x_ijk.sum(mip_inputs.fire_ready_node_ids_and_base, j, '*') - 1))
 
-    # Constraint 20 - vehicle can not arrive after the fire finished
+    # Constraint 21 - vehicle can not arrive after the fire finished
     for j in mip_inputs.fire_ready_node_ids:
         model.addConstr(tv_j[j] <= te_j[j])
 
 
     # equations linking fire arrivals and scheduling decisions
-    # Constraint 21 - fire spread case 1: t_v =0 --> fire spreads
+    # Constraint 22 - fire spread case 1: t_v =0 --> fire spreads
     for i in mip_inputs.fire_ready_node_ids:
         model.addConstr(mip_inputs.M_21[i] * tv_j[i] >= (1-s1_i[i]))
 
-    # Constraint 22 - fire spread case that allows case 2 and 3: t_v > 0
+    # Constraint 23 - fire spread case that allows case 2 and 3: t_v > 0
     for i in mip_inputs.fire_ready_node_ids:
         model.addConstr(tv_j[i] <=  mip_inputs.M_22[i] * s4_i[i])
 
-    # Constraint 23 - fire spread case  2: t_v > 0 and t_v >= t_m --> fire spreads
+    # Constraint 24 - fire spread case  2: t_v > 0 and t_v >= t_m --> fire spreads
     for i in mip_inputs.fire_ready_node_ids:
         model.addConstr(tv_j[i] - tm_j[i] + (10 ** -6) <= mip_inputs.M_23[i] * s2_i[i])
 
-    # Constraint 24 - fire spread case  3: t_v > 0 and t_v < t_m --> fire does not spread
+    # Constraint 25 - fire spread case  3: t_v > 0 and t_v < t_m --> fire does not spread
     for i in mip_inputs.fire_ready_node_ids:
         model.addConstr(tm_j[i] - tv_j[i] <= mip_inputs.M_24 * (s1_i[i] + s3_i[i]))
 
-    # Constraint 25 - fire spread cases: only one of case 1, i.e. t_v=0, and case 2, i.e. t_v>0, can occur
+    # Constraint 26 - fire spread cases: only one of case 1, i.e. t_v=0, and case 2, i.e. t_v>0, can occur
     for i in mip_inputs.fire_ready_node_ids:
         model.addConstr(s1_i[i] + s4_i[i] == 1)
 
-    # Constraint 26 - fire spread cases: only one of case 3, i.e. t_v>=t_m, and case 4, i.e. t_v<t_m, can occur
+    # Constraint 27 - fire spread cases: only one of case 3, i.e. t_v>=t_m, and case 4, i.e. t_v<t_m, can occur
     for i in mip_inputs.fire_ready_node_ids:
         model.addConstr(s4_i[i] >= s2_i[i] + s3_i[i])
 
-    # Constraint 27 - fire spread cases: if there is no fire in node i, it cannot spread to the adjacent nodes
+    # Constraint 28 - fire spread cases: if there is no fire in node i, it cannot spread to the adjacent nodes
     for i in mip_inputs.fire_ready_node_ids:
         i_neighborhood = [l for l in mip_inputs.neighborhood_links if l[0] == i]
         i_neighborhood_size = len(i_neighborhood)
         model.addConstr(z_ij.sum(i, '*') <= i_neighborhood_size * y_j[i])
 
-    # Constraint 28 - fire spread cases:  there is fire in node i, but no vehicle process it, i.e. t_v=0
+    # Constraint 29 - fire spread cases:  there is fire in node i, but no vehicle process it, i.e. t_v=0
     for i in mip_inputs.fire_ready_node_ids:
         i_neighborhood = [l for l in mip_inputs.neighborhood_links if l[0] == i]
         i_neighborhood_size = len(i_neighborhood)
         model.addConstr(z_ij.sum(i, '*') >= i_neighborhood_size * (s1_i[i] + y_j[i] - 1))
 
-    # Constraint 29 - fire spread cases:  there is fire in node i, a vehicle process it after it max point, i.e. t_v>=t_m --> it must spread to the adjacent cells
+    # Constraint 30 - fire spread cases:  there is fire in node i, a vehicle process it after it max point, i.e. t_v>=t_m --> it must spread to the adjacent cells
     for i in mip_inputs.fire_ready_node_ids:
         i_neighborhood = [l for l in mip_inputs.neighborhood_links if l[0] == i]
         i_neighborhood_size = len(i_neighborhood)
         model.addConstr(z_ij.sum(i, '*') >= i_neighborhood_size * s2_i[i])
 
-    # Constraint 30 - fire spread cases:  there is fire in node i, a vehicle process it after it before max point, i.e. t_v<t_m --> it cant spread to the adjacent cells
+    # Constraint 31 - fire spread cases:  there is fire in node i, a vehicle process it after it before max point, i.e. t_v<t_m --> it cant spread to the adjacent cells
     for i in mip_inputs.fire_ready_node_ids:
         i_neighborhood = [l for l in mip_inputs.neighborhood_links if l[0] == i]
         i_neighborhood_size = len(i_neighborhood)
         model.addConstr(z_ij.sum(i, '*') <= i_neighborhood_size * (1-s3_i[i]))
 
-    # Constraint 31 - if a fire spreads to an adjacent node, a fire must arrive to the adjacent node.
+    # Constraint 32 - if a fire spreads to an adjacent node, a fire must arrive to the adjacent node.
     for j in mip_inputs.fire_ready_node_ids:
         j_neighborhood_size = len([l for l in mip_inputs.neighborhood_links if l[1] == j])
         model.addConstr(j_neighborhood_size * y_j[j] >= z_ij.sum('*', j))
 
-    # Constraint 32 - a node is visited only if it has a fire, i.e. if a node is visited, then it must have fire
+    # Constraint 33 - a node is visited only if it has a fire, i.e. if a node is visited, then it must have fire
     for j in mip_inputs.fire_ready_node_ids:
         model.addConstr(y_j[j] >= x_ijk.sum(mip_inputs.fire_ready_node_ids_and_base, j, '*'))  # x_ijk.sum(mip_inputs.node_list, j, '*'))
 
-    # Constraint 33 - active fires at start
+    # Constraint 34 - active fires at start
     model.addConstr(gp.quicksum(y_j[j] for j in mip_inputs.set_of_active_fires_at_start) == len(
         mip_inputs.set_of_active_fires_at_start))
 
-    # Constraint 34 - determine fire spread
+    # Constraint 35 - determine fire spread
     for j in mip_inputs.fire_ready_node_ids:
         j_neighborhood_size = len([l for l in mip_inputs.neighborhood_links if l[1] == j])
         model.addConstr(j_neighborhood_size * q_ij.sum('*', j) >= z_ij.sum('*', j))
 
-    # Constraint 35 - determine fire spread
+    # Constraint 36 - determine fire spread
     for j in mip_inputs.fire_ready_node_ids:
         model.addConstr(q_ij.sum('*', j) <= 1)
 
-    # Constraint 36 - determine fire spread
+    # Constraint 37 - determine fire spread
     for j in mip_inputs.fire_ready_node_ids:
         temp_neighborhood_list = [x for x in mip_inputs.node_object_dict[j].get_neighborhood_list() if x not in mip_inputs.fire_proof_node_list]
         for i in temp_neighborhood_list:  #for i in mip_inputs.node_object_dict[j].get_neighborhood_list():
             model.addConstr(q_ij.sum(i, j) <= z_ij.sum(i, j))
 
-    # Constraint 37 - determine fire arrival (spread) time
+    # Constraint 38 - determine fire arrival (spread) time
     for ln in mip_inputs.neighborhood_links:
         model.addConstr(ts_j[ln[1]] <= tm_j[ln[0]] + mip_inputs.M_37 * (1 - z_ij[ln]))
         # if n[1] in mip_inputs.set_of_active_fires_at_start:
@@ -366,7 +364,7 @@ def mathematical_model_solve(mip_inputs):
         # else:
         #     model.addConstr(ts_j[n[1]] <= tm_j[n[0]] + M_37 * (1 - z_ij[n]))
 
-    # Constraint 38 - determine fire arrival (spread) time
+    # Constraint 39 - determine fire arrival (spread) time
     for ln in mip_inputs.neighborhood_links:
         if ln[1] in mip_inputs.set_of_active_fires_at_start:
             model.addConstr(ts_j[ln[1]] >= tm_j[ln[0]] - mip_inputs.M_37 * (2 - z_ij[ln] - q_ij[ln]) - mip_inputs.M_37)
@@ -377,18 +375,18 @@ def mathematical_model_solve(mip_inputs):
         # else:
         #     model.addConstr(ts_j[n[1]] >= tm_j[n[0]] - M_37 * (1 - z_ij[n]) - M_31 * (1 - q_ij[n]))
 
-    # Constraint 39 - determine fire arrival (spread) time
+    # Constraint 40 - determine fire arrival (spread) time
     for j in mip_inputs.fire_ready_node_ids:
         model.addConstr(ts_j[j] <= mip_inputs.M_37 * z_ij.sum('*', j))
 
-    # Constraint 40 - start time of active fires
+    # Constraint 41 - start time of active fires
     model.addConstr(gp.quicksum(ts_j[j] for j in mip_inputs.set_of_active_fires_at_start) == 0)
 
-    # Constraint 41 - determine fire spread time (the time at which the fire reaches its maximum size)
+    # Constraint 42 - determine fire spread time (the time at which the fire reaches its maximum size)
     for j in mip_inputs.fire_ready_node_ids:
         model.addConstr(tm_j[j] == ts_j[j] + (mip_inputs.node_area / mip_inputs.node_object_dict[j].get_fire_degradation_rate()))
 
-    # Constraint 42 - fire end time when it is not processed and burned down by itself
+    # Constraint 43 - fire end time when it is not processed and burned down by itself
     for j in mip_inputs.fire_ready_node_ids:
         model.addConstr(te_j[j] == tm_j[j] + (mip_inputs.node_area / mip_inputs.node_object_dict[j].get_fire_amelioration_rate()))
 
@@ -409,13 +407,13 @@ def mathematical_model_solve(mip_inputs):
 
 
     model.ModelSense = -1  # set objective to maximization
-    model.params.TimeLimit = 3600
-    model.params.MIPGap = 0.02
+    model.params.TimeLimit = 1200
+    model.params.MIPGap = 0.01
     start_time = time.time()
-    model.params.MIPFocus = 3
-    model.params.Presolve = 2
-    model.params.LogFile = "gurobi_log"
-    model.params.Heuristics = 0.2
+    # model.params.MIPFocus = 3
+    # model.params.Presolve = 2
+    # model.params.LogFile = "gurobi_log"
+    # model.params.Heuristics = 0.2
     # model.params.Cuts = 3
     # model.params.Threads = 8
     # model.params.NoRelHeurTime = 5
@@ -474,6 +472,10 @@ def mathematical_model_solve(mip_inputs):
         tv_j_results_df = model_organize_results(tv_j.values(), tv_j_results_df)
         tv_j_results_df.loc[len(tv_j_results_df.index)] = [tv_h.varName, mip_inputs.base_node_id, tv_h.X]
 
+        tl_j_results_df = pd.DataFrame(columns=['var_name', 'node_id', 'value'])
+        tl_j_results_df = model_organize_results(lv_j.values(), tl_j_results_df)
+        tl_j_results_df.loc[len(tl_j_results_df.index)] = [lv_h.varName, mip_inputs.base_node_id, lv_h.X]
+
         p_j_results_df = pd.DataFrame(columns=['var_name', 'node_id', 'value'])
         p_j_results_df = model_organize_results(p_j.values(), p_j_results_df)
 
@@ -513,9 +515,11 @@ def mathematical_model_solve(mip_inputs):
             tm_j_results_df.to_excel(writer, sheet_name='tm_j_results')
             te_j_results_df.to_excel(writer, sheet_name='te_j_results')
             tv_j_results_df.to_excel(writer, sheet_name='tv_j_results')
+            tl_j_results_df.to_excel(writer, sheet_name='tl_j_results')
             p_j_results_df.to_excel(writer, sheet_name='p_j_results')
             s_ijkw_results_df.to_excel(writer, sheet_name='s_ijkw_results')
             mip_inputs.problem_data_df.to_excel(writer, sheet_name='inputs_problem_data')
+            mip_inputs.distance_df["flight_time"] = mip_inputs.distance_df["distance"] / mip_inputs.vehicle_flight_speed
             mip_inputs.distance_df.to_excel(writer, sheet_name='inputs_distances')
             mip_inputs.parameters_df.to_excel(writer, sheet_name='inputs_parameters')
             writer.close()

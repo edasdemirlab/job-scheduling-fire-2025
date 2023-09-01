@@ -2,3 +2,5 @@
 .Rhistory
 .RData
 .Ruserdata
+outputs
+inputs/local_inputs
