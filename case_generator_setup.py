@@ -48,7 +48,7 @@ def get_rgb_deg(number):
 
 
 def generate_grid(user_inputs, default_density=(1, 0)):
-
+    x=4
     init_fire = int(user_inputs.parameters_df.loc["number_of_initial_fires", "value"])
     n = int(user_inputs.parameters_df.loc["number_of_grids_at_a_side", "value"])
     m = int(user_inputs.parameters_df.loc["number_of_areas_of_different_types", "value"])
