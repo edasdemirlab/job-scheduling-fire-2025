@@ -47,13 +47,16 @@ def get_rgb_deg(number):
     return (red_value, 25, 25)
 
 
-def generate_grid(user_inputs, default_density=(1, 0)):
+def generate_grid(user_inputs):
     x=4
     init_fire = int(user_inputs.parameters_df.loc["number_of_initial_fires", "value"])
     n = int(user_inputs.parameters_df.loc["number_of_grids_at_a_side", "value"])
     m = int(user_inputs.parameters_df.loc["number_of_areas_of_different_types", "value"])
     include_water = int(user_inputs.parameters_df.loc["include_water", "value"])
     include_block = int(user_inputs.parameters_df.loc["include_block", "value"])
+    default_housing_density = int(user_inputs.parameters_df.loc["default_housing_density", "value"])
+    default_vegetation_density = int(user_inputs.parameters_df.loc["default_vegetation_density", "value"])
+    default_density = (default_housing_density, default_vegetation_density)
     if include_water == 1:
         water = True
     else:

@@ -59,7 +59,7 @@ elif experiment_mode == "combination_run":
 
 elif experiment_mode == "instance_generation":
     user_inputs.case_output_file_name = os.path.join('outputs', "wui_scenario_{0}.csv".format(str(datetime.now().strftime('%Y_%m_%d_%H_%M_%S'))))
-    generator.generate_grid(user_inputs, default_density=(1, 1))
+    generator.generate_grid(user_inputs)
 
 
 #esther -->
