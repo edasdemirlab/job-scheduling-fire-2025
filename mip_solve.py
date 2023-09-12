@@ -216,7 +216,8 @@ def mathematical_model_solve(mip_inputs):
             model.addConstr(x_ijk.sum(mip_inputs.fire_ready_node_ids, j, k) == x_ijk.sum(mip_inputs.water_node_id, j, k))
 
     # Constraint 12 - time limitation
-    model.addConstr(tv_h <= mip_inputs.time_limit)
+    constraint_final_time = model.addConstr(tv_h <= mip_inputs.time_limit)
+    constraint_final_time.Lazy = 1
 
     # Constraint 13 - determines return time to the base, considering the time of vehicle with maximum return time
     for j in mip_inputs.fire_ready_node_ids:
@@ -408,13 +409,13 @@ def mathematical_model_solve(mip_inputs):
 
     model.ModelSense = -1  # set objective to maximization
     model.params.TimeLimit = 1200
-    model.params.MIPGap = 0.01
+    model.params.MIPGap = 0.03
     start_time = time.time()
-    # model.params.MIPFocus = 3
+    model.params.MIPFocus = 2
     # model.params.Presolve = 2
     # model.params.LogFile = "gurobi_log"
     # model.params.Heuristics = 0.2
-    # model.params.Cuts = 3
+    model.params.Cuts = 2
     # model.params.Threads = 8
     # model.params.NoRelHeurTime = 5
 

@@ -48,7 +48,6 @@ def get_rgb_deg(number):
 
 
 def generate_grid(user_inputs):
-    x=4
     init_fire = int(user_inputs.parameters_df.loc["number_of_initial_fires", "value"])
     n = int(user_inputs.parameters_df.loc["number_of_grids_at_a_side", "value"])
     m = int(user_inputs.parameters_df.loc["number_of_areas_of_different_types", "value"])
@@ -159,7 +158,7 @@ def generate_grid(user_inputs):
                 fire_degradation_rate = 0
                 fire_amelioration_rate = 0
             else:
-                fire_degradation_rate = generate_fire_degradation_rate(veg, fire_degradation_rates)  # value b/w 0.8 and 8
+                fire_degradation_rate = generate_fire_degradation_rate(veg, fire_degradation_rates)
                 fire_amelioration_rate = round(random.uniform(fire_degradation_rate - 0.5, fire_degradation_rate + 0.5),
                                                2) / 2  # value b/w 0.4 and 4
                 if fire_amelioration_rate > fire_degradation_rate_max/2:
