@@ -408,16 +408,21 @@ def mathematical_model_solve(mip_inputs):
 
 
     model.ModelSense = -1  # set objective to maximization
-    model.params.TimeLimit = 1200
-    model.params.MIPGap = 0.03
-    start_time = time.time()
+    # model.params.TimeLimit = 1200
+    model.params.MIPGap = 0.01
     model.params.MIPFocus = 2
-    # model.params.Presolve = 2
+    # model.params.CliqueCuts = 2
+    model.params.Cuts = 2
+    model.params.Presolve = 2
+    # model.params.BranchDir = 1
+    # model.params.Heuristics = 0.1
+    # model.params.ImproveStartGap = 0.1
+    model.params.NoRelHeurTime = 5
+
     # model.params.LogFile = "gurobi_log"
     # model.params.Heuristics = 0.2
-    model.params.Cuts = 2
     # model.params.Threads = 8
-    # model.params.NoRelHeurTime = 5
+
 
     # model.update()
     # model.write("model_hand2.lp")
@@ -426,6 +431,7 @@ def mathematical_model_solve(mip_inputs):
     # 0.455*0.355
     model.update()
     model.printStats()
+    start_time = time.time()
     model.optimize()
     end_time = time.time()
     run_time_cpu = round(end_time - start_time, 2)
