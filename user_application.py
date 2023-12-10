@@ -2,8 +2,8 @@
 # first successful run !!! March 28, 2023 - 3:35 pm
 # successful run after all bugs are fixed !! March 29, 2023 - 17:00
 # combinations mode is added June 15, 2023 - 17:00
-
-
+x=2
+x
 # import required packages
 import numpy as np
 import pandas as pd
@@ -43,6 +43,7 @@ if experiment_mode == "single_run":
 elif experiment_mode == "combination_run":
     fire_prone_node_list = user_inputs.problem_data_df.query("state == 0")["node_id"].tolist()
     list_combinations = list()
+
     for n in range(len(fire_prone_node_list) + 1):
         combn_list = list(combinations(fire_prone_node_list, n))
         if user_inputs.parameters_df.loc["n_nodes", "value"] <= 12:
