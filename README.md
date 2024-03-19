@@ -65,7 +65,7 @@ There are three modes: `instance_generation`, `single_run`, `combination_run`.
 This mode is used to create new instances based on the California wildfires case study described in the paper. The following parameters are required:
 - `number_of_initial_fires`: How many nodes have fire at the start.
 - `number_of_grids_at_a_side`: Defines the region size (e.g., 7 for a 7x7 region).
-- `number_of_areas_of_different_types`, `include_water`, `include_block`, `default_housing_density`, `default_vegetation_density`, `fire_degradation_rate_min`, `fire_degradation_rate_max`, `region_value_min`, `region_value_max`: Refer to the paper for detailed descriptions and values.
+- `number_of_areas_of_different_types`, `number_of_water_bodies`, `number_of_blocks`, `default_housing_density`, `default_vegetation_density`, `fire_degradation_rate_min`, `fire_degradation_rate_max`, `region_value_min`, `region_value_max`: Refer to the paper for detailed descriptions and values.
 
 **single_run**:
 This mode runs the model for the inputs defined in `inputs_df`. Additional parameters required in the `parameters` sheet include `n_nodes`, `region_side_length`, `node_area`, `n_vehicles`, `vehicle_flight_speed`, `time_limit`.
