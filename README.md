@@ -1,7 +1,7 @@
 # Scheduling and Routing with Degradation-Triggered Job Arrivals: An Application to Aerial Forest Firefighting with a UAV Fleet
 
 Authors:
-- Erdi Dasdemir (1) (Hacettepe University,
+- Erdi Dasdemir (1)
 - Esther Jose (2)
 - Rajan Batta (2)
 
