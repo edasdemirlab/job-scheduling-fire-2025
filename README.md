@@ -6,9 +6,10 @@ Authors:
 - Rajan Batta (2)
 
 (1) Department of Industrial Engineering, Hacettepe University, 06800 Ankara, Turkey
+
 (2) Department of Industrial and Systems Engineering, University at Buffalo (SUNY), Buffalo, NY 14260
 
-Reach out to Erdi Dasdemir (edasdemir@hacettepe.edu.tr) for your further questions.
+Reach out to Erdi Dasdemir (edasdemir@hacettepe.edu.tr) or Esther Jose (estherjo@buffalo.edu) for your further questions.
 
 ## Installation
 
