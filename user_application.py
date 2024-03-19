@@ -2,8 +2,8 @@
 # first successful run !!! March 28, 2023 - 3:35 pm
 # successful run after all bugs are fixed !! March 29, 2023 - 17:00
 # combinations mode is added June 15, 2023 - 17:00
-x=2
-x
+
+
 # import required packages
 import numpy as np
 import pandas as pd
