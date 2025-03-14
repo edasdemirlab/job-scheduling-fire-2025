@@ -56,6 +56,20 @@ class InputsSetup:
             self.problem_data_df.loc[[x - 1 for x in list(list_of_active_fires)], "state"] = 1
             self.run_start_date = user_inputs.run_start_date
 
+        if self.experiment_mode == "combination_run_from_file":
+            self.run_start_date = user_inputs.run_start_date
+
+
+
+        if self.experiment_mode in ["cluster_first", "cluster_first_combination_run", "cluster_first_lean",]:
+            self.clustering_cost_function = self.parameters_df.loc["clustering_cost_function", "value"]
+            self.clustering_neighborhood_level = self.parameters_df.loc["clustering_neighborhood_level", "value"]
+
+        if self.experiment_mode in ["cluster_first_combination_run", "single_run_hybrid_combination_run"]:
+            self.run_start_date = user_inputs.run_start_date
+            self.exact_run_time = user_inputs.exact_run_time
+
+
 
 
         fix_df = self.problem_data_df.copy()
@@ -205,7 +219,8 @@ class InputsSetup:
                 self.M_16[(i, j)] = (t_max - d_i_h + max_d_i_w + max_d_w_j) + self.big_m_augmentation_for_rounding_errors
                 # self.M_16[(i, j)] = 999
 
-        self.M_19 = 6 * 30 * 24
+        # self.M_19 = 6 * 30 * 24
+        self.M_19 = 1 * 1 * 24
 
         self.M_21 = dict()
         for i in self.fire_ready_node_ids:
@@ -233,14 +248,16 @@ class InputsSetup:
         #     # M_24[j] = len([l for l in mip_inputs.neighborhood_links if l[1] == j])\
         #     M_24[j] = 999
 
-        self.M_24 = 6 * 30 * 24
+        # self.M_24 = 6 * 30 * 24
+        self.M_24 = 1 * 1 * 24
 
         # M_26 = dict()
         # for j in mip_inputs.fire_ready_node_ids:
         #     M_26[j] = len([l for l in mip_inputs.neighborhood_links if l[1] == j])
         #     # M_26[j] = 999
 
-        self.M_37 = 6 * 30 * 24
+        # self.M_37 = 6 * 30 * 24
+        self.M_37 = 1 * 1 * 24
 
 
 # def list_combinations():

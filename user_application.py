@@ -39,6 +39,63 @@ if experiment_mode == "single_run":
     mip_inputs = mip_setup.InputsSetup(user_inputs)
     mip_solve.mathematical_model_solve(mip_inputs)
 
+elif experiment_mode == "single_run_lean":
+    mip_inputs = mip_setup.InputsSetup(user_inputs)
+    mip_solve.mathematical_model_solve_lean(mip_inputs)
+
+elif experiment_mode == "single_run_strengthen":
+    mip_inputs = mip_setup.InputsSetup(user_inputs)
+    mip_solve.mathematical_model_solve_strengthen(mip_inputs)
+
+elif experiment_mode == "single_run_hybrid":
+    mip_inputs = mip_setup.InputsSetup(user_inputs)
+    mip_inputs.start_sol, mip_inputs.run_time_original_mip = mip_solve.mathematical_model_solve(mip_inputs)
+    mip_solve.mathematical_model_solve_strengthen(mip_inputs)
+
+
+
+elif experiment_mode == "cluster_first":
+    mip_inputs = mip_setup.InputsSetup(user_inputs)
+    mip_inputs = mip_solve.clustering_model_solve(mip_inputs)
+    mip_solve.mathematical_model_solve(mip_inputs)
+
+elif experiment_mode == "cluster_first_lean":
+    mip_inputs = mip_setup.InputsSetup(user_inputs)
+    mip_inputs = mip_solve.clustering_model_solve(mip_inputs)
+    mip_solve.mathematical_model_solve_lean(mip_inputs)
+
+
+
+elif experiment_mode in ["single_run_hybrid_combination_run", "cluster_first_combination_run"]:
+    user_inputs.run_start_date = str(datetime.now().strftime('%Y_%m_%d_%H_%M'))
+    combination_results_file_name = user_inputs.parameters_df.loc["combination_results_file_name", "value"]
+    combination_results_df = pd.read_csv(os.path.join('inputs', combination_results_file_name), index_col=0)
+    # Loop through each row in combination_results_df
+    user_inputs.problem_data_df_original = user_inputs.problem_data_df.copy()
+    for _, row in combination_results_df.iterrows():
+        user_inputs.problem_data_df = user_inputs.problem_data_df_original.copy()
+        # Read initial_fire_node_IDs and convert to a list of integers
+        fire_node_ids = str(row["initial_fire_node_IDs"]).split(",")
+        fire_node_ids = [int(node.strip()) for node in fire_node_ids]  # Ensure clean integer conversion
+
+        # Find matching rows in user_inputs.problem_data_df and update the 'state' column
+        user_inputs.problem_data_df.loc[user_inputs.problem_data_df["node_id"].isin(fire_node_ids), "state"] = 1
+
+        # Find gurobi_time of the corresponding run
+        user_inputs.exact_run_time = row["gurobi_time"]
+
+        if experiment_mode == "cluster_first_combination_run":
+            # Run the necessary functions
+            mip_inputs = mip_setup.InputsSetup(user_inputs)
+            mip_inputs = mip_solve.clustering_model_solve(mip_inputs)
+            mip_solve.mathematical_model_solve(mip_inputs)
+        else:
+            mip_inputs = mip_setup.InputsSetup(user_inputs)
+            mip_inputs.start_sol, mip_inputs.run_time_original_mip = mip_solve.mathematical_model_solve(mip_inputs)
+            mip_solve.mathematical_model_solve_strengthen(mip_inputs)
+
+
+
 # run optimization in combination_mode
 elif experiment_mode == "combination_run":
     fire_prone_node_list = user_inputs.problem_data_df.query("state == 0")["node_id"].tolist()
@@ -58,10 +115,34 @@ elif experiment_mode == "combination_run":
         mip_inputs = mip_setup.InputsSetup(user_inputs, i)
         run_result = mip_solve.mathematical_model_solve(mip_inputs)
 
+elif experiment_mode == "combination_run_from_file":
+    user_inputs.run_start_date = str(datetime.now().strftime('%Y_%m_%d_%H_%M'))
+    combination_results_file_name = user_inputs.parameters_df.loc["combination_results_file_name", "value"]
+    combination_results_df = pd.read_csv(os.path.join('inputs', combination_results_file_name), index_col=0)
+    # Loop through each row in combination_results_df
+    user_inputs.problem_data_df_original = user_inputs.problem_data_df.copy()
+    user_inputs.run_start_date = str(datetime.now().strftime('%Y_%m_%d_%H_%M'))
+
+    for _, row in combination_results_df.iterrows():
+        user_inputs.problem_data_df = user_inputs.problem_data_df_original.copy()
+        # Read initial_fire_node_IDs and convert to a list of integers
+        fire_node_ids = str(row["initial_fire_node_IDs"]).split(",")
+        fire_node_ids = [int(node.strip()) for node in fire_node_ids]  # Ensure clean integer conversion
+
+        # Find matching rows in user_inputs.problem_data_df and update the 'state' column
+        user_inputs.problem_data_df.loc[user_inputs.problem_data_df["node_id"].isin(fire_node_ids), "state"] = 1
+
+        # Run the necessary functions
+        mip_inputs = mip_setup.InputsSetup(user_inputs)
+        mip_solve.mathematical_model_solve(mip_inputs)
+
+
+
 elif experiment_mode == "instance_generation":
     user_inputs.case_output_file_name = os.path.join('outputs', "wui_scenario_{0}.csv".format(str(datetime.now().strftime('%Y_%m_%d_%H_%M_%S'))))
     generator.generate_grid(user_inputs)
     print("The inputs of the new instance are successfully generated! see outputs folder.")
+
 
 
 #esther -->

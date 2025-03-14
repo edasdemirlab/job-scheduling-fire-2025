@@ -1,0 +1,39 @@
+\ Model firefighting_copy
+\ LP format - for model browsing. Use MPS format to capture full model detail.
+Maximize
+ 
+Subject To
+ R1: x_ijk[8,9,2] = 1
+ R2: x_ijk[9,10,1] = 1
+ R57: x_ijk[1,9,1] + x_ijk[2,9,1] + x_ijk[4,9,1] + x_ijk[6,9,1]
+   + x_ijk[7,9,1] + x_ijk[8,9,1] - x_ijk[9,1,1] - x_ijk[9,2,1]
+   - x_ijk[9,4,1] - x_ijk[9,6,1] - x_ijk[9,7,1] - x_ijk[9,8,1]
+   - x_ijk[9,10,1] - x_ijk[9,12,1] - x_ijk[9,14,1] - x_ijk[9,15,1]
+   - x_ijk[9,16,1] - x_ijk[9,17,1] - x_ijk[9,18,1] - x_ijk[9,19,1]
+   - x_ijk[9,22,1] - x_ijk[9,24,1] - x_ijk[9,25,1] + x_ijk[10,9,1]
+   + x_ijk[12,9,1] + x_ijk[14,9,1] + x_ijk[15,9,1] + x_ijk[16,9,1]
+   + x_ijk[17,9,1] + x_ijk[18,9,1] + x_ijk[19,9,1] + x_ijk[22,9,1]
+   + x_ijk[24,9,1] + x_ijk[25,9,1] = 0
+ R86: x_ijk[1,9,1] + x_ijk[1,9,2] + x_ijk[2,9,1] + x_ijk[2,9,2]
+   + x_ijk[4,9,1] + x_ijk[4,9,2] + x_ijk[6,9,1] + x_ijk[6,9,2]
+   + x_ijk[7,9,1] + x_ijk[7,9,2] + x_ijk[8,9,1] + x_ijk[8,9,2]
+   + x_ijk[10,9,1] + x_ijk[10,9,2] + x_ijk[12,9,1] + x_ijk[12,9,2]
+   + x_ijk[14,9,1] + x_ijk[14,9,2] + x_ijk[15,9,1] + x_ijk[15,9,2]
+   + x_ijk[16,9,1] + x_ijk[16,9,2] + x_ijk[17,9,1] + x_ijk[17,9,2]
+   + x_ijk[18,9,1] + x_ijk[18,9,2] + x_ijk[19,9,1] + x_ijk[19,9,2]
+   + x_ijk[22,9,1] + x_ijk[22,9,2] + x_ijk[24,9,1] + x_ijk[24,9,2]
+   + x_ijk[25,9,1] + x_ijk[25,9,2] <= 1
+Bounds
+Binaries
+ x_ijk[1,9,1] x_ijk[1,9,2] x_ijk[2,9,1] x_ijk[2,9,2] x_ijk[4,9,1]
+ x_ijk[4,9,2] x_ijk[6,9,1] x_ijk[6,9,2] x_ijk[7,9,1] x_ijk[7,9,2]
+ x_ijk[8,9,1] x_ijk[8,9,2] x_ijk[9,1,1] x_ijk[9,2,1] x_ijk[9,4,1]
+ x_ijk[9,6,1] x_ijk[9,7,1] x_ijk[9,8,1] x_ijk[9,10,1] x_ijk[9,12,1]
+ x_ijk[9,14,1] x_ijk[9,15,1] x_ijk[9,16,1] x_ijk[9,17,1] x_ijk[9,18,1]
+ x_ijk[9,19,1] x_ijk[9,22,1] x_ijk[9,24,1] x_ijk[9,25,1] x_ijk[10,9,1]
+ x_ijk[10,9,2] x_ijk[12,9,1] x_ijk[12,9,2] x_ijk[14,9,1] x_ijk[14,9,2]
+ x_ijk[15,9,1] x_ijk[15,9,2] x_ijk[16,9,1] x_ijk[16,9,2] x_ijk[17,9,1]
+ x_ijk[17,9,2] x_ijk[18,9,1] x_ijk[18,9,2] x_ijk[19,9,1] x_ijk[19,9,2]
+ x_ijk[22,9,1] x_ijk[22,9,2] x_ijk[24,9,1] x_ijk[24,9,2] x_ijk[25,9,1]
+ x_ijk[25,9,2]
+End
