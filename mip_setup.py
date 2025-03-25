@@ -50,7 +50,8 @@ class InputsSetup:
         # self.problem_data_df = pd.read_excel(self.directory, sheet_name="inputs_df", engine='openpyxl').dropna(axis=0, how='all').dropna(axis=1, how='all')
 
         # self.experiment_mode = experiment_mode
-        self.experiment_mode = self.parameters_df.loc["mode", "value"]
+        self.algorithm = self.parameters_df.loc["algorithm", "value"]
+        self.experiment_mode = self.parameters_df.loc["experiment_mode", "value"]
 
         if self.experiment_mode == "combination_run":
             self.problem_data_df.loc[[x - 1 for x in list(list_of_active_fires)], "state"] = 1
@@ -61,15 +62,16 @@ class InputsSetup:
 
 
 
-        if self.experiment_mode in ["cluster_first", "cluster_first_combination_run", "cluster_first_lean",]:
+        if self.algorithm in ["cem", "crlm", "ce-rlm"]:
             self.clustering_cost_function = self.parameters_df.loc["clustering_cost_function", "value"]
             self.clustering_neighborhood_level = self.parameters_df.loc["clustering_neighborhood_level", "value"]
 
-        if self.experiment_mode in ["cluster_first_combination_run", "single_run_hybrid_combination_run"]:
+        if self.experiment_mode in ["combination_run"]:
+            self.run_start_date = user_inputs.run_start_date
+
+        if self.experiment_mode in ["combination_run_from_file"]:
             self.run_start_date = user_inputs.run_start_date
             self.exact_run_time = user_inputs.exact_run_time
-
-
 
 
         fix_df = self.problem_data_df.copy()

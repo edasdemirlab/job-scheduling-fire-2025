@@ -1,8 +1,4 @@
-# firefighting model by erdi dasdemir
-# first successful run !!! March 28, 2023 - 3:35 pm
-# successful run after all bugs are fixed !! March 29, 2023 - 17:00
-# combinations mode is added June 15, 2023 - 17:00
-
+# firefighting model by erdi dasdemir, esther jose, rajan batta
 
 # import required packages
 import numpy as np
@@ -22,8 +18,14 @@ from random import sample
 
 # read user inputs
 user_inputs = mip_setup.UserInputsRead()
-experiment_mode = user_inputs.parameters_df.loc["mode", "value"]
+algorithm = user_inputs.parameters_df.loc["algorithm", "value"]
+experiment_mode = user_inputs.parameters_df.loc["experiment_mode", "value"]
 
+# Inform user about selected configuration
+print("\n" + "-" * 80)
+print(f"\n🔧 Algorithm selected: {algorithm}")
+print(f"🧪 Experiment mode: {experiment_mode}\n")
+print("-" * 80 + "\n")
 
 # modes
 # single_run: runs MIP as a single optimization task
@@ -31,42 +33,82 @@ experiment_mode = user_inputs.parameters_df.loc["mode", "value"]
 # instance_generate: generate a new WUI scenario based case instance
 
 
-
-
-
-# run optimization in single_run_mode
+# exact model
 if experiment_mode == "single_run":
-    mip_inputs = mip_setup.InputsSetup(user_inputs)
-    mip_solve.mathematical_model_solve(mip_inputs)
+    if algorithm == "em":
+        mip_inputs = mip_setup.InputsSetup(user_inputs)
+        mip_solve.exact_model_solve(mip_inputs)
+    elif algorithm == "cem":
+        mip_inputs = mip_setup.InputsSetup(user_inputs)
+        mip_inputs = mip_solve.clustering_model_solve(mip_inputs)
+        mip_solve.exact_model_solve(mip_inputs)
+    elif algorithm == "rlm":
+        mip_inputs = mip_setup.InputsSetup(user_inputs)
+        mip_solve.exact_model_solve(mip_inputs)
+    elif algorithm == "crlm":
+        mip_inputs = mip_setup.InputsSetup(user_inputs)
+        mip_inputs = mip_solve.clustering_model_solve(mip_inputs)
+        mip_solve.exact_model_solve(mip_inputs)
+    elif algorithm == "e-rlm":
+        mip_inputs = mip_setup.InputsSetup(user_inputs)
+        mip_inputs.hybrid_mode = "em"
+        mip_inputs.start_sol, mip_inputs.run_time_original_mip = mip_solve.exact_model_solve(mip_inputs)
+        mip_inputs.hybrid_mode = "rlm"
+        mip_solve.exact_model_solve(mip_inputs)
+    elif algorithm == "ce-rlm":
+        mip_inputs = mip_setup.InputsSetup(user_inputs)
+        mip_inputs = mip_solve.clustering_model_solve(mip_inputs)
+        mip_inputs.hybrid_mode = "em"
+        mip_inputs.start_sol, mip_inputs.run_time_original_mip = mip_solve.exact_model_solve(mip_inputs)
+        mip_inputs.hybrid_mode = "rlm"
+        mip_solve.exact_model_solve(mip_inputs)
 
-elif experiment_mode == "single_run_lean":
-    mip_inputs = mip_setup.InputsSetup(user_inputs)
-    mip_solve.mathematical_model_solve_lean(mip_inputs)
 
-elif experiment_mode == "single_run_strengthen":
-    mip_inputs = mip_setup.InputsSetup(user_inputs)
-    mip_solve.mathematical_model_solve_strengthen(mip_inputs)
+elif experiment_mode == "combination_run":
+    # run optimization in combination_mode
+    fire_prone_node_list = user_inputs.problem_data_df.query("state == 0")["node_id"].tolist()
+    list_combinations = list()
 
-elif experiment_mode == "single_run_hybrid":
-    mip_inputs = mip_setup.InputsSetup(user_inputs)
-    mip_inputs.start_sol, mip_inputs.run_time_original_mip = mip_solve.mathematical_model_solve(mip_inputs)
-    mip_solve.mathematical_model_solve_strengthen(mip_inputs)
+    for n in range(len(fire_prone_node_list) + 1):
+        combn_list = list(combinations(fire_prone_node_list, n))
+        if user_inputs.parameters_df.loc["n_nodes", "value"] <= 12:
+            list_combinations += combn_list
+        else:
+            list_combinations += sample(combn_list, min(20, len(combn_list)))
+    list_combinations = list_combinations[1:]
+    # i=list_combinations[5]
+    user_inputs.run_start_date = str(datetime.now().strftime('%Y_%m_%d_%H_%M'))
+    for i in list_combinations:
+        print(i)
+        if algorithm == "em":
+            mip_inputs = mip_setup.InputsSetup(user_inputs, i)
+            mip_solve.exact_model_solve(mip_inputs)
+        elif algorithm == "cem":
+            mip_inputs = mip_setup.InputsSetup(user_inputs, i)
+            mip_inputs = mip_solve.clustering_model_solve(mip_inputs)
+            mip_solve.exact_model_solve(mip_inputs)
+        elif algorithm == "rlm":
+            mip_inputs = mip_setup.InputsSetup(user_inputs, i)
+            mip_solve.exact_model_solve(mip_inputs)
+        elif algorithm == "crlm":
+            mip_inputs = mip_setup.InputsSetup(user_inputs, i)
+            mip_inputs = mip_solve.clustering_model_solve(mip_inputs)
+            mip_solve.exact_model_solve(mip_inputs)
+        elif algorithm == "e-rlm":
+            mip_inputs = mip_setup.InputsSetup(user_inputs, i)
+            mip_inputs.hybrid_mode = "em"
+            mip_inputs.start_sol, mip_inputs.run_time_original_mip = mip_solve.exact_model_solve(mip_inputs)
+            mip_inputs.hybrid_mode = "rlm"
+            mip_solve.exact_model_solve(mip_inputs)
+        elif algorithm == "ce-rlm":
+            mip_inputs = mip_setup.InputsSetup(user_inputs, i)
+            mip_inputs = mip_solve.clustering_model_solve(mip_inputs)
+            mip_inputs.hybrid_mode = "em"
+            mip_inputs.start_sol, mip_inputs.run_time_original_mip = mip_solve.exact_model_solve(mip_inputs)
+            mip_inputs.hybrid_mode = "rlm"
+            mip_solve.exact_model_solve(mip_inputs)
 
-
-
-elif experiment_mode == "cluster_first":
-    mip_inputs = mip_setup.InputsSetup(user_inputs)
-    mip_inputs = mip_solve.clustering_model_solve(mip_inputs)
-    mip_solve.mathematical_model_solve(mip_inputs)
-
-elif experiment_mode == "cluster_first_lean":
-    mip_inputs = mip_setup.InputsSetup(user_inputs)
-    mip_inputs = mip_solve.clustering_model_solve(mip_inputs)
-    mip_solve.mathematical_model_solve_lean(mip_inputs)
-
-
-
-elif experiment_mode in ["single_run_hybrid_combination_run", "cluster_first_combination_run"]:
+elif experiment_mode == "combination_run_from_file":
     user_inputs.run_start_date = str(datetime.now().strftime('%Y_%m_%d_%H_%M'))
     combination_results_file_name = user_inputs.parameters_df.loc["combination_results_file_name", "value"]
     combination_results_df = pd.read_csv(os.path.join('inputs', combination_results_file_name), index_col=0)
@@ -84,59 +126,33 @@ elif experiment_mode in ["single_run_hybrid_combination_run", "cluster_first_com
         # Find gurobi_time of the corresponding run
         user_inputs.exact_run_time = row["gurobi_time"]
 
-        if experiment_mode == "cluster_first_combination_run":
-            # Run the necessary functions
+        if algorithm == "em":
+            mip_inputs = mip_setup.InputsSetup(user_inputs)
+            mip_solve.exact_model_solve(mip_inputs)
+        elif algorithm == "cem":
             mip_inputs = mip_setup.InputsSetup(user_inputs)
             mip_inputs = mip_solve.clustering_model_solve(mip_inputs)
-            mip_solve.mathematical_model_solve(mip_inputs)
-        else:
+            mip_solve.exact_model_solve(mip_inputs)
+        elif algorithm == "rlm":
             mip_inputs = mip_setup.InputsSetup(user_inputs)
-            mip_inputs.start_sol, mip_inputs.run_time_original_mip = mip_solve.mathematical_model_solve(mip_inputs)
-            mip_solve.mathematical_model_solve_strengthen(mip_inputs)
-
-
-
-# run optimization in combination_mode
-elif experiment_mode == "combination_run":
-    fire_prone_node_list = user_inputs.problem_data_df.query("state == 0")["node_id"].tolist()
-    list_combinations = list()
-
-    for n in range(len(fire_prone_node_list) + 1):
-        combn_list = list(combinations(fire_prone_node_list, n))
-        if user_inputs.parameters_df.loc["n_nodes", "value"] <= 12:
-            list_combinations += combn_list
-        else:
-            list_combinations += sample(combn_list, min(20, len(combn_list)))
-    list_combinations = list_combinations[1:]
-    # i=list_combinations[5]
-    user_inputs.run_start_date = str(datetime.now().strftime('%Y_%m_%d_%H_%M'))
-    for i in list_combinations:
-        print(i)
-        mip_inputs = mip_setup.InputsSetup(user_inputs, i)
-        run_result = mip_solve.mathematical_model_solve(mip_inputs)
-
-elif experiment_mode == "combination_run_from_file":
-    user_inputs.run_start_date = str(datetime.now().strftime('%Y_%m_%d_%H_%M'))
-    combination_results_file_name = user_inputs.parameters_df.loc["combination_results_file_name", "value"]
-    combination_results_df = pd.read_csv(os.path.join('inputs', combination_results_file_name), index_col=0)
-    # Loop through each row in combination_results_df
-    user_inputs.problem_data_df_original = user_inputs.problem_data_df.copy()
-    user_inputs.run_start_date = str(datetime.now().strftime('%Y_%m_%d_%H_%M'))
-
-    for _, row in combination_results_df.iterrows():
-        user_inputs.problem_data_df = user_inputs.problem_data_df_original.copy()
-        # Read initial_fire_node_IDs and convert to a list of integers
-        fire_node_ids = str(row["initial_fire_node_IDs"]).split(",")
-        fire_node_ids = [int(node.strip()) for node in fire_node_ids]  # Ensure clean integer conversion
-
-        # Find matching rows in user_inputs.problem_data_df and update the 'state' column
-        user_inputs.problem_data_df.loc[user_inputs.problem_data_df["node_id"].isin(fire_node_ids), "state"] = 1
-
-        # Run the necessary functions
-        mip_inputs = mip_setup.InputsSetup(user_inputs)
-        mip_solve.mathematical_model_solve(mip_inputs)
-
-
+            mip_solve.exact_model_solve(mip_inputs)
+        elif algorithm == "crlm":
+            mip_inputs = mip_setup.InputsSetup(user_inputs)
+            mip_inputs = mip_solve.clustering_model_solve(mip_inputs)
+            mip_solve.exact_model_solve(mip_inputs)
+        elif algorithm == "e-rlm":
+            mip_inputs = mip_setup.InputsSetup(user_inputs)
+            mip_inputs.hybrid_mode = "em"
+            mip_inputs.start_sol, mip_inputs.run_time_original_mip = mip_solve.exact_model_solve(mip_inputs)
+            mip_inputs.hybrid_mode = "rlm"
+            mip_solve.exact_model_solve(mip_inputs)
+        elif algorithm == "ce-rlm":
+            mip_inputs = mip_setup.InputsSetup(user_inputs)
+            mip_inputs = mip_solve.clustering_model_solve(mip_inputs)
+            mip_inputs.hybrid_mode = "em"
+            mip_inputs.start_sol, mip_inputs.run_time_original_mip = mip_solve.exact_model_solve(mip_inputs)
+            mip_inputs.hybrid_mode = "rlm"
+            mip_solve.exact_model_solve(mip_inputs)
 
 elif experiment_mode == "instance_generation":
     user_inputs.case_output_file_name = os.path.join('outputs', "wui_scenario_{0}.csv".format(str(datetime.now().strftime('%Y_%m_%d_%H_%M_%S'))))
@@ -150,3 +166,38 @@ elif experiment_mode == "instance_generation":
 # how do we determine number of waters and blocks # sometimes it does not create blocks (is this case for water as well ? Should we make sure that there has to be at least 1 water and block when they are set to true?)
 # what is the relationship between n and m
 # initial fires
+
+#
+# elif experiment_mode == "single_run_strengthen":
+#     mip_inputs = mip_setup.InputsSetup(user_inputs)
+#     mip_solve.refill_lazy_constrained_model_solve(mip_inputs)
+#
+# elif experiment_mode == "single_run_hybrid":
+#     mip_inputs = mip_setup.InputsSetup(user_inputs)
+#     mip_inputs.start_sol, mip_inputs.run_time_original_mip = mip_solve.exact_model_solve(mip_inputs)
+#     mip_solve.refill_lazy_constrained_model_solve(mip_inputs)
+
+
+#
+#
+# elif experiment_mode == "combination_run_from_file":
+#     user_inputs.run_start_date = str(datetime.now().strftime('%Y_%m_%d_%H_%M'))
+#     combination_results_file_name = user_inputs.parameters_df.loc["combination_results_file_name", "value"]
+#     combination_results_df = pd.read_csv(os.path.join('inputs', combination_results_file_name), index_col=0)
+#     # Loop through each row in combination_results_df
+#     user_inputs.problem_data_df_original = user_inputs.problem_data_df.copy()
+#     user_inputs.run_start_date = str(datetime.now().strftime('%Y_%m_%d_%H_%M'))
+#
+#     for _, row in combination_results_df.iterrows():
+#         user_inputs.problem_data_df = user_inputs.problem_data_df_original.copy()
+#         # Read initial_fire_node_IDs and convert to a list of integers
+#         fire_node_ids = str(row["initial_fire_node_IDs"]).split(",")
+#         fire_node_ids = [int(node.strip()) for node in fire_node_ids]  # Ensure clean integer conversion
+#
+#         # Find matching rows in user_inputs.problem_data_df and update the 'state' column
+#         user_inputs.problem_data_df.loc[user_inputs.problem_data_df["node_id"].isin(fire_node_ids), "state"] = 1
+#
+#         # Run the necessary functions
+#         mip_inputs = mip_setup.InputsSetup(user_inputs)
+#         mip_solve.exact_model_solve(mip_inputs)
+
