@@ -159,7 +159,10 @@ elif experiment_mode == "instance_generation":
     generator.generate_grid(user_inputs)
     print("The inputs of the new instance are successfully generated! see outputs folder.")
 
-
+elif experiment_mode == "simulation":
+    if algorithm == "em":
+        mip_inputs = mip_setup.InputsSetup(user_inputs)
+        mip_solve.exact_model_solve(mip_inputs)
 
 #esther -->
 # the role of default density

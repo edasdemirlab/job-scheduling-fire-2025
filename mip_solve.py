@@ -451,7 +451,7 @@ def exact_model_solve(mip_inputs):
 
 
 
-    if mip_inputs.algorithm in ['cem', 'crlm'] or (mip_inputs.algorithm in ['ce-rlm'] and mip_inputs.hybrid_mode == 'em'):
+    if mip_inputs.algorithm in ['cem', 'crlm', 'ce-rlm']: #if mip_inputs.algorithm in ['cem', 'crlm'] or (mip_inputs.algorithm in ['ce-rlm'] and mip_inputs.hybrid_mode == 'em'):
         # Inform user about selected configuration
         print("\n" + "-" * 80)
         print("📌 Links are filtered based on vehicle clusters to reduce the problem size.")
@@ -887,16 +887,19 @@ def exact_model_solve(mip_inputs):
         print("-" * 80 + "\n")
 
         numb_of_fires = len(mip_inputs.set_of_active_fires_at_start)
-        model.params.TimeLimit = numb_of_fires * 0.2 * 60 # 180
+        model.params.TimeLimit = numb_of_fires * 0.2 * 60 # 180 # numb_of_fires * 0.2 * 60 # 180
         model.params.Presolve = 2
-        model.params.NoRelHeurTime = numb_of_fires * 0.1 * 60 # 30
+        model.params.NoRelHeurTime = numb_of_fires * 0.1 * 60 # 30 # numb_of_fires * 0.1 * 60 # 30
         model.params.MIPFocus = 1
+        model.params.MIPGap = 0.03
+
         model.update()
         model.printStats()
         start_time = time.time()
         model.optimize()
         end_time = time.time()
         run_time_cpu = round(end_time - start_time, 2)
+        em_gap = model.mipgap
         print("\n" + "-" * 80)
         print("📌 Exact model is solved")
         print("-" * 80 + "\n")
@@ -911,9 +914,20 @@ def exact_model_solve(mip_inputs):
             print("📌 Setting solution and constraints.")
             print("-" * 80 + "\n")
 
+            # Set all x_ijk variables to start at 0
+            for var in x_ijk.values():
+                var.start = 0
+            # Set all x_ijk variables to start at 0
+            for var in w_ijlk.values():
+                var.start = 0
+
             # set starting solutions
             water_and_base = set(mip_inputs.water_node_id) | {mip_inputs.base_node_id}
             for key, value in mip_inputs.start_sol["x_ijk"].items():
+
+                model.addConstr(
+                    x_ijk[key] == value
+                )
 
                 x_ijk[key].start = value
                 i = key[0]
@@ -972,16 +986,22 @@ def exact_model_solve(mip_inputs):
                     # cb_instance.added_constraints.add((i, j, k))
 
             for key, value in mip_inputs.start_sol["w_ijlk"].items():
+                model.addConstr(
+                    w_ijlk[key] == value
+                )
                 w_ijlk[key].start = value
 
             model.params.Presolve = 2
-            model.params.MIPFocus = 3
-
+            model.params.MIPFocus = 2
+            # model.params.Cuts = 2
+            # model.Params.Heuristics = 0  # Turn off internal heuristics temporarily
+            # model.Params.StartNodeLimit = 1  # Limit effort to process start, but make it try
 
 
         model.setParam("LazyConstraints", 1)  # Enable lazy constraints
         model.params.MIPGap = 0.03
-        model.params.TimeLimit = 10800
+        model.params.TimeLimit = 7200
+
 
         model._vars_x_ijk = x_ijk
         model._vars_w_ijlk = w_ijlk
@@ -1000,6 +1020,7 @@ def exact_model_solve(mip_inputs):
         model.optimize(my_callback)
         end_time = time.time()
         run_time_cpu = round(end_time - start_time, 2)
+
         print("\n" + "-" * 80)
         print("📌 Refill lazy-constrained model is solved")
         print("-" * 80 + "\n")
@@ -1014,7 +1035,6 @@ def exact_model_solve(mip_inputs):
     else:
         # if the hybrid algorithm is running, store the best feasible solutions flow decisions. These will be used as a starting solution for the
         if mip_inputs.algorithm in ['e-rlm', 'ce-rlm'] and mip_inputs.hybrid_mode == 'em':
-
             start_solution = {
                 "x_ijk": {},
                 "w_ijlk": {},
@@ -1086,6 +1106,12 @@ def exact_model_solve(mip_inputs):
                 global_results_df["run_time_original_mip"] = mip_inputs.run_time_original_mip
                 global_results_df["run_time_callback_mip"] = run_time_cpu
                 global_results_df["run_time_total"] = mip_inputs.run_time_original_mip + run_time_cpu
+
+            if mip_inputs.algorithm in ["e-rlm"]:
+                global_results_df["run_time_original_mip"] = mip_inputs.run_time_original_mip
+                global_results_df["run_time_callback_mip"] = run_time_cpu
+                global_results_df["run_time_total"] = mip_inputs.run_time_original_mip + run_time_cpu
+
 
             if mip_inputs.algorithm in ["ce-rlm"]:
                 global_results_df["clustering_python_time"] = mip_inputs.run_time_cpu_clustering
