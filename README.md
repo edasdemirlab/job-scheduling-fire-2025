@@ -72,3 +72,6 @@ This mode runs the model for the inputs defined in `inputs_df`. Additional param
 
 **combination_run**:
 This mode replicates the combination runs conducted in the paper. It uses the inputs in `inputs_df` but requires the sheet to have no nodes with states indicating initial fire at the start. Then, the combination mode will systematically create combinations of different initial fires for the experimental study as described in the paper.
+
+### revision update
+Now, two different solution algorithms are available in the code: Exact Model (EM) and Exact Guided Refill Lazy Model (E-RLM). The parameter algorithm in the input file need to set accordingly. More details will be available.
