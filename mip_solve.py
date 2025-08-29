@@ -860,6 +860,39 @@ def exact_model_solve(mip_inputs):
         model.addConstr(te_j[j] == tm_j[j] + (mip_inputs.node_area / mip_inputs.node_object_dict[j].get_fire_amelioration_rate()))
 
 
+    if mip_inputs.experiment_mode == "simulation":
+        x_ijk_sheet_name = 'x_ijk_results'
+        w_ijkl_sheet_name = 's_ijkw_results'
+        if os.path.exists(mip_inputs.opt_sol_path):
+            # Step 3: Read the Excel file and the specific sheet if it exists
+            x_ijk_start_df = pd.read_excel(mip_inputs.opt_sol_path, sheet_name=x_ijk_sheet_name)
+            w_ijkl_start_df = pd.read_excel(mip_inputs.opt_sol_path, sheet_name=w_ijkl_sheet_name)
+
+            # Step 4: Set the start solution for x_ijk from the DataFrame
+            for _, row in x_ijk_start_df.iterrows():
+                var_name = row['var_name']  # You can use this if you want variable names (e.g., 'x_ijk')
+                i = row['from_node_id']
+                j = row['to_node_id']
+                k = row['vehicle_id']
+                value = row['value']
+                # Set the starting solution for the variable x_ijk[i, j, k] if it exists
+                model.addConstr(x_ijk[i, j, k] == value)
+            print(f"x_ijk variables have been succesfully set!")
+
+            # Step 5: Set the start solution for w_ijkl from the DataFrame
+            for _, row in w_ijkl_start_df.iterrows():
+                var_name = row['var_name']  # You can use this if you want variable names (e.g., 'x_ijk')
+                i = row['from_node_id']
+                j = row['to_node_id']
+                k = row['vehicle_id']
+                l = row['water_node_id']
+                value = row['value']
+                # Set the starting solution for the variable x_ijk[i, j, k] if it exists
+                model.addConstr(w_ijlk[i, j, k, l] == value)
+            print(f"w_ijkl variables have been succesfully set!")
+        else:
+            print(f"Deterministic optimal solution file does not exist. No start solution will be fed to the model.")
+
     if mip_inputs.algorithm in ['em', 'cem']:
         print("\n" + "-" * 80)
         print("📌 Solving exact model...")
@@ -887,9 +920,9 @@ def exact_model_solve(mip_inputs):
         print("-" * 80 + "\n")
 
         numb_of_fires = len(mip_inputs.set_of_active_fires_at_start)
-        model.params.TimeLimit = numb_of_fires * 0.2 * 60 # 180 # numb_of_fires * 0.2 * 60 # 180
+        model.params.TimeLimit = numb_of_fires * 3 * 60 # 180 # numb_of_fires * 0.2 * 60 # 180
         model.params.Presolve = 2
-        model.params.NoRelHeurTime = numb_of_fires * 0.1 * 60 # 30 # numb_of_fires * 0.1 * 60 # 30
+        model.params.NoRelHeurTime = numb_of_fires * 2.4 * 60 # 30 # numb_of_fires * 0.1 * 60 # 30
         model.params.MIPFocus = 1
         model.params.MIPGap = 0.03
 
@@ -1027,11 +1060,71 @@ def exact_model_solve(mip_inputs):
 
 
 
-    if model.Status == GRB.Status.INFEASIBLE:
+    if model.Status == GRB.Status.INFEASIBLE :
         max_dev_result = None
         model.computeIIS()
         model.write("infeasible_model.ilp")
         print("Go check infeasible_model.ilp file")
+
+        if mip_inputs.experiment_mode == 'simulation':
+            # keep column names IDENTICAL to feasible branch
+            cols = [
+                'total_value', 'model_obj_value', 'model_obj_bound', 'gap',
+                'gurobi_time', 'python_time',
+                'operation_time',
+                'number_of_initial_fires', 'number_of_jobs_arrived',
+                'number_of_job_processed',
+                'number_of_vehicles', 'number_of_vehicles_used',
+                'initial_fire_node_IDs'
+            ]
+
+            # fill with NaNs/empties; keep the fields you CAN fill from mip_inputs
+            # Use getattr to read runtime regardless of attribute casing
+            gurobi_time = getattr(model, 'Runtime', getattr(model, 'runtime', np.nan))
+            initial_fires = len(mip_inputs.set_of_active_fires_at_start)
+            n_vehicles = len(mip_inputs.vehicle_list) if hasattr(mip_inputs, 'vehicle_list') else np.nan
+            base_ids = ','.join(map(str, mip_inputs.set_of_active_fires_at_start))
+
+            row = [
+                np.nan, np.nan, np.nan, np.nan,
+                gurobi_time, run_time_cpu,
+                np.nan,
+                initial_fires, np.nan,
+                np.nan,
+                n_vehicles, np.nan,
+                base_ids
+            ]
+
+            global_results_df = pd.DataFrame([row], columns=cols)
+
+
+            writer_file_name = os.path.join('outputs',
+                                            "{0}_{1}_results_{2}nodes_{3}uavs_{4}speed_{5}.csv".format(
+                                                mip_inputs.algorithm,
+                                                mip_inputs.experiment_mode,
+                                                mip_inputs.n_nodes,
+                                                mip_inputs.n_vehicles,
+                                                mip_inputs.vehicle_flight_speed,
+                                                mip_inputs.run_start_date))
+
+            # append to CSV
+            if os.path.isfile(writer_file_name):
+                global_results_df.to_csv(writer_file_name, mode="a", index=False, header=False)
+            else:
+                global_results_df.to_csv(writer_file_name, mode="a", index=False, header=True)
+
+            # return a consistent tuple so your for-loop unpack works
+            return None, run_time_cpu
+
+        # if not simulation, just return a safe tuple as well (or raise if you prefer)
+        return None, run_time_cpu
+
+
+
+
+
+
+
     else:
         # if the hybrid algorithm is running, store the best feasible solutions flow decisions. These will be used as a starting solution for the
         if mip_inputs.algorithm in ['e-rlm', 'ce-rlm'] and mip_inputs.hybrid_mode == 'em':
@@ -1161,9 +1254,10 @@ def exact_model_solve(mip_inputs):
                 mip_inputs.parameters_df.to_excel(writer, sheet_name='inputs_parameters')
                 writer.close()
 
-            elif mip_inputs.experiment_mode in ["combination_run", "combination_run_from_file"]:
-                writer_file_name = os.path.join('outputs', "{0}_{1}_results_{2}_nodes_{3}.csv".format(mip_inputs.algorithm,
-                                                                                                          mip_inputs.experiment_mode, mip_inputs.n_nodes, mip_inputs.run_start_date))
+            elif mip_inputs.experiment_mode in ["combination_run", "combination_run_from_file", 'simulation']:
+                writer_file_name = os.path.join('outputs', "{0}_{1}_results_{2}nodes_{3}uavs_{4}speed_{5}.csv".format(mip_inputs.algorithm,
+                                                                                                          mip_inputs.experiment_mode, mip_inputs.n_nodes,
+                                                                                                          mip_inputs.n_vehicles, mip_inputs.vehicle_flight_speed, mip_inputs.run_start_date))
 
                 if os.path.isfile(writer_file_name):
                     global_results_df.to_csv(writer_file_name, mode="a", index=False, header=False)

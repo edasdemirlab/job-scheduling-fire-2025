@@ -1,0 +1,210 @@
+2uav_60v 
+	em: DONE
+	e-rlm: 
+ 	- DONE: 0.2 + 0.1 time limits: e-rlm_combination_run_from_file_results_25_nodes_2025_03_22_07_22
+	
+	ce-rlm
+	- DONE: spread_rate_0_0 -->0.2+ 0.1 time limits: ce-rlm_combination_run_from_file_results_25_nodes_2025_04_04_14_21 --> It seems that it did not help significantly in terms of time
+	- DONE: value_0_0 --> 0.2 + 0.1 time limits
+	- DONE: value_1_0 --> 0.2 + 0.1 time limits
+	- DONE: value_2_0 --> 0.2 + 0.1 time limits
+	- DONE: value_2_1 --> 0.2 + 0.1 time limits
+	- RUNNING: value_1_1 --> 0.2 + 0.1 time limits
+
+
+
+2uav_120v
+	em: DONE: em_combination_run_from_file_results_25_nodes_2025_03_27_21_04
+
+	e-rlm: done 0.1 + 0.05
+	ce-rlm: 
+		- DONE: value_0_0  --> 0.1 + 0.05
+		- DONE: value_0_1  --> 0.1 + 0.05
+		- DONE: value_1_0  --> 0.1 + 0.05
+		- DONE: value_1_1  --> 0.1 + 0.05
+		- DONE: value_2_0  --> 0.1 + 0.05
+		- DONE: value_2_1  --> 0.1 + 0.05
+
+		- RUNNING: spread_0_0  --> 0.1 + 0.05
+
+
+
+4uav_60v
+	em: DONE: em_combination_run_from_file_results_25_nodes_2025_03_27_17_32  
+
+	e-rlm: DONE: e-rlm_combination_run_from_file_results_25_nodes_2025_04_02_17_10 --> TimeLimit = numb_of_fires * 0.1 * 60 # 180, numb_of_fires * 0.05 * 60 # 30
+
+
+	ce-rlm
+		- DONE: value_0_0  --> 0.1 + 0.05
+		- DONE: value_0_1  --> 0.1 + 0.05
+		- DONE: value_1_0  --> 0.1 + 0.05
+		- DONE: value_1_1  --> 0.1 + 0.05
+		- DONE: value_2_0  --> 0.1 + 0.05
+		- DONE: value_2_1  --> 0.1 + 0.05
+		- RUNNING: spread_0_0  --> 0.1 + 0.05
+
+
+
+4uav_120v
+
+	em: DONE: em_combination_run_from_file_results_25_nodes_2025_03_27_17_38
+	
+	e-rlm: DONE: e-rlm_combination_run_from_file_results_25_nodes_2025_04_02_17_18 --> TimeLimit = numb_of_fires * 0.05 * 60 # 180, numb_of_fires * 0.025 * 60 # 30
+
+
+	ce-rlm
+		- DONE: value_0_0  --> 0.05 + 0.025
+		- DONE: value_0_1  --> 0.05 + 0.025
+		- DONE: value_1_0  --> 0.05 + 0.025
+		- DONE: value_1_1  --> 0.05 + 0.025
+		- DONE: value_2_0  --> 0.05 + 0.025
+		- DONE: value_2_1  --> 0.05 + 0.025
+		- RUNNING: spread_0_0  --> 0.05 + 0.025
+
+
+
+
+
+
+
+Case Study
+
+	HighPop_HighVeg_5_1:
+			e-rlm:
+			   - 2uav_30v: completed (%50 gap), 0.6 + 0.8
+					completed -->  4 + 6 %50 gap sonuç iyileşmedi
+			   - 2uav_60v: completed, 0.6 + 0.8
+			   - 2uav_120v: completed, 0.6 + 0.8
+			   - 3uav_30v: completed (%20 gap), 0.6 + 0.8
+					completed -->  4 + 6  -->%5 gap
+					running -->  6 + 8  -->%5 gap
+
+			   - 3uav_60v: completed, 0.6 + 0.8
+			   - 3uav_120v
+
+			ce-rlm:
+			   - 2uav_30v: 0_0 completed, 1_0 completed, 2_0 completed, 2_1 completed
+					completed 2_1 (4 + 6 time limits) + completed 1_1 (4 + 6 time limits)  + running 0_1 (4 + 6 time limits)
+
+			   - 2uav_60v: 
+			   - 2uav_120v
+			   - 3uav_30v
+			   - 3uav_60v
+			   - 3uav_120v
+
+
+	HighPop_LowVeg_5_0:
+			   - 2uav_30v: completed 
+			   - 2uav_60v: completed
+			   - 2uav_120v: completed
+			   - 3uav_30v: completed
+			   - 3uav_60v : completed
+			   - 3uav_120v: completed
+	LowPop_HighVeg_1_1:
+			   - 2uav_30v: completed
+			   - 2uav_60v: completed
+			   - 2uav_120v: completed
+			   - 3uav_30v: completed
+			   - 3uav_60v: completed
+			   - 3uav_120v: completed
+	LowPop_LowVeg_1_0:
+			   - 2uav_30v: completed with %4 gap, presolve is open, heuristic 0.005  e-rlm_single_run_results_49_nodes_2025_04_03_20_47.xlsx
+					completed with %3.5 gap,
+			               completed -->  (2 + 2.4 time limits, presolve kapali, focus 3, cuts 3, heuristics 0) --> no improvement in terms of gap
+					completed --> (6 + 8 time limits)  high gap around %4
+					running --> (2 + 3 time limits + varbranch 3 + 10800 seconds) 
+
+			   - 2uav_60v
+			   - 2uav_120v
+			   - 3uav_30v
+			   - 3uav_60v: 
+			   - 3uav_120v: done
+
+	MediumPop_HighVeg_3_1:
+			   - 2uav_30v: DONE --> %40 gap (0.8 + 1.2 time limits, presolve 2, focus 3, cuts 3, heuristics 0)
+			               DONE --> %40 gap   (2.4 + 2 time limits, presolve 2, focus 3, cuts 3, heuristics 0)
+			               RUNNING --> (6+8  + varbranch 3 + 10800 seconds) 
+
+
+			   - 2uav_60v
+			   - 2uav_120v
+			   - 3uav_30v
+			   - 3uav_60v: 
+			   - 3uav_120v: DONE
+
+	MediumPop_LowVeg_3_0:
+			   - 2uav_30v: DONE --> %40 gap  (0.4 + 0.6 time limits, presolve 2, focus 3, cuts 3, heuristics 0)
+			               DONE --> %40 gap (2.4 + 2 time limits, presolve 2, focus 3, cuts 3, heuristics 0)
+			               DONE --> (6+8) %17 gap
+			               RUNNING --> (6+8 + varbranch 3 + 10800 seconds)
+
+
+			   - 2uav_60v
+			   - 2uav_120v
+			   - 3uav_30v
+			   - 3uav_60v: 
+			   - 3uav_120v: 
+
+
+
+
+
+2uav_60v (son guncelleme 02.04.2025)
+
+em: ilk 252 tanesi tamam, sonrasini 02.04.2025'te 18210043 gonderdim.
+cem: 
+ - val_dec, clustering_neighborhood_level=0, clustering_distance_on_off=0 DONE: cem_value_deg_0_0_combination_run_from_file_results_25_nodes_2025_03_29_17_28
+ - val_dec, clustering_neighborhood_level=0, clustering_distance_on_off=1 running: 03.04.2025, 18218629
+
+
+e-rlm: 
+ - DONE: 0.2 + 0.1 time limits: e-rlm_combination_run_from_file_results_25_nodes_2025_03_23_18_34
+ - RUNNING:
+
+ce-rlm
+ - cem'den gelen best parametre ile calistirilacak
+
+
+
+2uav_120v
+
+em: DONE: em_combination_run_from_file_results_25_nodes_2025_03_27_21_04
+
+cem:
+ - DONE: val_dec, clustering_neighborhood_level=0, clustering_distance_on_off=0 --> cem_value_deg_0_0_combination_run_from_file_results_25_nodes_2025_03_27_17_27
+ - val_dec, clustering_neighborhood_level=0, clustering_distance_on_off=1 running: 02.04.2025'te 1821050101:49 03.04.202501:49 03.04.2025 gonderdim.
+
+e-rlm: done
+ce-rlm
+ - cem'den gelen best parametre ile calistirilacak
+
+
+
+4uav_60v
+em: DONE: em_combination_run_from_file_results_25_nodes_2025_03_27_17_32  
+cem:
+ - DONE val_dec, clustering_neighborhood_level=0, clustering_distance_on_off=0 : cem_value_deg_0_0_combination_run_from_file_results_25_nodes_2025_03_27_17_34
+ - DONE, val_dec, clustering_neighborhood_level=0, clustering_distance_on_off=1 : cem_value_deg_0_1_combination_run_from_file_results_25_nodes_2025_04_03_07_33
+ - RUNNING, val_dec, clustering_neighborhood_level=1, clustering_distance_on_off=1 :
+
+e-rlm: DONE: e-rlm_combination_run_from_file_results_25_nodes_2025_03_27_17_35 --> TimeLimit = numb_of_fires * 0.2 * 60 # 180, numb_of_fires * 0.1 * 60 # 30
+e-rlm: DONE: e-rlm_combination_run_from_file_results_25_nodes_2025_04_02_17_10 --> TimeLimit = numb_of_fires * 0.1 * 60 # 180, numb_of_fires * 0.05 * 60 # 30
+
+
+ce-rlm
+ - cem'den gelen best parametre ile calistirilacak
+
+
+
+4uav_120v
+
+em: DONE: em_combination_run_from_file_results_25_nodes_2025_03_27_17_38
+e-rlm: DONE: e-rlm_combination_run_from_file_results_25_nodes_2025_03_27_17_42 --> TimeLimit = numb_of_fires * 0.2 * 60 # 180, numb_of_fires * 0.1 * 60 # 30
+e-rlm: DONE: e-rlm_combination_run_from_file_results_25_nodes_2025_04_02_17_18 --> TimeLimit = numb_of_fires * 0.05 * 60 # 180, numb_of_fires * 0.025 * 60 # 30
+
+
+
+
+
+

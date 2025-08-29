@@ -60,7 +60,10 @@ class InputsSetup:
         if self.experiment_mode == "combination_run_from_file":
             self.run_start_date = user_inputs.run_start_date
 
+        if self.experiment_mode == "simulation":
+            self.opt_sol_path = user_inputs.opt_sol_path
 
+            self.run_start_date = user_inputs.run_start_date
 
         if self.algorithm in ["cem", "crlm", "ce-rlm"]:
             self.clustering_cost_function = self.parameters_df.loc["clustering_cost_function", "value"]

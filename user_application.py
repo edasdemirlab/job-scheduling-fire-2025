@@ -32,7 +32,6 @@ print("-" * 80 + "\n")
 # combination_run: runs MIP in the combination mode (to evaluate the impact of quantity and location of initial fires)
 # instance_generate: generate a new WUI scenario based case instance
 
-
 # exact model
 if experiment_mode == "single_run":
     if algorithm == "em":
@@ -160,9 +159,44 @@ elif experiment_mode == "instance_generation":
     print("The inputs of the new instance are successfully generated! see outputs folder.")
 
 elif experiment_mode == "simulation":
-    if algorithm == "em":
-        mip_inputs = mip_setup.InputsSetup(user_inputs)
-        mip_solve.exact_model_solve(mip_inputs)
+
+    # Store original values
+    orig_value_at_start = user_inputs.problem_data_df["value_at_start"].copy()
+    orig_fire_deg = user_inputs.problem_data_df["fire_degradation_rate"].copy()
+    orig_fire_amel = user_inputs.problem_data_df["fire_amelioration_rate"].copy()
+
+    for n_vehicle_simulation in [3]:
+        for vehicle_speed_simulation in [120]:
+            opt_sol_scenario = user_inputs.parameters_df.loc["optimal_solution_file_name", "value"]
+            opt_sol_file_name = f"{opt_sol_scenario}--{n_vehicle_simulation}uav--{vehicle_speed_simulation}speed.xlsx"
+
+            user_inputs.opt_sol_path = os.path.join("inputs", "optimal_solutions", opt_sol_file_name)
+            user_inputs.run_start_date = str(datetime.now().strftime('%Y_%m_%d_%H_%M'))
+            user_inputs.parameters_df.loc["n_vehicles", "value"] = n_vehicle_simulation
+            user_inputs.parameters_df.loc["vehicle_flight_speed", "value"] = vehicle_speed_simulation
+
+            for r in np.round(np.arange(-0.30, 0.31, 0.05),2):
+            # for r in [0.15]:
+                print(
+                    f"Running with {n_vehicle_simulation} vehicles, "
+                    f"speed {vehicle_speed_simulation} km/h, "
+                    f"r = {r}, "
+                    f"opt_sol_file_name = {opt_sol_file_name}"
+                )
+                # Modify rates based on r
+                user_inputs.problem_data_df["fire_degradation_rate"] = orig_fire_deg * (1 + r)
+                user_inputs.problem_data_df["fire_amelioration_rate"] = orig_fire_amel * (1 + r)
+                user_inputs.problem_data_df["value_degradation_rate"] = orig_value_at_start / (1/user_inputs.problem_data_df["fire_degradation_rate"]  + 1/user_inputs.problem_data_df["fire_amelioration_rate"])
+
+                # Run your scenario here
+                mip_inputs = mip_setup.InputsSetup(user_inputs)
+                mip_inputs.hybrid_mode = "em"
+                mip_inputs.start_sol, mip_inputs.run_time_original_mip = mip_solve.exact_model_solve(mip_inputs)
+                if mip_inputs.start_sol is not None:
+                    mip_inputs.hybrid_mode = "rlm"
+                    mip_solve.exact_model_solve(mip_inputs)
+                else:
+                    print("Skipping RLM run: EM returned no feasible start solution.")
 
 #esther -->
 # the role of default density

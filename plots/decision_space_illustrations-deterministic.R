@@ -8,7 +8,7 @@ library(colorspace)
 source("decision_space_functions.R")
 
 # read output file
-input_name <- "single_run_hybrid_results_25_nodes_2025_03_11_01_03"
+input_name <- "e-rlm_single_run_results_49_nodes_2025_08_17_14_36"
 input_file <- paste0(input_name,".xlsx")
 
 # Step 2: Create a folder in the current directory using the input file's name
@@ -38,7 +38,7 @@ node_coordinates <- inputs_problem_data_df[, c("node_id", "x_coordinate", "y_coo
 # problem parameters
 base_id <- 1
 water_id <- inputs_problem_data_df$node_id[inputs_problem_data_df$state == 5]
-node_at_a_side <- 5
+node_at_a_side <- 7
 pX <- inputs_problem_data_df$x_coordinate 
 pY <- inputs_problem_data_df$y_coordinate
 pMat <- c()
