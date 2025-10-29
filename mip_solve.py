@@ -634,7 +634,7 @@ def exact_model_solve(mip_inputs):
     # equations for prize collection
     # constraint 2 - determines collected prizes from at each node
     for j in mip_inputs.fire_ready_node_ids:
-        model.addConstr(p_j[j] <= mip_inputs.node_object_dict[j].get_value_at_start() - mip_inputs.node_object_dict[j].get_value_degradation_rate() * tv_j[j] - mip_inputs.node_object_dict[j].get_value_at_start() * b_j[j])
+        model.addConstr(p_j[j] <= mip_inputs.node_object_dict[j].get_value_at_start() - mip_inputs.node_object_dict[j].get_value_degradation_rate() * (tv_j[j] - ts_j[j] ) - mip_inputs.node_object_dict[j].get_value_at_start() * b_j[j])
 
     # constraint 3 - determines if a fire is burned down or not - that also impacts the decision of visiting a node to process the fire
     for j in mip_inputs.fire_ready_node_ids:
