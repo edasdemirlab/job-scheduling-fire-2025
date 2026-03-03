@@ -5,7 +5,7 @@ Authors:
 - Esther Jose (2)
 - Rajan Batta (2)
 
-(1) Department of Industrial Engineering, Hacettepe University, 06800 Ankara, Turkey
+(1) Department of Industrial Engineering, Hacettepe University, 06800 Ankara, Türkiye
 
 (2) Department of Industrial and Systems Engineering, University at Buffalo (SUNY), Buffalo, NY 14260
 
