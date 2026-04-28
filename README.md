@@ -75,3 +75,5 @@ This mode replicates the combination runs conducted in the paper. It uses the in
 
 ### revision update
 Now, two different solution algorithms are available in the code: Exact Model (EM) and Exact Guided Refill Lazy Model (E-RLM). The parameter algorithm in the input file need to set accordingly. More details will be available.
+
+Last updates is on April 28, 2026
